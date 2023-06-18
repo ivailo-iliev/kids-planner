@@ -341,11 +341,7 @@
         .weather {
             width: 100%;
             height: 90%;
-            background-size: contain;
-            background-position: center center;
-            background-repeat: no-repeat;
             font-size: 1.8rem;
-            display: none;
         }
 
         .current-temp {
@@ -363,6 +359,20 @@
             height: 1.8rem;
             display: none;
             vertical-align: text-top;
+        }
+
+        .weather-text
+        {
+            height: 3rem;
+        }
+
+        .weather-icon
+        {
+            height: calc(100% - 3rem);
+            width: 100%;
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
         }
     </style>
 
@@ -485,16 +495,19 @@
         </div>
 
         <div class="weather" id="weather">
-            <span class="current-temp" id="current_temp"></span> ▸
-            <span class="max-temp" id="max_temp"></span>
-            <svg id="icon_snow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
-                <path
-                    d="M450-80v-195L301-126l-43-42 192-192v-90h-90L172-262l-44-41 147-147H80v-60h195L125-660l43-43 192 193h90v-91L262-789l42-44 146 147v-194h60v194l150-150 42 43-192 192v91h91l189-189 43 42-147 147h194v60H686l148 149-41 43-192-192h-91v90l192 193-41 43-151-151v195h-60Z" />
-            </svg>
-            <svg id="icon_rain" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
-                <path
-                    d="M479-208q16 0 24.5-5.5T512-230q0-11-8.5-17t-25.5-6q-42 0-85.5-26.5T337-373q-2-9-9-14.5t-15-5.5q-11 0-17 8.5t-4 17.5q15 84 71 121.5T479-208Zm1 128q-137 0-228.5-94T160-408q0-100 79.5-217.5T480-880q161 137 240.5 254.5T800-408q0 140-91.5 234T480-80Zm0-60q112 0 186-76.5T740-408q0-79-66.5-179.5T480-800Q353-688 286.5-587.5T220-408q0 115 74 191.5T480-140Zm0-340Z" />
-            </svg>
+            <div class="weather-text">
+                <span class="current-temp" id="current_temp">10.1</span> ▸
+                <span class="max-temp" id="max_temp">18.8</span>
+                <svg id="icon_snow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
+                    <path
+                        d="M450-80v-195L301-126l-43-42 192-192v-90h-90L172-262l-44-41 147-147H80v-60h195L125-660l43-43 192 193h90v-91L262-789l42-44 146 147v-194h60v194l150-150 42 43-192 192v91h91l189-189 43 42-147 147h194v60H686l148 149-41 43-192-192h-91v90l192 193-41 43-151-151v195h-60Z" />
+                </svg>
+                <svg id="icon_rain" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
+                    <path
+                        d="M479-208q16 0 24.5-5.5T512-230q0-11-8.5-17t-25.5-6q-42 0-85.5-26.5T337-373q-2-9-9-14.5t-15-5.5q-11 0-17 8.5t-4 17.5q15 84 71 121.5T479-208Zm1 128q-137 0-228.5-94T160-408q0-100 79.5-217.5T480-880q161 137 240.5 254.5T800-408q0 140-91.5 234T480-80Zm0-60q112 0 186-76.5T740-408q0-79-66.5-179.5T480-800Q353-688 286.5-587.5T220-408q0 115 74 191.5T480-140Zm0-340Z" />
+                </svg>
+            </div>
+            <div class="weather-icon" id="weather_icon"></div>
         </div>
     </div>
 
@@ -541,7 +554,7 @@
         </div>
     </div>
     <!-- end // Calendar -->
-    <button id="fetch-btn">Fetch</button>
+<!--    <button id="fetch-btn">Fetch</button>-->
 
     <script>
         const root = document.documentElement;
@@ -608,10 +621,11 @@
         setInterval(runClock, 1000);
 
         const weather = document.getElementById("weather");
+        const weatherIcon = document.getElementById("weather_icon");
         const currentTemp = document.getElementById("current_temp");
         const maxTemp = document.getElementById("max_temp");
         const iconSnow = document.getElementById("icon_snow");
-        const iconRain = document.getElementById("icon_rain");
+        const iconRain = document.getElementById("icon_rain"); 
 
         async function getWeather() {
           const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
@@ -627,13 +641,13 @@
                     case "Rain": iconRain.style.display = "inline"; break;
                     case "Snow": iconSnow.style.display = "inline"; break;
                 }
-                weather.style.backgroundImage = "url(https://www.accuweather.com/images/weathericons/" + todayForecast.DailyForecasts[0].Day.Icon + ".svg)";
+                weatherIcon.style.backgroundImage = "url(https://www.accuweather.com/images/weathericons/" + todayForecast.DailyForecasts[0].Day.Icon + ".svg)";
                 weather.style.display = "block";
 
             }
         }
         
-        document.getElementById('fetch-btn').addEventListener('click', getWeather())
+//        document.getElementById('fetch-btn').addEventListener('click', getWeather())
     </script>
 
 </body>
