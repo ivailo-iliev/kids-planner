@@ -305,6 +305,7 @@
             width: 100%;
             height: 90%;
             font-size: 1.8rem;
+            display: none;
         }
 
         .current-temp {
@@ -499,7 +500,6 @@
         </div>
     </div>
     <!-- end // Calendar -->
-    <!--    <button id="fetch-btn">Fetch</button>-->
 
     <script>
         const root = document.documentElement;
@@ -591,8 +591,6 @@
 
             }
         }
-        //        getWeather();
-        //        document.getElementById('fetch-btn').addEventListener('click', getWeather())
 
         async function getCalendar() {
             const calendarData = await fetch('/.netlify/functions/calendar').then(
@@ -608,6 +606,9 @@
                     }
                 }
         }
+
+        getWeather();
+        getCalendar();
     </script>
 
 </body>
