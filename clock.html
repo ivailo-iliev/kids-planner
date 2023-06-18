@@ -642,8 +642,12 @@
         const iconRain = document.getElementById("icon_rain");
 
         async function getWeather() {
-            let currentWeather = await fetchCurrentWeather();
-            let todayForecast = await fetchTodayForecast();
+          const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
+            currentWeather => currentWeather.json()
+          )
+          const todayForecast = await fetch('/.netlify/functions/todayForecast').then(
+            todayForecast => todayForecast.json()
+          )
             if (currentWeather) {
                 currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
                 maxTemp.innerText = todayForecast.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
@@ -656,25 +660,18 @@
 
             }
         }
+        
+      document.addEventListener('DOMContentLoaded', () => {
+        const fetchBtn = document.getElementById('fetch-btn')
 
-        getWeather();*/
+        fetchBtn.addEventListener('click', getWeather())
+      })
+
     </script>
     <button id="fetch-btn">Fetch</button>
     <p id="response-output">Response Placeholder</p>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const fetchBtn = document.getElementById('fetch-btn')
-        const responseText = document.getElementById('response-output')
-
-        fetchBtn.addEventListener('click', async () => {
-          const response = await fetch('/.netlify/functions/currentWeather').then(
-            response => response.json()
-          )
-
-          responseText.innerText = JSON.stringify(response)
-        })
-      })
     </script>
 </body>
 
