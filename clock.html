@@ -607,9 +607,11 @@
                 }
         }
 
+        getWeather();
+        getCalendar();
         setInterval(function () {
             let h = new Date().getHours();
-            if (h >= 7 && h < 21) {
+            if (h >= 6 && h < 21) {
                 getWeather();
                 getCalendar();
             }
