@@ -607,35 +607,6 @@
 
         setInterval(runClock, 1000);
 
-        const accuweatherApiKey = "8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG";
-        const locationKey = 51097;
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow',
-            mode: 'no-cors'
-        };
-
-        const currentWeatherApi = "https://dataservice.accuweather.com/currentconditions/v1/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true";
-        const todayForecastApi = "https://dataservice.accuweather.com/forecasts/v1/daily/1day/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true&metric=true";
-
-        async function fetchCurrentWeather() {
-            try {
-                let res = await fetch(currentWeatherApi, { mode: 'no-cors' });
-                return await res.json();
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        async function fetchTodayForecast() {
-            try {
-                let res = await fetch(todayForecastApi, { mode: 'no-cors' });
-                return await res.json();
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
         const weather = document.getElementById("weather");
         const currentTemp = document.getElementById("current_temp");
         const maxTemp = document.getElementById("max_temp");
@@ -662,12 +633,7 @@
             }
         }
         
-      document.addEventListener('DOMContentLoaded', () => {
-        const fetchBtn = document.getElementById('fetch-btn')
-
-        fetchBtn.addEventListener('click', getWeather())
-      })
-
+        document.getElementById('fetch-btn').addEventListener('click', getWeather())
     </script>
 
 </body>
