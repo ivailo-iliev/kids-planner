@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="bg">
+
+<head>
+    <meta charset="utf-8">
+    <title>Calendar</title>
+
+    <!-- CONFIGURATION -->
+
+    <!-- Allow web app to be run in full-screen mode - iOS. -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Allow web app to be run in full-screen mode - Android. -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Make the app title different than the page title - iOS. -->
+    <meta name="apple-mobile-web-app-title" content="Calendar">
+
+    <!-- Make the app title different than the page title and configure icons - Android. -->
+    <!--<link rel="manifest" href="/manifest.json">-->
+
+    <!-- IE configuration for icons and colors is in browserconfig.xml -->
+
+    <!-- Configure the status bar - iOS. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+
+    <!-- Set the viewport. -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+
+    <!-- Disable automatic phone number detection. -->
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Android dock color -->
+    <meta name="theme-color" content="#fff">
+
+    <meta http-equiv="refresh" content="3600">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@200;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Sofia Sans Condensed", sans-serif;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .calendar,
+        .widgets {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            padding: 1%;
+            box-sizing: border-box;
+            gap: 0.8%;
+            width: 100%;
+        }
+
+        .widgets {
+            width: 100%;
+            height: 40%;
+            padding-bottom: 2vh;
+            justify-content: center;
+            gap: 2%;
+        }
+
+        .widgets>div {
+            flex: none;
+            order: 0;
+            align-self: center;
+            text-align: center;
+            flex-grow: 0;
+            flex-shrink: 1;
+            flex-basis: 20%;
+            height: 100%;
+        }
+
+        .calendar {
+            height: 60%;
+        }
+
+        .day {
+            /* Monday */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5%;
+            gap: 1.5%;
+            color: #000000;
+
+            background: #DBF6FF66;
+            border: 1px solid #D9D9D9;
+            border-radius: 5px;
+
+            /* Inside auto layout */
+
+            flex: none;
+            order: 0;
+            align-self: center;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0;
+            height: 100%;
+        }
+
+        .day.past {
+            opacity: 0.5;
+        }
+
+        .day.weekend {
+            background-color: #FFE1E166;
+        }
+
+        .day.active {
+            background-image: linear-gradient(0deg, rgba(61, 245, 167, 1) 50%, rgba(9, 111, 224, 1) 100%);
+            color: white;
+            font-weight: 700;
+        }
+
+        .day-name,
+        .clock-label {
+            font-style: normal;
+            font-size: 16px;
+            line-height: 19px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .event {
+            background-size: cover;
+            background-position: center center;
+            border-radius: 5px;
+            border: 1px solid white;
+            box-sizing: border-box;
+
+            /* Inside auto layout */
+            flex: none;
+            order: 1;
+            align-self: stretch;
+            flex-grow: 1;
+            max-height: 60%;
+        }
+
+        .event.kindergarten {
+            background-image: url("kindergarten.jpg");
+        }
+
+        .event.ballet {
+            background-image: url("ballet.jpg");
+        }
+
+        .event.blagoevgrad {
+            background-image: url("blagoevgrad.jpg");
+        }
+
+        .event.suha {
+            background-image: url("suha.jpg");
+            background-position: left center;
+        }
+
+        .event.home {
+            background-image: url("home.jpg");
+        }
+
+        .event.iceskating {
+            background-image: url("ice-skating.jpg");
+        }
+
+        .event.fathersday {
+            background-image: url("fathers-day.jpg");
+        }
+
+        .event.concert {
+            background-image: url("concert.jpg");
+        }
+
+        .event.ice-cream {
+            background-image: url("ice-cream.jpg");
+        }
+
+        .clock-label {
+            height: 1.5em;
+        }
+
+        .clock svg {
+            height: 90%;
+        }
+
+        .clock-ring {
+            stroke: #EBEBEB;
+        }
+
+        .clock-ring-inner,
+        .active .hour-progress,
+        #am_clock .hour-progress,
+        .hour-marks {
+            stroke: url(#0);
+        }
+
+        .clock .icon use {
+            pointer-events: none;
+            fill: white;
+            stroke: #333;
+            stroke-width: 10px;
+        }
+
+        .hour-hand,
+        .min-hand {
+            transform-origin: 2.105px 2.105px;
+        }
+
+        .active .hour-hand line,
+        .active .min-hand line {
+            stroke: #096fe0;
+        }
+
+        .mid-circle {
+            fill: #096fe0;
+        }
+
+        .number {
+            pointer-events: none;
+            text-anchor: middle;
+            font-size: 0.3px;
+            font-weight: 700;
+        }
+
+        .clock {
+            --pi: 3.1415926535897932;
+            --viewbox: 4.21px;
+            --center: calc(var(--viewbox)/2);
+            --icon-radius: 1.9px;
+            --number-radius: 1.35px;
+            --icon-offset-x: -0.2px;
+            --icon-offset-y: -2.105px;
+            --number-offset-x: 0px;
+            --number-offset-y: 0.1px;
+        }
+
+        .clock .number:nth-of-type(1),
+        .clock .icon-12 {
+            --index: 0;
+        }
+
+        .clock .number:nth-of-type(2),
+        .clock .icon-1 {
+            --index: 1;
+        }
+
+        .clock .number:nth-of-type(3),
+        .clock .icon-2 {
+            --index: 2;
+        }
+
+        .clock .number:nth-of-type(4),
+        .clock .icon-3 {
+            --index: 3;
+        }
+
+        .clock .number:nth-of-type(5),
+        .clock .icon-4 {
+            --index: 4;
+        }
+
+        .clock .number:nth-of-type(6),
+        .clock .icon-5 {
+            --index: 5;
+        }
+
+        .clock .number:nth-of-type(7),
+        .clock .icon-6 {
+            --index: 6;
+        }
+
+        .clock .number:nth-of-type(8),
+        .clock .icon-7 {
+            --index: 7;
+        }
+
+        .clock .number:nth-of-type(9),
+        .clock .icon-8 {
+            --index: 8;
+        }
+
+        .clock .number:nth-of-type(10),
+        .clock .icon-9 {
+            --index: 9;
+        }
+
+        .clock .number:nth-of-type(11),
+        .clock .icon-10 {
+            --index: 10;
+        }
+
+        .clock .number:nth-of-type(12),
+        .clock .icon-11 {
+            --index: 11;
+        }
+
+        .clock .number {
+            --translate-x: calc(var(--center) + var(--number-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-x));
+            --translate-y: calc(var(--center) + var(--number-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-y));
+            transform: translate(var(--translate-x), var(--translate-y));
+        }
+
+        .clock .icon {
+            --translate-x: calc(var(--center) + var(--icon-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--icon-offset-x));
+            --translate-y: calc(var(--center) + var(--icon-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--icon-offset-y));
+            transform: translate(var(--translate-x), var(--translate-y));
+        }
+
+        .symbols-library {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .dark {
+            background-color: #000000;
+        }
+
+        .dark .calendar {
+            visibility: hidden;
+        }
+
+        .dark .clock-ring {
+            stroke: #333;
+        }
+
+        .weather {
+            width: 100%;
+            height: 90%;
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+            font-size: 1.8rem;
+            display: none;
+        }
+
+        .current-temp {
+            font-size: 3rem;
+        }
+
+        .current-temp::after,
+        .max-temp::after {
+            content: "°";
+        }
+
+        #icon_snow,
+        #icon_rain {
+            width: 1.8rem;
+            height: 1.8rem;
+            display: none;
+            vertical-align: text-top;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="widgets">
+        <svg class="symbols-library" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <linearGradient id="0" x1="0.5" y1="0" x2="0.5" y2="1">
+                    <stop offset="40%" stop-color="#096fe0" />
+                    <stop offset="60%" stop-color="#3df5a7" />
+                </linearGradient>
+                <symbol id="icon_rise_outline" viewBox="0 -960 960 960">
+                    <path
+                        d="M450-770v-150h60v150h-60Zm256 106-42-42 106-107 42 43-106 106Zm64 214v-60h150v60H770ZM450-40v-150h60v150h-60ZM253-665 148-770l42-42 106 106-43 41Zm518 517L664-254l41-41 108 104-42 43ZM40-450v-60h150v60H40Zm151 302-43-42 105-105 22 20 22 21-106 106Zm289-92q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-60q75 0 127.5-52.5T660-480q0-75-52.5-127.5T480-660q-75 0-127.5 52.5T300-480q0 75 52.5 127.5T480-300Zm0-180Z" />
+                </symbol>
+                <symbol id="icon_rise" viewBox="0 -960 960 960">
+                    <path
+                        d="M421-753v-190h118v190H421Zm293 124-87-85 137-133 85 81-135 137Zm39 208v-118h190v118H753ZM421-17v-190h118v190H421ZM246-629 110-764l87-82 133 133-84 84Zm519 521L631-247l83-83 136 131-85 91ZM17-421v-118h190v118H17Zm179 311-84-86 135-133 41 41 41 41-133 137Zm283.765-138Q383-248 315.5-315.735q-67.5-67.736-67.5-164.5Q248-577 315.735-644.5q67.736-67.5 164.5-67.5Q577-712 644.5-644.265q67.5 67.736 67.5 164.5Q712-383 644.265-315.5q-67.736 67.5-164.5 67.5Z" />
+                </symbol>
+                <symbol id="icon_sleep_outline" viewBox="0 -960 960 960">
+                    <path
+                        d="M524-40q-84 0-157.5-32t-128-86.5Q184-213 152-286.5T120-444q0-146 93-257.5T450-840q-18 98 11 192.635 29 94.635 100 165.736 71 71.101 165.5 100.143Q821-352.445 920-370.471q-26 144.206-138 237.338Q670-40 524-40Zm0-60q100 0 182-57t132-145q-90-8-173-41.5T518.5-440Q455-503 422-585.5T381-757q-88 48-144.5 130.5T180-444q0 143.333 100.333 243.667Q380.667-100 524-100Zm-6-340Z" />
+                </symbol>
+                <symbol id="icon_sleep" viewBox="0 -960 960 960">
+                    <path
+                        d="M531.105-28q-84.487 0-158.413-32.162-73.927-32.162-129.147-87.383-55.221-55.22-87.383-129.147Q124-350.618 124-435.105 124-587 222-701.5 320-816 470-843q-8 103 17.5 196T583-484q68 68 162.5 91.5T937-370q-24 147-139 244.5T531.105-28Z" />
+                </symbol>
+                <symbol id="icon_eat" viewBox="0 -960 960 960">
+                    <path
+                        d="M285-80v-368q-52-11-88.5-52.5T160-600v-280h60v280h65v-280h60v280h65v-280h60v280q0 58-36.5 99.5T345-448v368h-60Zm415 0v-320H585v-305q0-79 48-127t127-48v800h-60Z" />
+                </symbol>
+            </defs>
+        </svg>
+        <div class="clock" id="am_clock">
+            <div class="clock-label">Преди обед</div>
+            <svg viewBox="0 0 4.21 4.21">
+                <circle class="clock-ring" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4">
+                </circle>
+                <circle class="hour-progress" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4"
+                    stroke-dasharray="0 12" stroke-dashoffset="3" stroke-linecap="round"></circle>
+                <circle class="clock-ring-inner" cx="2.1" cy="2.1" r="1.70" fill="transparent" stroke-width="0.02">
+                </circle>
+                <circle class="hour-marks" cx="2.1" cy="2.1" r="1.6" fill="transparent" stroke-width="0.2"
+                    stroke-dasharray="0.06 0.7777583" stroke-dashoffset="0.8677583333333333">
+                </circle>
+                <g class="icon icon-7">
+                    <use width="0.4" xlink:href="#icon_rise"></use>
+                </g>
+                <text class="number">12</text>
+                <text class="number">1</text>
+                <text class="number">2</text>
+                <text class="number">3</text>
+                <text class="number">4</text>
+                <text class="number">5</text>
+                <text class="number">6</text>
+                <text class="number">7</text>
+                <text class="number">8</text>
+                <text class="number">9</text>
+                <text class="number">10</text>
+                <text class="number">11</text>
+
+                <circle class="mid-circle" cx="2.105" cy="2.105" r="0.1" class="center-dot" />
+                <g class="hour-hand">
+                    <line x1="2.105" y1="2.105" x2="2.105" y2="1.2" stroke-width="0.1" stroke-linecap="round"
+                        class="hour-arm" />
+                    <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                </g>
+                <g class="min-hand">
+                    <line x1="2.105" y1="2.105" x2="2.105" y2="0.7" stroke-width="0.05" stroke-linecap="round"
+                        class="min-arm" />
+                    <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                </g>
+            </svg>
+
+        </div>
+        <div class="clock" id="pm_clock">
+            <div class="clock-label">След обед</div>
+            <svg viewBox="0 0 4.21 4.21">
+                <circle class="clock-ring" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4">
+                </circle>
+                <circle class="hour-progress" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4"
+                    stroke-dasharray="7 5" stroke-dashoffset="3" stroke-linecap="round"></circle>
+                <circle class="clock-ring-inner" cx="2.1" cy="2.1" r="1.70" fill="transparent" stroke-width="0.02">
+                </circle>
+                <circle class="hour-marks" cx="2.1" cy="2.1" r="1.6" fill="transparent" stroke-width="0.2"
+                    stroke-dasharray="0.06 0.7777583" stroke-dashoffset="0.8677583333333333">
+                </circle>
+                <g class="icon icon-9">
+                    <use width="0.4" xlink:href="#icon_sleep"></use>
+                </g>
+                <text class="number">12</text>
+                <text class="number">1</text>
+                <text class="number">2</text>
+                <text class="number">3</text>
+                <text class="number">4</text>
+                <text class="number">5</text>
+                <text class="number">6</text>
+                <text class="number">7</text>
+                <text class="number">8</text>
+                <text class="number">9</text>
+                <text class="number">10</text>
+                <text class="number">11</text>
+
+                <circle class="mid-circle" cx="2.105" cy="2.105" r="0.1" class="center-dot" />
+                <g class="hour-hand">
+                    <line x1="2.105" y1="2.105" x2="2.105" y2="1.2" stroke-width="0.1" stroke-linecap="round"
+                        class="hour-arm" />
+                    <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                </g>
+                <g class="min-hand">
+                    <line x1="2.105" y1="2.105" x2="2.105" y2="0.7" stroke-width="0.05" stroke-linecap="round"
+                        class="min-arm" />
+                    <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                </g>
+            </svg>
+        </div>
+
+        <div class="weather" id="weather">
+            <span class="current-temp" id="current_temp"></span> ▸
+            <span class="max-temp" id="max_temp"></span>
+            <svg id="icon_snow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
+                <path
+                    d="M450-80v-195L301-126l-43-42 192-192v-90h-90L172-262l-44-41 147-147H80v-60h195L125-660l43-43 192 193h90v-91L262-789l42-44 146 147v-194h60v194l150-150 42 43-192 192v91h91l189-189 43 42-147 147h194v60H686l148 149-41 43-192-192h-91v90l192 193-41 43-151-151v195h-60Z" />
+            </svg>
+            <svg id="icon_rain" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
+                <path
+                    d="M479-208q16 0 24.5-5.5T512-230q0-11-8.5-17t-25.5-6q-42 0-85.5-26.5T337-373q-2-9-9-14.5t-15-5.5q-11 0-17 8.5t-4 17.5q15 84 71 121.5T479-208Zm1 128q-137 0-228.5-94T160-408q0-100 79.5-217.5T480-880q161 137 240.5 254.5T800-408q0 140-91.5 234T480-80Zm0-60q112 0 186-76.5T740-408q0-79-66.5-179.5T480-800Q353-688 286.5-587.5T220-408q0 115 74 191.5T480-140Zm0-340Z" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="calendar" id="calendar">
+        <div class="day">
+            <div class="day-name">Понеделник</div>
+            <div class="event kindergarten"></div>
+            <div class="event suha"></div>
+        </div>
+        <div class="day">
+            <div class="day-name">Вторник</div>
+            <div class="event kindergarten"></div>
+            <div class="event fathersday"></div>
+            <div class="event suha"></div>
+        </div>
+        <div class="day">
+            <div class="day-name">Сряда</div>
+            <div class="event kindergarten"></div>
+            <div class="event ballet"></div>
+            <div class="event suha"></div>
+        </div>
+        <div class="day">
+            <div class="day-name">Четвъртък</div>
+            <div class="event kindergarten"></div>
+            <div class="event concert"></div>
+        </div>
+        <div class="day">
+            <div class="day-name">Петък</div>
+            <div class="event kindergarten"></div>
+            <div class="event blagoevgrad"></div>
+        </div>
+        <div class="day weekend">
+            <div class="day-name">Събота</div>
+            <div class="event blagoevgrad"></div>
+            <div class="event ice-cream"></div>
+        </div>
+        <div class="day weekend">
+            <div class="day-name">Неделя</div>
+            <div class="event blagoevgrad"></div>
+        </div>
+        <div class="day">
+            <div class="day-name">Понеделник</div>
+            <div class="event blagoevgrad"></div>
+        </div>
+    </div>
+    <!-- end // Calendar -->
+
+    <script>
+        const root = document.documentElement;
+        const cal = document.getElementById("calendar");
+        const calDays = document.getElementById("calendar").getElementsByClassName("day");
+        const amClock = document.getElementById("am_clock");
+        const pmClock = document.getElementById("pm_clock");
+        const amClockProgress = amClock.getElementsByClassName("hour-progress")[0];
+        const pmClockProgress = pmClock.getElementsByClassName("hour-progress")[0];
+        const amHourHand = amClock.getElementsByClassName("hour-hand")[0];
+        const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
+        const amMinHand = amClock.getElementsByClassName("min-hand")[0];
+        const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
+
+
+        const runClock = () => {
+            let d = new Date();
+            let day = d.getDay() - 1;
+            if (day == -1) day = 6;
+            let hr = d.getHours();
+            let min = d.getMinutes();
+            let sec = d.getSeconds();
+            let hrPosition = (hr * 360) / 12 + (min * (360 / 60)) / 12;
+            let minPosition = (min * 360) / 60 + (sec * (360 / 60)) / 60;
+            let hour = hr + min / 60;
+            let hoursRemaining = 12 - (hr + min / 60);
+            let pmHour = hr + min / 60 - 12;
+            let pmHoursRemaining = 24 - (hr + min / 60);
+
+            if (hr < 12) {
+                if (!amClock.classList.contains("active")) {
+                    amClock.classList.add("active");
+                    pmClock.classList.remove("active");
+                }
+                amClockProgress.setAttribute("stroke-dasharray", hour + " " + hoursRemaining);
+                amHourHand.style.transform = "rotate(" + hrPosition + "deg)";
+                amMinHand.style.transform = "rotate(" + minPosition + "deg)";
+            }
+            else {
+                if (!pmClock.classList.contains("active")) {
+                    amClockProgress.setAttribute("stroke-dasharray", "12 0");
+                    pmClock.classList.add("active");
+                    amClock.classList.remove("active");
+                }
+                pmClockProgress.setAttribute("stroke-dasharray", pmHour + " " + pmHoursRemaining);
+                pmHourHand.style.transform = "rotate(" + hrPosition + "deg)";
+                pmMinHand.style.transform = "rotate(" + minPosition + "deg)";
+            }
+            if ((hr >= 21 || hr < 7) && !root.classList.contains("dark")) {
+                root.classList.add("dark");
+            }
+            else if ((hr >= 7 && hr < 21) && root.classList.contains("dark")) {
+                root.classList.remove("dark");
+            }
+            if (!calDays[day].classList.contains("active")) {
+                calDays[day].classList.add("active");
+                for (let i = 0; i < day; i++) {
+                    calDays[i].classList.remove("active");
+                    calDays[i].classList.add("past");
+                }
+            }
+        };
+
+        setInterval(runClock, 1000);
+
+        const accuweatherApiKey = "8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG";
+        const locationKey = 51097;
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+            mode: 'no-cors'
+        };
+/*
+        const currentWeatherApi = "https://dataservice.accuweather.com/currentconditions/v1/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true";
+        const todayForecastApi = "https://dataservice.accuweather.com/forecasts/v1/daily/1day/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true&metric=true";
+
+        async function fetchCurrentWeather() {
+            try {
+                let res = await fetch(currentWeatherApi, { mode: 'no-cors' });
+                return await res.json();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function fetchTodayForecast() {
+            try {
+                let res = await fetch(todayForecastApi, { mode: 'no-cors' });
+                return await res.json();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        const weather = document.getElementById("weather");
+        const currentTemp = document.getElementById("current_temp");
+        const maxTemp = document.getElementById("max_temp");
+        const iconSnow = document.getElementById("icon_snow");
+        const iconRain = document.getElementById("icon_rain");
+
+        async function getWeather() {
+            let currentWeather = await fetchCurrentWeather();
+            let todayForecast = await fetchTodayForecast();
+            if (currentWeather) {
+                currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
+                maxTemp.innerText = todayForecast.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
+                switch (todayForecast.DailyForecasts[0].Day.PrecipitationType) {
+                    case "Rain": iconRain.style.display = "inline"; break;
+                    case "Snow": iconSnow.style.display = "inline"; break;
+                }
+                weather.style.backgroundImage = "url(https://www.accuweather.com/images/weathericons/" + todayForecast.DailyForecasts[0].Day.Icon + ".svg)";
+                weather.style.display = "block";
+
+            }
+        }
+
+        getWeather();*/
+    </script>
+    <button id="fetch-btn">Fetch</button>
+    <p id="response-output">Response Placeholder</p>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const fetchBtn = document.getElementById('fetch-btn')
+        const responseText = document.getElementById('response-output')
+
+        fetchBtn.addEventListener('click', async () => {
+          const response = await fetch('/.netlify/functions/currentWeather').then(
+            response => response.json()
+          )
+
+          responseText.innerText = JSON.stringify(response)
+        })
+      })
+    </script>
+</body>
+
+</html>
