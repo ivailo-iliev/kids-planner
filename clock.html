@@ -151,43 +151,6 @@
             max-height: 60%;
         }
 
-        .event.kindergarten {
-            background-image: url("kindergarten.jpg");
-        }
-
-        .event.ballet {
-            background-image: url("ballet.jpg");
-        }
-
-        .event.blagoevgrad {
-            background-image: url("blagoevgrad.jpg");
-        }
-
-        .event.suha {
-            background-image: url("suha.jpg");
-            background-position: left center;
-        }
-
-        .event.home {
-            background-image: url("home.jpg");
-        }
-
-        .event.iceskating {
-            background-image: url("ice-skating.jpg");
-        }
-
-        .event.fathersday {
-            background-image: url("fathers-day.jpg");
-        }
-
-        .event.concert {
-            background-image: url("concert.jpg");
-        }
-
-        .event.ice-cream {
-            background-image: url("ice-cream.jpg");
-        }
-
         .clock-label {
             height: 1.5em;
         }
@@ -361,13 +324,11 @@
             vertical-align: text-top;
         }
 
-        .weather-text
-        {
+        .weather-text {
             height: 3rem;
         }
 
-        .weather-icon
-        {
+        .weather-icon {
             height: calc(100% - 3rem);
             width: 100%;
             background-size: contain;
@@ -514,47 +475,31 @@
     <div class="calendar" id="calendar">
         <div class="day">
             <div class="day-name">Понеделник</div>
-            <div class="event kindergarten"></div>
-            <div class="event suha"></div>
         </div>
         <div class="day">
             <div class="day-name">Вторник</div>
-            <div class="event kindergarten"></div>
-            <div class="event fathersday"></div>
-            <div class="event suha"></div>
         </div>
         <div class="day">
             <div class="day-name">Сряда</div>
-            <div class="event kindergarten"></div>
-            <div class="event ballet"></div>
-            <div class="event suha"></div>
         </div>
         <div class="day">
             <div class="day-name">Четвъртък</div>
-            <div class="event kindergarten"></div>
-            <div class="event concert"></div>
         </div>
         <div class="day">
             <div class="day-name">Петък</div>
-            <div class="event kindergarten"></div>
-            <div class="event blagoevgrad"></div>
         </div>
         <div class="day weekend">
             <div class="day-name">Събота</div>
-            <div class="event blagoevgrad"></div>
-            <div class="event ice-cream"></div>
         </div>
         <div class="day weekend">
             <div class="day-name">Неделя</div>
-            <div class="event blagoevgrad"></div>
         </div>
         <div class="day">
             <div class="day-name">Понеделник</div>
-            <div class="event blagoevgrad"></div>
         </div>
     </div>
     <!-- end // Calendar -->
-<!--    <button id="fetch-btn">Fetch</button>-->
+    <!--    <button id="fetch-btn">Fetch</button>-->
 
     <script>
         const root = document.documentElement;
@@ -625,15 +570,15 @@
         const currentTemp = document.getElementById("current_temp");
         const maxTemp = document.getElementById("max_temp");
         const iconSnow = document.getElementById("icon_snow");
-        const iconRain = document.getElementById("icon_rain"); 
+        const iconRain = document.getElementById("icon_rain");
 
         async function getWeather() {
-          const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
-            currentWeather => currentWeather.json()
-          )
-          const todayForecast = await fetch('/.netlify/functions/todayForecast').then(
-            todayForecast => todayForecast.json()
-          )
+            const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
+                currentWeather => currentWeather.json()
+            )
+            const todayForecast = await fetch('/.netlify/functions/todayForecast').then(
+                todayForecast => todayForecast.json()
+            )
             if (currentWeather) {
                 currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
                 maxTemp.innerText = todayForecast.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
@@ -646,8 +591,23 @@
 
             }
         }
-        getWeather();
-//        document.getElementById('fetch-btn').addEventListener('click', getWeather())
+        //        getWeather();
+        //        document.getElementById('fetch-btn').addEventListener('click', getWeather())
+
+        async function getCalendar() {
+            const calendarData = await fetch('/.netlify/functions/calendar').then(
+                calendarData => calendarData.json()
+            )
+            if (calendarData)
+                for (let i = 0; i < calendarData.records.length; i++) {
+                    for (let p = 0; p < calendarData.records[i].fields.Photos.length; p++) {
+                        let photoNode = document.createElement("div");
+                        photoNode.className = "event";
+                        photoNode.style.backgroundImage = "url(" + calendarData.records[i].fields.Photos[p].thumbnails.large.url + ")";
+                        cal.getElementsByClassName("day")[i].append(photoNode);
+                    }
+                }
+        }
     </script>
 
 </body>
