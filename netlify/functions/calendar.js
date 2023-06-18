@@ -1,5 +1,13 @@
 const fetch = require('node-fetch')
 
+Date.prototype.getWeekNumber = function () {
+  var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+  var dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+};
+
 exports.handler = async function () {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d");
@@ -8,14 +16,6 @@ exports.handler = async function () {
     method: 'GET',
     headers: myHeaders,
     redirect: 'follow'
-  };
-
-  Date.prototype.getWeekNumber = function () {
-    var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
-    var dayNum = d.getUTCDay() || 7;
-    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
   };
 
   const weekNum = new Date().getWeekNumber();
