@@ -25,7 +25,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
 
     <!-- Set the viewport. -->
-    <meta name="viewport" content="viewport-fit=cover, width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+    <meta name="viewport"
+        content="viewport-fit=cover, width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
 
     <!-- Disable automatic phone number detection. -->
     <meta name="format-detection" content="telephone=no">
@@ -573,11 +574,14 @@
                 root.classList.remove("dark");
             }
             if (!calDays[day].classList.contains("active")) {
-                calDays[day].classList.add("active");
+                for (let j = 0; j < calDays.length; j++) {
+                    calDays[j].classList.remove("active");
+                    calDays[j].classList.remove("past");
+                }
                 for (let i = 0; i < day; i++) {
-                    calDays[i].classList.remove("active");
                     calDays[i].classList.add("past");
                 }
+                calDays[day].classList.add("active");
             }
         };
 
@@ -614,14 +618,23 @@
             const calendarData = await fetch('/.netlify/functions/calendar').then(
                 calendarData => calendarData.json()
             )
+
             if (calendarData)
                 for (let i = 0; i < calendarData.records.length; i++) {
+                    let currentDay = new DocumentFragment;
+
+                    let dayName = document.createElement("div");
+                    dayName.className = "day-name";
+                    dayName.textContent = calendarData.records[i].fields.Day;
+                    currentDay.append(dayName);
+
                     for (let p = 0; p < calendarData.records[i].fields.Photos.length; p++) {
-                        let photoNode = document.createElement("div");
-                        photoNode.className = "event";
-                        photoNode.style.backgroundImage = "url(" + calendarData.records[i].fields.Photos[p].thumbnails.large.url + ")";
-                        cal.getElementsByClassName("day")[i].append(photoNode);
+                        let eventNode = document.createElement("div");
+                        eventNode.className = "event";
+                        eventNode.style.backgroundImage = "url(" + calendarData.records[i].fields.Photos[p].thumbnails.large.url + ")";
+                        currentDay.append(eventNode);
                     }
+                    cal.getElementsByClassName("day")[i].replaceChildren(currentDay);
                 }
         }
 
