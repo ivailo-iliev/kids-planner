@@ -33,10 +33,11 @@ exports.handler = async function (event, context) {
   const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather";
 
   const updateWeather = await fetch(airtableApi, requestOptions);
-  console.log("executed");
-
+  const updateResponse = await updateWeather.json();
+  console.log(updateResponse);
   return {
-    statusCode: 200
+    statusCode: 200,
+    body: JSON.stringify(updateResponse)
   }
 }
 
