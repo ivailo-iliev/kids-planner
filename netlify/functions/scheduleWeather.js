@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const { schedule } = require("@netlify/functions");
 
 const handler = async function(event, context) {
   var myHeaders = new Headers();
