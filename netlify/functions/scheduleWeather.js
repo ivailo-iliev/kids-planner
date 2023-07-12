@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const handler = async function(event, context) {
+exports.handler = async function(event, context) {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d");
   myHeaders.append("Content-Type", "application/json");
@@ -28,10 +28,11 @@ const handler = async function(event, context) {
       }
     });
     const updateWeather = await fetch(airtableApi, requestOptions);
+    console.log("executed");
 
   return {
     statusCode: 200
   }
 }
 
-exports.handler = schedule("0 * * ? * *", handler); //"0 0/30 6-21 ? * * *" every 30 minutes
+//exports.handler = schedule("0 * * ? * *", handler); //"0 0/30 6-21 ? * * *" every 30 minutes
