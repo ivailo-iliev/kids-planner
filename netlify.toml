@@ -1,2 +1,2 @@
 [functions."scheduleWeather"]
-schedule = "0 * * ? *"
+schedule = "0 * * * *"
