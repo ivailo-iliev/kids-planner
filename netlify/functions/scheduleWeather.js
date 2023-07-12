@@ -49,5 +49,3 @@ exports.handler = async function (event, context) {
     body: JSON.stringify(updateResponse)
   }
 }
-
-//exports.handler = schedule("* * * ? * *", handler); //"0 0/30 6-21 ? * * *" every 30 minutes
