@@ -8,8 +8,8 @@ exports.handler = async function (event, context) {
 
   const todayForecastApi = "https://dataservice.accuweather.com/forecasts/v1/daily/1day/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true&metric=true";
     
-  const fetchTodayForecast = await fetch(todayForecastApi)
-  const todayForecastData = await fetchTodayForecast.json()
+  const fetchTodayForecast = await fetch(todayForecastApi);
+  const todayForecastData = await fetchTodayForecast.json();
 
   const weatherDataCache =
   {
@@ -18,14 +18,14 @@ exports.handler = async function (event, context) {
         "id": "recLxkU2dyt16sIwf",
         "fields": {
           "Name": "todaysForecast",
-          "Value": todayForecastData
+          "Value": JSON.stringify(todayForecastData)
         }
       },
       {
         "id": "recUF1J84zlIwn0Y8",
         "fields": {
           "Name": "currentWeather",
-          "Value": currentWeatherData
+          "Value": JSON.stringify(currentWeatherData)
         }
       }
     ]
