@@ -35,4 +35,4 @@ exports.handler = async function(event, context) {
   }
 }
 
-//exports.handler = schedule("0 * * ? * *", handler); //"0 0/30 6-21 ? * * *" every 30 minutes
+//exports.handler = schedule("* * * ? * *", handler); //"0 0/30 6-21 ? * * *" every 30 minutes
