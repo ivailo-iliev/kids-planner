@@ -1,21 +1,31 @@
 const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
-  const weatherData =
+  const currentWeatherApi = "https://dataservice.accuweather.com/currentconditions/v1/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true";
+    
+  const fetchCurrentWeather = await fetch(currentWeatherApi)
+  const currentWeatherData = await fetchCurrentWeather.json()
+
+  const todayForecastApi = "https://dataservice.accuweather.com/forecasts/v1/daily/1day/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true&metric=true";
+    
+  const fetchTodayForecast = await fetch(todayForecastApi)
+  const todayForecastData = await fetchTodayForecast.json()
+
+  const weatherDataCache =
   {
     "records": [
       {
         "id": "recLxkU2dyt16sIwf",
         "fields": {
           "Name": "todaysForecast",
-          "Value": "123"
+          "Value": todayForecastData
         }
       },
       {
         "id": "recUF1J84zlIwn0Y8",
         "fields": {
           "Name": "currentWeather",
-          "Value": "123"
+          "Value": currentWeatherData
         }
       }
     ]
@@ -28,10 +38,9 @@ exports.handler = async function (event, context) {
     method: 'PATCH',
     headers: myHeaders,
     redirect: 'follow',
-    body: JSON.stringify(weatherData)
+    body: JSON.stringify(weatherDataCache)
   };
   const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather";
-
   const updateWeather = await fetch(airtableApi, requestOptions);
   const updateResponse = await updateWeather.json();
   console.log(updateResponse);
