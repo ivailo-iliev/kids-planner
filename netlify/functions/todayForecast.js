@@ -13,7 +13,7 @@ exports.handler = async function () {
   const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather/recLxkU2dyt16sIwf";
   const fetchTodayForecast = await fetch(airtableApi, requestOptions);
   const todayForecastDataRaw = await fetchTodayForecast.json();
-  const todayForecastData = todayForecastDataRaw.fields.Value.json();
+  const todayForecastData = await todayForecastDataRaw.fields.Value;
 
   return {
     statusCode: 200,
