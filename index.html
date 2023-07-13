@@ -594,7 +594,7 @@
         const iconSnow = document.getElementById("icon_snow");
         const iconRain = document.getElementById("icon_rain");
 
-        async function getWeather() {
+//        async function getWeather() {
             const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
                 currentWeather => currentWeather.json()
             )
@@ -612,7 +612,7 @@
                 weather.style.display = "block";
 
             }
-        }
+ //       }
 
         async function getCalendar() {
             const calendarData = await fetch('/.netlify/functions/calendar').then(
@@ -638,7 +638,7 @@
                 }
         }
 
-        getWeather();
+//        getWeather();
         getCalendar();
         setInterval(function () {
             let h = new Date().getHours();
