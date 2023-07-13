@@ -594,14 +594,17 @@
         const iconSnow = document.getElementById("icon_snow");
         const iconRain = document.getElementById("icon_rain");
 
-//        async function getWeather() {
+        async function getWeather() {
             const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
                 currentWeather => currentWeather.json()
             )
             const todayForecast = await fetch('/.netlify/functions/todayForecast').then(
                 todayForecast => todayForecast.json()
             )
-            if (currentWeather) {
+
+            console.log(currentWeather.fields.Value);
+            console.log(todayForecast.fields.Value)
+/*            if (currentWeather) {
                 currentTemp.innerText = currentWeather.fields.Value[0].RealFeelTemperature.Metric.Value;
                 maxTemp.innerText = todayForecast.fields.Value.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
                 switch (todayForecast.fields.Value.DailyForecasts[0].Day.PrecipitationType) {
@@ -612,7 +615,8 @@
                 weather.style.display = "block";
 
             }
- //       }
+            */
+        }
 
         async function getCalendar() {
             const calendarData = await fetch('/.netlify/functions/calendar').then(
