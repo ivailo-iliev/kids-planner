@@ -606,8 +606,8 @@
             todayForecast => todayForecast.fields.Value.json();
 
             if (currentWeather) {
-                currentTemp.innerText = currentWeather.fields.Value[0].RealFeelTemperature.Metric.Value;
-                maxTemp.innerText = todayForecast.fields.Value.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
+                currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
+                maxTemp.innerText = todayForecast.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
                 switch (todayForecast.fields.Value.DailyForecasts[0].Day.PrecipitationType) {
                     case "Rain": iconRain.style.display = "inline"; break;
                     case "Snow": iconSnow.style.display = "inline"; break;
