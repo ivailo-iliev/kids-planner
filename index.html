@@ -602,8 +602,11 @@
                 todayForecast => todayForecast.json()
             )
 
-            console.log(currentWeather.fields.Value);
-            console.log(todayForecast.fields.Value)
+            currentWeather => currentWeather.fields.Value.json();
+            todayForecast => todayForecast.fields.Value.json();
+
+            console.log(currentWeather);
+            console.log(todayForecast);
 /*            if (currentWeather) {
                 currentTemp.innerText = currentWeather.fields.Value[0].RealFeelTemperature.Metric.Value;
                 maxTemp.innerText = todayForecast.fields.Value.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
