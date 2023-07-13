@@ -596,10 +596,10 @@
         const iconRain = document.getElementById("icon_rain");
 
         async function getWeather() {
-            let currentWeather = await fetch('/.netlify/functions/currentWeather').then(
+            const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
                 currentWeather => currentWeather.json()
             )
-            let todayForecast = await fetch('/.netlify/functions/todayForecast').then(
+            const todayForecast = await fetch('/.netlify/functions/todayForecast').then(
                 todayForecast => todayForecast.json()
             )
 
@@ -612,7 +612,6 @@
                 }
                 weatherIcon.style.backgroundImage = "url(https://www.accuweather.com/images/weathericons/" + todayForecast.DailyForecasts[0].Day.Icon + ".svg)";
                 weather.style.display = "block";
-
             }
         }
 
@@ -648,7 +647,7 @@
                 getWeather();
                 getCalendar();
             }
-        }, 60 * 60 * 1000);
+        }, 30 * 60 * 1000);
 
     </script>
 
