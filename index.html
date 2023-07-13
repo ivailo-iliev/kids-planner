@@ -605,7 +605,7 @@
             if (currentWeather) {
                 currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
                 maxTemp.innerText = todayForecast.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
-                switch (todayForecast.fields.Value.DailyForecasts[0].Day.PrecipitationType) {
+                switch (todayForecast.DailyForecasts[0].Day.PrecipitationType) {
                     case "Rain": iconRain.style.display = "inline"; break;
                     case "Snow": iconSnow.style.display = "inline"; break;
                 }
@@ -639,7 +639,7 @@
                 }
         }
 
-//        getWeather();
+        getWeather();
         getCalendar();
         setInterval(function () {
             let h = new Date().getHours();
