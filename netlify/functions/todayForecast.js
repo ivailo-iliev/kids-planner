@@ -10,7 +10,7 @@ exports.handler = async function () {
     redirect: 'follow'
   };
 
-  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/tblwhM5yFy4N4XpKk/viwdROa0LNFQOyJSi/recUF1J84zlIwn0Y8";
+  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather/recLxkU2dyt16sIwf";
   const fetchTodayForecast = await fetch(airtableApi, requestOptions);
   const todayForecastData = await fetchTodayForecast.json();
 
