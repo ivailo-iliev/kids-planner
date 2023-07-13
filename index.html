@@ -602,9 +602,6 @@
                 todayForecast => todayForecast.json()
             )
 
-            currentWeather => currentWeather.fields.Value.json();
-            todayForecast => todayForecast.fields.Value.json();
-
             if (currentWeather) {
                 currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
                 maxTemp.innerText = todayForecast.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
