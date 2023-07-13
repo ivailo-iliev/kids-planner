@@ -595,10 +595,10 @@
         const iconRain = document.getElementById("icon_rain");
 
         async function getWeather() {
-            const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
+            let currentWeather = await fetch('/.netlify/functions/currentWeather').then(
                 currentWeather => currentWeather.json()
             )
-            const todayForecast = await fetch('/.netlify/functions/todayForecast').then(
+            let todayForecast = await fetch('/.netlify/functions/todayForecast').then(
                 todayForecast => todayForecast.json()
             )
 
