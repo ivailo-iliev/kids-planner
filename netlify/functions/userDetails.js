@@ -18,6 +18,6 @@ const fetch = require('node-fetch')
 
   return {
     statusCode: 200,
-    body: JSON.stringify(calendarData)
+    body: JSON.stringify(event.queryStringParameters)
   }
 }
