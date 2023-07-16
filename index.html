@@ -615,6 +615,13 @@
             }
         }
 
+        async function getUserDetails() {
+            const userDetails = await fetch('/.netlify/functions/userDetails').then(
+                userDetails => userDetails.json()
+            )
+            console.log(userDetails);
+        }
+
         async function getCalendar() {
             const calendarData = await fetch('/.netlify/functions/calendar').then(
                 calendarData => calendarData.json()
