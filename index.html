@@ -581,23 +581,18 @@
             }
         };
 
-        let weatherLocationId, displayName, sleepHour, wakeUpHour;
+        let profile;
         const getProfile = async (callback) => {
-            let userProfileData;
             try {
                 const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
-                userProfileData = await response.json();
+                profile = await response.json();
             } catch (error) {
                 console.error('Error:', error);
                 return;
             }
 
-            if (userProfileData) {
-                currentLanguage = userProfileData.fields["Language"];
-                weatherLocationId = userProfileData.fields["Weather Location ID"];
-                displayName = userProfileData.fields["Display Name"];
-                sleepHour = userProfileData.fields["Sleep hour"];
-                wakeUpHour = userProfileData.fields["Wake up hour"];
+            if (profile) {
+                currentLanguage = profile.currentLanguage;
             }
 
             if (typeof callback === 'function') {

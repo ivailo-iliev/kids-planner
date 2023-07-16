@@ -6,7 +6,7 @@ exports.handler = async function (event, context) {
   const airtableHeaders = {
     "Authorization": `Bearer ${process.env.AIRTABLE_TOKEN}`
   };
-  
+
   const requestOptions = {
     method: 'GET',
     headers: airtableHeaders,
@@ -17,8 +17,25 @@ exports.handler = async function (event, context) {
   const response = await fetch(airtableApi, requestOptions);
   const profileData = await response.json();
 
+  const {
+    "Language": currentLanguage,
+    "Weather Location ID": weatherLocationId,
+    "Display Name": displayName,
+    "Sleep hour": sleepHour,
+    "Wake up hour": wakeUpHour
+  } = profileData.fields;
+
+  const filteredData = {
+    currentLanguage,
+    weatherLocationId,
+    displayName,
+    sleepHour,
+    wakeUpHour
+  };
+
+
   return {
     statusCode: 200,
-    body: JSON.stringify(profileData)
+    body: JSON.stringify(filteredData)
   }
 }
