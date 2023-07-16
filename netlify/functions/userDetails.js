@@ -12,7 +12,7 @@ const fetch = require('node-fetch')
     redirect: 'follow'
   };
 
-  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/week?filterByFormula=UserID%3DreckRn41ZCJm4333N&view=even";
+  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/week?filterByFormula=UserID%3D%22reckRn41ZCJm4333N%22&view=even";
   const fetchCalendar = await fetch(airtableApi, requestOptions);
   const calendarData = await fetchCalendar.json();
 
