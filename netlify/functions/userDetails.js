@@ -1,7 +1,6 @@
 const fetch = require('node-fetch')
 
-//exports.handler = async function () {
-  exports.handler = async event => {
+exports.handler = async function (event,context) {
    console.log(event.queryStringParameters);
    var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d");
