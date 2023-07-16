@@ -516,6 +516,7 @@
     <script>
         const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
+        let currentLanguage = queryParams.get("lang");
 
         var manifestData = {
             "id": "https://elena-calendar.netlify.app/",
@@ -568,6 +569,20 @@
         const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
         const amMinHand = amClock.getElementsByClassName("min-hand")[0];
         const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
+
+        const localTimeOfDay = {
+            "en": {
+                "AM": "AM",
+                "PM": "PM"
+            },
+            "bg": {
+                "AM": "Преди обед",
+                "PM": "След обед"
+            }
+        };
+
+        amClock.getElementsByClassName("clock-label")[0].textContent=localTimeOfDay[currentLanguage]['AM'];
+        pmClock.getElementsByClassName("clock-label")[0].textContent=localTimeOfDay[currentLanguage]['PM'];
 
 
         const runClock = () => {
@@ -701,8 +716,6 @@
                 "Sunday": "Неделя"
             }
         };
-
-        let currentLanguage = 'bg';
 
         const updateCalendarData = (calendarData) => {
             // Get the list of day elements once
