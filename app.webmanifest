@@ -3,7 +3,7 @@
   "scope": "/",
   "name": "Calendar",
   "display": "fullscreen",
-  "start_url": "/",
+  "start_url": ".",
   "short_name": "Calendar",
   "theme_color": "#ffffff",
   "orientation": "landscape",
