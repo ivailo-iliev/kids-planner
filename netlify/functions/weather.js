@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 
 exports.handler = async function () {
   var airtableHeaders = {
-    "Authorization": "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d"
+    "Authorization": `Bearer ${process.env.AIRTABLE_TOKEN}`
   };
   
   var requestOptions = {

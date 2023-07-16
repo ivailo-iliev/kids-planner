@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 
-Date.prototype.getWeekNumber = function () {
-  var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+const getWeekNumber = (date) => {
+  var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   var dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -11,23 +11,22 @@ Date.prototype.getWeekNumber = function () {
 exports.handler = async function (event, context) {
   const userId = event.queryStringParameters.id;
 
-  var airtableHeaders = {
-    "Authorization": "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d"
+  const airtableHeaders = {
+    "Authorization": `Bearer ${process.env.AIRTABLE_TOKEN}`
   };
   
-  var requestOptions = {
+  const requestOptions = {
     method: 'GET',
     headers: airtableHeaders,
     redirect: 'follow'
   };
 
-  const weekNum = new Date().getWeekNumber();
-  let weekParity;
-  if (weekNum % 2 === 0) weekParity = "even";
-  else weekParity = "odd";
+  const weekNum = getWeekNumber(new Date());
+  const weekParity = weekNum % 2 === 0 ? "even" : "odd";
 
-  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/week?filterByFormula=UserID%3D%22"+userId+"%22&view="+weekParity;
-  const calendarData = await (await fetch(airtableApi, requestOptions)).json();
+  const airtableApi = `https://api.airtable.com/v0/appCu46edF9GYofCL/week?filterByFormula=UserID%3D%22${userId}%22&view=${weekParity}`;
+  const response = await fetch(airtableApi, requestOptions);
+  const calendarData = await response.json();
 
   return {
     statusCode: 200,

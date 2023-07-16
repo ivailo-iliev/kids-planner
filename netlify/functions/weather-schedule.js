@@ -1,51 +1,41 @@
 const fetch = require('node-fetch');
 
-async function fetchData(apiUrl, headers) {
-  const response = await fetch(apiUrl, headers);
+async function doRequest(apiUrl, method = 'GET', headers = {}, body = null) {
+  const requestOptions = {
+    method: method,
+    headers: headers,
+    redirect: 'follow',
+    body: body ? JSON.stringify(body) : null
+  };
+
+  const response = await fetch(apiUrl, requestOptions);
+
   if (!response.ok) {
-    return { error: `API request failed with status ${response.status}` };
+    throw new Error(`API request failed with status ${response.status}`);
   }
 
   const data = await response.json();
   return data;
 }
 
-async function patchData(apiUrl, headers, body) {
-  const requestOptions = {
-    method: 'PATCH',
-    headers: headers,
-    redirect: 'follow',
-    body: JSON.stringify(body)
-  };
-
-  const response = await fetch(apiUrl, requestOptions);
-  const responseData = await response.json();
-  return responseData;
-}
-
 exports.handler = async function (event, context) {
-  const currentWeatherApi = "https://dataservice.accuweather.com/currentconditions/v1/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true";
-  const todayForecastApi = "https://dataservice.accuweather.com/forecasts/v1/daily/1day/51097?apikey=8GM4gMnnGKurUdAFMBNrFobGX1XnG1kG&language=bg-bg&details=true&metric=true";
+  const currentWeatherApi = `"https://dataservice.accuweather.com/currentconditions/v1/51097?apikey=${process.env.ACCUWEATHER_API_KEY}&language=bg-bg&details=true"`;
+  const todayForecastApi = `https://dataservice.accuweather.com/forecasts/v1/daily/1day/51097?apikey=${process.env.ACCUWEATHER_API_KEY}&language=bg-bg&details=true&metric=true`;
 
   const forecastRequestHeaders = {
-    headers: {
-      "Accept-Encoding": "gzip,deflate"
-    }
+    "Accept-Encoding": "gzip,deflate"
   };
 
-  const currentWeatherData = await fetchData(currentWeatherApi, forecastRequestHeaders);
-  if (currentWeatherData.error) {
+  let currentWeatherData, todayForecastData;
+  try {
+    [currentWeatherData, todayForecastData] = await Promise.all([
+      doRequest(currentWeatherApi, 'GET', forecastRequestHeaders),
+      doRequest(todayForecastApi, 'GET', forecastRequestHeaders)
+    ]);
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: currentWeatherData.error })
-    };
-  }
-
-  const todayForecastData = await fetchData(todayForecastApi, forecastRequestHeaders);
-  if (todayForecastData.error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: todayForecastData.error })
+      body: JSON.stringify({ error: error.message })
     };
   }
 
@@ -70,12 +60,20 @@ exports.handler = async function (event, context) {
   };
 
   const airtableHeaders = {
-    "Authorization": "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d",
-    "Content-Type": "application/json"
+    "Authorization": `Bearer ${process.env.AIRTABLE_TOKEN}`
   };
 
   const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather";
-  const updateResponse = await patchData(airtableApi, { headers: airtableHeaders }, weatherDataCache);
+
+  let updateResponse;
+  try {
+    updateResponse = await doRequest(airtableApi, 'PATCH', airtableHeaders, weatherDataCache);
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message })
+    };
+  }
 
   return {
     statusCode: 200,
