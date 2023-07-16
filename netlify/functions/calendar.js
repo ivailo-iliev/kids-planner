@@ -11,12 +11,13 @@ Date.prototype.getWeekNumber = function () {
 exports.handler = async function (event, context) {
   const userId = event.queryStringParameters.id;
 
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d");
-
+  var airtableHeaders = {
+    "Authorization": "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d"
+  };
+  
   var requestOptions = {
     method: 'GET',
-    headers: myHeaders,
+    headers: airtableHeaders,
     redirect: 'follow'
   };
 
@@ -26,8 +27,7 @@ exports.handler = async function (event, context) {
   else weekParity = "odd";
 
   const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/week?filterByFormula=UserID%3D%22"+userId+"%22&view="+weekParity;
-  const fetchCalendar = await fetch(airtableApi, requestOptions);
-  const calendarData = await fetchCalendar.json();
+  const calendarData = await (await fetch(airtableApi, requestOptions)).json();
 
   return {
     statusCode: 200,

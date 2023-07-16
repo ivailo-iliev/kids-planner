@@ -11,11 +11,10 @@ exports.handler = async function () {
     redirect: 'follow'
   };
 
-  const airtableApi1 = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather/recLxkU2dyt16sIwf";
-  const todayForecastData = JSON.parse((await (await fetch(airtableApi1, requestOptions)).json()).fields.Value);
-
-  const airtableApi2 = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather/recUF1J84zlIwn0Y8";
-  const currentWeatherData = JSON.parse((await (await fetch(airtableApi2, requestOptions)).json()).fields.Value);
+  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather/";
+  const weatherData = await (await fetch(airtableApi, requestOptions)).json();
+  const todayForecastData = JSON.parse(weatherData).records[0].fields.Value;
+  const currentWeatherData = JSON.parse(weatherData).records[1].fields.Value;
 
   return {
     statusCode: 200,
