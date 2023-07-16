@@ -615,8 +615,11 @@
             }
         }
 
+        const queryParams = new URLSearchParams(window.location.search);
+        const userId = queryParams.get("id");
+
         async function getUserDetails() {
-            const userDetails = await fetch('/.netlify/functions/userDetails?id=reckRn41ZCJm4333N').then(
+            const userDetails = await fetch('/.netlify/functions/userDetails?id='+userId).then(
                 userDetails => userDetails.json()
             )
             console.log(userDetails);
