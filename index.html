@@ -583,9 +583,10 @@
 
         let weatherLocationId, displayName, sleepHour, wakeUpHour;
         const getProfile = async () => {
+            let userProfileData;
             try {
                 const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
-                const userProfileData = await response.json();
+                userProfileData = await response.json();
             } catch (error) {
                 console.error('Error:', error);
                 return;
