@@ -17,7 +17,7 @@
     <meta name="apple-mobile-web-app-title" content="Calendar">
 
     <!-- Make the app title different than the page title and configure icons - Android. -->
-    <link rel="manifest"  id="manifestPlaceholder">
+    <link rel="manifest" id="manifestPlaceholder" type="application/manifest+json">
 
     <!-- IE configuration for icons and colors is in browserconfig.xml -->
 
@@ -522,49 +522,49 @@
     </div>
 
     <script>
-         const queryParams = new URLSearchParams(window.location.search);
+        const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
 
         var manifestData = {
-  "id": "/",
-  "scope": "/",
-  "name": "Calendar",
-  "display": "fullscreen",
-  "start_url": "./?id=" + userId,
-  "short_name": "Calendar",
-  "theme_color": "#ffffff",
-  "orientation": "landscape",
-  "background_color": "#ffffff",
-  "related_applications": [],
-  "prefer_related_applications": false,
-  "display_override": ["window-controls-overlay"],
-  "icons": [
-    {
-        "src": "/icon-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-    },
-    {
-        "src": "/icon-256x256.png",
-        "sizes": "256x256",
-        "type": "image/png"
-    },
-    {
-        "src": "/icon-384x384.png",
-        "sizes": "384x384",
-        "type": "image/png"
-    },
-    {
-        "src": "/icon-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-    }
-]
-}
-;
+            "id": "https://elena-calendar.netlify.app/",
+            "scope": "https://elena-calendar.netlify.app/",
+            "name": "Calendar",
+            "display": "fullscreen",
+            "start_url": "https://elena-calendar.netlify.app/?id=" + userId,
+            "short_name": "Calendar",
+            "theme_color": "#ffffff",
+            "orientation": "landscape",
+            "background_color": "#ffffff",
+            "related_applications": [],
+            "prefer_related_applications": false,
+            "display_override": ["window-controls-overlay"],
+            "icons": [
+                {
+                    "src": "https://elena-calendar.netlify.app/icon-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://elena-calendar.netlify.app/icon-256x256.png",
+                    "sizes": "256x256",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://elena-calendar.netlify.app/icon-384x384.png",
+                    "sizes": "384x384",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://elena-calendar.netlify.app/icon-512x512.png",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
+        }
+            ;
 
         // Create a new Blob object from the manifestData
-        var blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        var blob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
 
         // Create a URL for the blob object
         var url = URL.createObjectURL(blob);
@@ -666,7 +666,7 @@
         }
 
         async function getCalendar() {
-            const calendarData = await fetch('/.netlify/functions/calendar?id='+userId).then(
+            const calendarData = await fetch('/.netlify/functions/calendar?id=' + userId).then(
                 calendarData => calendarData.json()
             )
 
