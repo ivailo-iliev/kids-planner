@@ -616,7 +616,7 @@
         }
 
         async function getUserDetails() {
-            const userDetails = await fetch('/.netlify/functions/userDetails').then(
+            const userDetails = await fetch('/.netlify/functions/userDetails?id=reckRn41ZCJm4333N').then(
                 userDetails => userDetails.json()
             )
             console.log(userDetails);
