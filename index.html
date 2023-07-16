@@ -494,28 +494,20 @@
 
         <div class="calendar" id="calendar">
             <div class="day">
-                <div class="day-name">Понеделник</div>
             </div>
             <div class="day">
-                <div class="day-name">Вторник</div>
             </div>
             <div class="day">
-                <div class="day-name">Сряда</div>
             </div>
             <div class="day">
-                <div class="day-name">Четвъртък</div>
             </div>
             <div class="day">
-                <div class="day-name">Петък</div>
             </div>
             <div class="day weekend">
-                <div class="day-name">Събота</div>
             </div>
             <div class="day weekend">
-                <div class="day-name">Неделя</div>
             </div>
             <div class="day">
-                <div class="day-name">Понеделник</div>
             </div>
         </div>
         <!-- end // Calendar -->
@@ -689,26 +681,58 @@
                 updateCalendarData(calendarData);
             }
         }
+        const localDayNames = {
+            "en": {
+                "Monday": "Monday",
+                "Tuesday": "Tuesday",
+                "Wednesday": "Wednesday",
+                "Thursday": "Thursday",
+                "Friday": "Friday",
+                "Saturday": "Saturday",
+                "Sunday": "Sunday"
+            },
+            "bg": {
+                "Monday": "Понеделник",
+                "Tuesday": "Вторник",
+                "Wednesday": "Сряда",
+                "Thursday": "Четвъртък",
+                "Friday": "Петък",
+                "Saturday": "Събота",
+                "Sunday": "Неделя"
+            }
+        };
+
+        let currentLanguage = 'bg';
 
         const updateCalendarData = (calendarData) => {
-            for (let i = 0; i < calendarData.records.length; i++) {
-                let currentDay = new DocumentFragment;
+            // Get the list of day elements once
+            const dayElements = document.getElementsByClassName("day");
 
+            for (let i = 0; i < calendarData.records.length; i++) {
+                // create fragment
+                let currentDay = document.createDocumentFragment();
+
+                // update day name
                 let dayName = document.createElement("div");
                 dayName.className = "day-name";
-                dayName.textContent = calendarData.records[i].fields.Day;
-                currentDay.append(dayName);
+                let apiDayName = calendarData.records[i].fields.Day;
+                let localDayName = localDayNames[currentLanguage][apiDayName];
+                dayName.textContent = localDayName;
+                currentDay.appendChild(dayName);
 
+                // update photos
                 for (let p = 0; p < calendarData.records[i].fields.Photos.length; p++) {
                     let eventNode = document.createElement("div");
                     eventNode.className = "event";
                     eventNode.style.backgroundImage = `url(${calendarData.records[i].fields.Photos[p].thumbnails.large.url})`;
-                    currentDay.append(eventNode);
+                    currentDay.appendChild(eventNode);
                 }
-                cal.getElementsByClassName("day")[i].replaceChildren(currentDay);
+
+                // clear the day's content and append new content
+                dayElements[i].textContent = '';
+                dayElements[i].appendChild(currentDay);
             }
         }
-
         const refreshData = () => {
             const h = new Date().getHours();
             if (h >= 6 && h < 21) {
