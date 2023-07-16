@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="bg">
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -581,6 +581,27 @@
             }
         };
 
+        let weatherLocationId, displayName, sleepHour, wakeUpHour;
+        const getProfile = async () => {
+            try {
+                const response = await fetch(`/.netlify/functions/profile?${userId}`);
+                const userProfileData = await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return;
+            }
+
+            if (userProfileData) {
+                currentLanguage = userProfile.fields["Language"];
+                weatherLocationId = userProfile.fields["Weather Location ID"];
+                displayName = userProfile.fields["Display Name"];
+                sleepHour = userProfile.fields["Sleep hour"];
+                wakeUpHour = userProfile.fields["Wake up hour"];
+            }
+        }
+
+        getProfile();
+
         amClock.getElementsByClassName("clock-label")[0].textContent=localTimeOfDay[currentLanguage]['AM'];
         pmClock.getElementsByClassName("clock-label")[0].textContent=localTimeOfDay[currentLanguage]['PM'];
 
@@ -685,7 +706,7 @@
             let calendarData;
 
             try {
-                const response = await fetch('/.netlify/functions/calendar?id=' + userId);
+                const response = await fetch(`/.netlify/functions/calendar?id=${userId}`);
                 calendarData = await response.json();
             } catch (error) {
                 console.error('Error:', error);
