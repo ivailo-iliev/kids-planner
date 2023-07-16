@@ -618,15 +618,8 @@
         const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
 
-        async function getUserDetails() {
-            const userDetails = await fetch('/.netlify/functions/userDetails?id='+userId).then(
-                userDetails => userDetails.json()
-            )
-            console.log(userDetails);
-        }
-
         async function getCalendar() {
-            const calendarData = await fetch('/.netlify/functions/calendar').then(
+            const calendarData = await fetch('/.netlify/functions/calendar?id='+userId).then(
                 calendarData => calendarData.json()
             )
 

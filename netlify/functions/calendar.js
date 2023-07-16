@@ -8,7 +8,9 @@ Date.prototype.getWeekNumber = function () {
   return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
 };
 
-exports.handler = async function () {
+exports.handler = async function (event, context) {
+  const userId = event.queryStringParameters.id;
+
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer patK67o9PJI2V7wJI.58ff50c61d33b346880bcd7eaf6bb93ad8882303b0c7a47387e731f5dee6cf5d");
 
@@ -20,10 +22,10 @@ exports.handler = async function () {
 
   const weekNum = new Date().getWeekNumber();
   let weekParity;
-  if (weekNum % 2 === 0) weekParity = "week-even";
-  else weekParity = "week-odd";
+  if (weekNum % 2 === 0) weekParity = "even";
+  else weekParity = "odd";
 
-  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/" + weekParity + "?view=Grid%20view";
+  const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/week?filterByFormula=UserID%3D%22"+userId+"%22&view="+weekParity;
   const fetchCalendar = await fetch(airtableApi, requestOptions);
   const calendarData = await fetchCalendar.json();
 
