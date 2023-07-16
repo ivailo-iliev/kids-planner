@@ -582,7 +582,7 @@
         };
 
         let weatherLocationId, displayName, sleepHour, wakeUpHour;
-        const getProfile = async () => {
+        const getProfile = async (callback) => {
             let userProfileData;
             try {
                 const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
@@ -599,13 +599,19 @@
                 sleepHour = userProfileData.fields["Sleep hour"];
                 wakeUpHour = userProfileData.fields["Wake up hour"];
             }
-        }
 
-        getProfile();
+            if (typeof callback === 'function') {
+                callback();
+            }
+        };
 
-        amClock.getElementsByClassName("clock-label")[0].textContent=localTimeOfDay[currentLanguage]['AM'];
-        pmClock.getElementsByClassName("clock-label")[0].textContent=localTimeOfDay[currentLanguage]['PM'];
+        const updateTextContent = () => {
+            amClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['AM'];
+            pmClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['PM'];
+            // Call other functions that rely on the updated currentLanguage here
+        };
 
+        getProfile(updateTextContent);
 
         const runClock = () => {
             const d = new Date();
