@@ -646,16 +646,24 @@
         const iconRain = document.getElementById("icon_rain");
 
         async function getWeather() {
-            const currentWeather = await fetch('/.netlify/functions/currentWeather').then(
-                currentWeather => currentWeather.json()
-            )
-            const todayForecast = await fetch('/.netlify/functions/todayForecast').then(
-                todayForecast => todayForecast.json()
-            )
+            let currentWeather, todayForecast;
 
-            if (currentWeather) {
+            try {
+                const response = await fetch('/.netlify/functions/weather');
+                const data = await response.json();
+                todayForecast = data.todayForecastData;
+                currentWeather = data.currentWeatherData;
+
+                console.log('Today\'s forecast:', todayForecast);
+                console.log('Current weather:', currentWeather);
+            } catch (error) {
+                console.error('Error:', error);
+                return;
+            }
+
+            if (currentWeather && todayForecast) {
                 currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
-                maxTemp.innerText = todayForecast.DailyForecasts[0].RealFeelTemperature.Maximum.Value;
+                maxTemp.innerText = todayForecast.DailyForecasts[0].Temperature.Maximum.Value;
                 switch (todayForecast.DailyForecasts[0].Day.PrecipitationType) {
                     case "Rain": iconRain.style.display = "inline"; break;
                     case "Snow": iconSnow.style.display = "inline"; break;

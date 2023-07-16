@@ -2,6 +2,10 @@ const fetch = require('node-fetch');
 
 async function fetchData(apiUrl, headers) {
   const response = await fetch(apiUrl, headers);
+  if (!response.ok) {
+    return { error: `API request failed with status ${response.status}` };
+  }
+
   const data = await response.json();
   return data;
 }
@@ -30,7 +34,20 @@ exports.handler = async function (event, context) {
   };
 
   const currentWeatherData = await fetchData(currentWeatherApi, forecastRequestHeaders);
+  if (currentWeatherData.error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: currentWeatherData.error })
+    };
+  }
+
   const todayForecastData = await fetchData(todayForecastApi, forecastRequestHeaders);
+  if (todayForecastData.error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: todayForecastData.error })
+    };
+  }
 
   const weatherDataCache =
   {
