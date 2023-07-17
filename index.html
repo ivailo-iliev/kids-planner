@@ -14,7 +14,7 @@
     <meta name="mobile-web-app-capable" content="yes">
 
     <!-- Make the app title different than the page title - iOS. -->
-    <meta name="apple-mobile-web-app-title" content="Calendar">
+    <meta name="apple-mobile-web-app-title" content="Kids Planner">
 
     <!-- Make the app title different than the page title and configure icons - Android. -->
     <link rel="manifest" id="manifestPlaceholder" type="application/manifest+json">
@@ -35,8 +35,12 @@
     <meta name="theme-color" content="#ffffff">
 
     <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icon.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@200;400;700&display=swap"
@@ -531,28 +535,30 @@
             "related_applications": [],
             "prefer_related_applications": false,
             "display_override": ["window-controls-overlay"],
-            "icons": [
+            icons: [
                 {
-                    "src": "https://elena-calendar.netlify.app/icon-192x192.png",
-                    "sizes": "192x192",
-                    "type": "image/png"
+                    src: 'pwa-64x64.png',
+                    sizes: '64x64',
+                    type: 'image/png'
                 },
                 {
-                    "src": "https://elena-calendar.netlify.app/icon-256x256.png",
-                    "sizes": "256x256",
-                    "type": "image/png"
+                    src: 'pwa-192x192.png',
+                    sizes: '192x192',
+                    type: 'image/png'
                 },
                 {
-                    "src": "https://elena-calendar.netlify.app/icon-384x384.png",
-                    "sizes": "384x384",
-                    "type": "image/png"
+                    src: 'pwa-512x512.png',
+                    sizes: '512x512',
+                    type: 'image/png',
+                    purpose: 'any'
                 },
                 {
-                    "src": "https://elena-calendar.netlify.app/icon-512x512.png",
-                    "sizes": "512x512",
-                    "type": "image/png"
+                    src: 'maskable-icon-512x512.png',
+                    sizes: '512x512',
+                    type: 'image/png',
+                    purpose: 'maskable'
                 }
-            ]
+            ]            ]
         };
         var blob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
         var url = URL.createObjectURL(blob);
@@ -582,7 +588,7 @@
         };
 
         let profile;
-        const getProfile = async (callback) => {
+        const getProfile = async () => {
             try {
                 const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
                 profile = await response.json();
@@ -595,9 +601,7 @@
                 currentLanguage = profile.currentLanguage;
             }
 
-            if (typeof callback === 'function') {
-                callback();
-            }
+            return profile;
         };
 
         const updateTextContent = () => {
@@ -606,7 +610,8 @@
             // Call other functions that rely on the updated currentLanguage here
         };
 
-        getProfile(updateTextContent);
+        let profilePromise = getProfile();
+        profilePromise.then(() => updateTextContent());
 
         const runClock = () => {
             const d = new Date();
@@ -688,7 +693,7 @@
             }
 
             if (currentWeather && todayForecast) {
-                updateWeather(currentWeather, todayForecast);
+                return { currentWeather, todayForecast };
             }
         }
 
@@ -703,6 +708,8 @@
             weather.style.display = "block";
         }
 
+        let weatherPromise = getWeather();
+        weatherPromise.then(({ currentWeather, todayForecast }) => updateWeather(currentWeather, todayForecast));
 
         const getCalendar = async () => {
             let calendarData;
@@ -716,9 +723,10 @@
             }
 
             if (calendarData) {
-                updateCalendarData(calendarData);
+                return calendarData;
             }
         }
+
         const localDayNames = {
             "en": {
                 "Monday": "Monday",
@@ -769,16 +777,19 @@
                 dayElements[i].appendChild(currentDay);
             }
         }
-        const refreshData = () => {
+
+        const refreshData = async () => {
             const h = new Date().getHours();
             if (h >= 6 && h < 21) {
                 getWeather();
-                getCalendar();
+                let calendarData = await getCalendar();
+                updateCalendarData(calendarData);
             }
         }
 
         getWeather();
-        getCalendar();
+        let calendarPromise = getCalendar();
+        calendarPromise.then((calendarData) => updateCalendarData(calendarData));
         setInterval(refreshData, 30 * 60 * 1000);
 
     </script>
