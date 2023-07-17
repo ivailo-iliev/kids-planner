@@ -605,16 +605,13 @@
         const getProfile = async () => {
             try {
                 const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
-                profile = await response.json();
+                if (response.status === 200) profile = await response.json();
             } catch (error) {
                 console.error('Error:', error);
                 return;
             }
 
-            if (profile) {
-                currentLanguage = profile.currentLanguage;
-            }
-
+            currentLanguage = profile.currentLanguage || currentLanguage;
             return profile;
         };
 
