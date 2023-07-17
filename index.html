@@ -34,7 +34,8 @@
     <!-- Android dock color -->
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -551,13 +552,13 @@
                 {
                     src: 'https://kids-planner.netlify.app/icon-512x512.png',
                     sizes: '512x512',
-                    type: 'image/png',
-                    purpose: 'any'
+                    type: 'image/png'
                 },
                 {
                     src: 'https://kids-planner.netlify.app/icon-512x512.png',
                     sizes: '512x512',
-                    type: 'image/png'
+                    type: 'image/png',
+                    purpose: 'any'
                 },
                 {
                     src: 'https://kids-planner.netlify.app/maskable-icon-512x512.png',
@@ -691,9 +692,6 @@
                 const data = await response.json();
                 todayForecast = data.todayForecastData;
                 currentWeather = data.currentWeatherData;
-
-                console.log('Today\'s forecast:', todayForecast);
-                console.log('Current weather:', currentWeather);
             } catch (error) {
                 console.error('Error:', error);
                 return;
@@ -808,7 +806,6 @@
             }
         };
 
-        getWeather();
         let calendarPromise = getCalendar();
         calendarPromise.then((calendarData) => updateCalendarImages(calendarData));
         setInterval(refreshData, 30 * 60 * 1000);
