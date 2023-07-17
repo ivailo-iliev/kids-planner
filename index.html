@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Calendar</title>
+    <title>Kids Planner</title>
 
     <!-- CONFIGURATION -->
 
@@ -36,10 +36,7 @@
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -531,18 +528,15 @@
         let currentLanguage = queryParams.get("lang");
 
         var manifestData = {
-            "id": "https://elena-calendar.netlify.app/",
-            "scope": "https://elena-calendar.netlify.app/",
-            "name": "Calendar",
-            "display": "fullscreen",
-            "start_url": "https://elena-calendar.netlify.app/?id=" + userId,
-            "short_name": "Calendar",
+            "id": "https://kids-planner.netlify.app/",
+            "scope": "https://kids-planner.netlify.app/",
+            "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
+            "name": "Kids Planner",
+            "short_name": "Kids Planner",
             "theme_color": "#ffffff",
-            "orientation": "landscape",
             "background_color": "#ffffff",
-            "related_applications": [],
-            "prefer_related_applications": false,
-            "display_override": ["window-controls-overlay"],
+            "display": "fullscreen",
+            "orientation": "landscape",
             icons: [
                 {
                     src: 'icon-64x64.png',
@@ -559,6 +553,11 @@
                     sizes: '512x512',
                     type: 'image/png',
                     purpose: 'any'
+                },
+                {
+                    src: 'icon-512x512.png',
+                    sizes: '512x512',
+                    type: 'image/png'
                 },
                 {
                     src: 'maskable-icon-512x512.png',
