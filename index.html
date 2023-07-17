@@ -526,7 +526,7 @@
     <script>
         const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
-        let currentLanguage = queryParams.get("lang");
+        let currentLanguage = queryParams.get("lang") || "en";
 
         var manifestData = {
             "id": "https://kids-planner.netlify.app/",
@@ -583,6 +583,12 @@
         const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
         const amMinHand = amClock.getElementsByClassName("min-hand")[0];
         const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
+
+        const updateDarkMode = (hr) => {
+            const isNight = hr >= 21 || hr < 7;
+            root.classList.toggle("dark", isNight);
+        }
+
 
         const localTimeOfDay = {
             "en": {
@@ -657,11 +663,6 @@
             activeClockProgress.setAttribute("stroke-dasharray", `${hour} ${hoursRemaining}`);
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
-        }
-
-        const updateDarkMode = (hr) => {
-            const isNight = hr >= 21 || hr < 7;
-            root.classList.toggle("dark", isNight);
         }
 
         const updateCalendar = (day) => {

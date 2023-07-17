@@ -17,6 +17,14 @@ exports.handler = async function (event, context) {
   const response = await fetch(airtableApi, requestOptions);
   const profileData = await response.json();
 
+  // Check if profileData and profileData.fields are defined
+  if (!profileData || !profileData.fields) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Could not fetch profile data' })
+    };
+  }
+
   const {
     "Language": currentLanguage,
     "Weather Location ID": weatherLocationId,
@@ -32,7 +40,6 @@ exports.handler = async function (event, context) {
     sleepHour,
     wakeUpHour
   };
-
 
   return {
     statusCode: 200,
