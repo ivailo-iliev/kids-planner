@@ -393,7 +393,7 @@
                 </defs>
             </svg>
             <div class="clock" id="am_clock">
-                <div class="clock-label">AM</div>
+                <div class="clock-label">Преди обед</div>
                 <svg viewBox="0 0 4.21 4.21">
                     <circle class="clock-ring" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4">
                     </circle>
@@ -435,7 +435,7 @@
 
             </div>
             <div class="clock" id="pm_clock">
-                <div class="clock-label">PM</div>
+                <div class="clock-label">След обед</div>
                 <svg viewBox="0 0 4.21 4.21">
                     <circle class="clock-ring" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4">
                     </circle>
@@ -525,9 +525,9 @@
     <script>
         const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
-        let currentLanguage = queryParams.get("lang") || "en";
+        let currentLanguage = queryParams.get("lang");
 
-        const manifestData = {
+        var manifestData = {
             "id": "https://kids-planner.netlify.app/",
             "scope": "https://kids-planner.netlify.app/",
             "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
@@ -567,60 +567,58 @@
                 }
             ]
         };
-        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
-        const manifestURL = URL.createObjectURL(manifestBlob);
-        document.querySelector('#manifestPlaceholder').href = manifestURL;
-
-        class Clock {
-            constructor(id, label) {
-                this.element = document.getElementById(id);
-                this.progress = this.element.getElementsByClassName("hour-progress")[0];
-                this.hourHand = this.element.getElementsByClassName("hour-hand")[0];
-                this.minHand = this.element.getElementsByClassName("min-hand")[0];
-                this.label = this.element.getElementsByClassName("clock-label")[0];
-                this.labelContent = label;
-            }
-
-            activate(hour, hoursRemaining, hrPosition, minPosition) {
-                this.element.classList.add("active");
-                this.progress.setAttribute("stroke-dasharray", `${hour} ${hoursRemaining}`);
-                this.hourHand.style.transform = `rotate(${hrPosition}deg)`;
-                this.minHand.style.transform = `rotate(${minPosition}deg)`;
-            }
-
-            deactivate() {
-                this.element.classList.remove("active");
-            }
-        }
+        var blob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
+        var url = URL.createObjectURL(blob);
+        document.querySelector('#manifestPlaceholder').href = url;
 
         const root = document.documentElement;
         const cal = document.getElementById("calendar");
-        const calDays = [...cal.getElementsByClassName("day")];
-
-        let amClock = new Clock("am_clock", "AM");
-        let pmClock = new Clock("pm_clock", "PM");
+        const calDays = cal.getElementsByClassName("day");
+        const amClock = document.getElementById("am_clock");
+        const pmClock = document.getElementById("pm_clock");
+        const amClockProgress = amClock.getElementsByClassName("hour-progress")[0];
+        const pmClockProgress = pmClock.getElementsByClassName("hour-progress")[0];
+        const amHourHand = amClock.getElementsByClassName("hour-hand")[0];
+        const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
+        const amMinHand = amClock.getElementsByClassName("min-hand")[0];
+        const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
 
         const localTimeOfDay = {
-            "en": { "AM": "AM", "PM": "PM" },
-            "bg": { "AM": "Преди обед", "PM": "След обед" }
-        };
-
-        const fetchData = async (endpoint) => {
-            try {
-                const response = await fetch(`/.netlify/functions/${endpoint}?id=${userId}`);
-                return await response.json();
-            } catch (error) {
-                console.error('Error:', error);
+            "en": {
+                "AM": "AM",
+                "PM": "PM"
+            },
+            "bg": {
+                "AM": "Преди обед",
+                "PM": "След обед"
             }
         };
 
+        let profile;
         const getProfile = async () => {
-            const profile = await fetchData("profile");
-            currentLanguage = profile?.currentLanguage || currentLanguage;
-            amClock.labelContent = localTimeOfDay[currentLanguage]['AM'];
-            pmClock.labelContent = localTimeOfDay[currentLanguage]['PM'];
+            try {
+                const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
+                profile = await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return;
+            }
+
+            if (profile) {
+                currentLanguage = profile.currentLanguage;
+            }
+
+            return profile;
+        };
+
+        const updateTextContent = () => {
+            amClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['AM'];
+            pmClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['PM'];
             localizeDayNames();
         };
+
+        let profilePromise = getProfile();
+        profilePromise.then(() => updateTextContent());
 
         const runClock = () => {
             const d = new Date();
@@ -634,25 +632,37 @@
             const hoursRemaining = 12 - hour;
             const pmHour = Math.max(0, hour - 12);
             const pmHoursRemaining = 24 - hour;
-
-            if (hr < 12) {
-                amClock.activate(hour, hoursRemaining, hrPosition, minPosition);
-                pmClock.deactivate();
-            } else {
-                pmClock.activate(pmHour, pmHoursRemaining, hrPosition, minPosition);
-                amClock.deactivate();
-            }
-
+            updateClock(hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining);
             updateDarkMode(hr);
             updateCalendar(day);
         };
 
         setInterval(runClock, 1000);
 
+        const updateClock = (hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining) => {
+            if (hr < 12) {
+                activateClock(amClock, pmClock, amClockProgress, amHourHand, amMinHand, hour, hoursRemaining, hrPosition, minPosition);
+            } else {
+                activateClock(pmClock, amClock, pmClockProgress, pmHourHand, pmMinHand, pmHour, pmHoursRemaining, hrPosition, minPosition);
+                amClockProgress.setAttribute("stroke-dasharray", "12 0");
+            }
+        }
+
+        const activateClock = (activeClock, inactiveClock, activeClockProgress, activeHourHand, activeMinHand, hour, hoursRemaining, hrPosition, minPosition) => {
+            if (!activeClock.classList.contains("active")) {
+                activeClock.classList.add("active");
+                inactiveClock.classList.remove("active");
+            }
+            activeClockProgress.setAttribute("stroke-dasharray", `${hour} ${hoursRemaining}`);
+            activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
+            activeMinHand.style.transform = `rotate(${minPosition}deg)`;
+        }
+
         const updateDarkMode = (hr) => {
             const isNight = hr >= 21 || hr < 7;
             root.classList.toggle("dark", isNight);
         }
+
         const updateCalendar = (day) => {
             const activeDay = calDays[day];
             if (!activeDay.classList.contains("active")) {
@@ -665,6 +675,14 @@
                 activeDay.classList.add("active");
             }
         }
+
+        const weather = document.getElementById("weather");
+        const weatherIcon = document.getElementById("weather_icon");
+        const currentTemp = document.getElementById("current_temp");
+        const maxTemp = document.getElementById("max_temp");
+        const iconSnow = document.getElementById("icon_snow");
+        const iconRain = document.getElementById("icon_rain");
+
         const getWeather = async () => {
             let currentWeather, todayForecast;
 
@@ -685,6 +703,7 @@
                 return { currentWeather, todayForecast };
             }
         }
+
         const updateWeather = (currentWeather, todayForecast) => {
             currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
             maxTemp.innerText = todayForecast.DailyForecasts[0].Temperature.Maximum.Value;
@@ -695,6 +714,10 @@
             weatherIcon.style.backgroundImage = `url(https://www.accuweather.com/images/weathericons/${todayForecast.DailyForecasts[0].Day.Icon}.svg)`;
             weather.style.display = "block";
         }
+
+        let weatherPromise = getWeather();
+        weatherPromise.then(({ currentWeather, todayForecast }) => updateWeather(currentWeather, todayForecast));
+
         const getCalendar = async () => {
             let calendarData;
 
@@ -731,6 +754,7 @@
                 "Sunday": "Неделя"
             }
         };
+
         const localizeDayNames = () => {
             // Get the list of day name elements once
             const dayNameElements = document.getElementsByClassName("day-name");
@@ -784,12 +808,11 @@
             }
         };
 
-
-
-        getProfile();
         getWeather();
-        getCalendar();
+        let calendarPromise = getCalendar();
+        calendarPromise.then((calendarData) => updateCalendarImages(calendarData));
         setInterval(refreshData, 30 * 60 * 1000);
+
     </script>
 
 </body>
