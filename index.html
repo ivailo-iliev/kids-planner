@@ -623,8 +623,7 @@
             }
 
             currentLanguage = profile?.currentLanguage || currentLanguage;
-            document.title = getFormattedTitle(profile?.displayName || manifestData.name, currentLanguage);
-
+            document.title = getFormattedTitle(profile?.displayName, currentLanguage);
             updateManifest(profile?.displayName);
             return profile;
         };
