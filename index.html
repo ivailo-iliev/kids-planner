@@ -740,8 +740,8 @@
             // Iterate over profile properties
             for (let key in profile) {
 
-                // Process only properties that start with "icon"
-                if (key.startsWith("icon")) {
+                // Process only properties that start with "icon" and is not empty
+                if (key.startsWith("icon") && profile[key][0] !== "") {
 
                     // Iterate over array values in each property
                     profile[key].forEach(num => {
