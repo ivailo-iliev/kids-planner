@@ -528,50 +528,54 @@
         const userId = queryParams.get("id");
         let currentLanguage = queryParams.get("lang") || "en";
 
-        var manifestData = {
-            "id": "https://kids-planner.netlify.app/",
-            "scope": "https://kids-planner.netlify.app/",
-            "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
-            "name": "Kids Planner",
-            "short_name": "Kids Planner",
-            "theme_color": "#ffffff",
-            "background_color": "#ffffff",
-            "display": "fullscreen",
-            "orientation": "landscape",
-            icons: [
-                {
-                    src: 'https://kids-planner.netlify.app/icon-64x64.png',
-                    sizes: '64x64',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-192x192.png',
-                    sizes: '192x192',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png',
-                    purpose: 'any'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/maskable-icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png',
-                    purpose: 'maskable'
-                }
-            ]
-        };
-        var blob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
-        var url = URL.createObjectURL(blob);
-        document.querySelector('#manifestPlaceholder').href = url;
+        const updateManifest = (name) => {
+            let manifestData = {
+                "id": "https://kids-planner.netlify.app/",
+                "scope": "https://kids-planner.netlify.app/",
+                "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
+                "name": "Kids Planner",
+                "short_name": "Kids Planner",
+                "theme_color": "#ffffff",
+                "background_color": "#ffffff",
+                "display": "fullscreen",
+                "orientation": "landscape",
+                icons: [
+                    {
+                        src: 'https://kids-planner.netlify.app/icon-64x64.png',
+                        sizes: '64x64',
+                        type: 'image/png'
+                    },
+                    {
+                        src: 'https://kids-planner.netlify.app/icon-192x192.png',
+                        sizes: '192x192',
+                        type: 'image/png'
+                    },
+                    {
+                        src: 'https://kids-planner.netlify.app/icon-512x512.png',
+                        sizes: '512x512',
+                        type: 'image/png'
+                    },
+                    {
+                        src: 'https://kids-planner.netlify.app/icon-512x512.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                        purpose: 'any'
+                    },
+                    {
+                        src: 'https://kids-planner.netlify.app/maskable-icon-512x512.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                        purpose: 'maskable'
+                    }
+                ]
+            };
+            manifestData.name = name || manifestData.name;
+            manifestData.short_name = name || manifestData.short_name;
 
+            const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            document.querySelector('#manifestPlaceholder').href = manifestUrl;
+        };
         const root = document.documentElement;
         const cal = document.getElementById("calendar");
         const calDays = cal.getElementsByClassName("day");
@@ -608,10 +612,13 @@
                 if (response.status === 200) profile = await response.json();
             } catch (error) {
                 console.error('Error:', error);
+                updateManifest();
                 return;
             }
 
             currentLanguage = profile?.currentLanguage || currentLanguage;
+            document.title = profile?.displayName || document.title;
+            updateManifest(profile?.displayName);
             return profile;
         };
 
