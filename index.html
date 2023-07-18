@@ -198,7 +198,7 @@
 
         .hour-hand,
         .min-hand {
-            transform-origin: 2.105px 2.105px;
+            transform-origin: 11px 11px;
         }
 
         .active .hour-hand line,
@@ -213,20 +213,26 @@
         .number {
             pointer-events: none;
             text-anchor: middle;
-            font-size: 0.3px;
+            font-size: 1.5px;
             font-weight: 700;
         }
 
         .clock {
             --pi: 3.1415926535897932;
-            --viewbox: 4.21px;
+            --viewbox: 22px;
             --center: calc(var(--viewbox)/2);
-            --icon-radius: 1.9px;
-            --number-radius: 1.35px;
-            --icon-offset-x: -0.2px;
-            --icon-offset-y: -2.105px;
+            --icon-radius: 5.4px;
+            --number-radius: 7px;
+            --icon-offset-x: -1px;
+            --icon-offset-y: -11px;
             --number-offset-x: 0px;
-            --number-offset-y: 0.1px;
+            --number-offset-y: 0.5px;
+        }
+
+        .clock .icon use {
+            pointer-events: none;
+            fill: #999;
+            stroke-width: 0;
         }
 
         .clock .number:nth-of-type(1),
@@ -395,18 +401,18 @@
             </svg>
             <div class="clock" id="am_clock">
                 <div class="clock-label">AM</div>
-                <svg viewBox="0 0 4.21 4.21">
-                    <circle class="clock-ring" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4">
+                <svg viewBox="0 0 22 22">
+                    <circle class="clock-ring" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4">
                     </circle>
-                    <circle class="hour-progress" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4"
-                        stroke-dasharray="0 12" stroke-dashoffset="3" stroke-linecap="round"></circle>
-                    <circle class="clock-ring-inner" cx="2.1" cy="2.1" r="1.70" fill="transparent" stroke-width="0.02">
+                    <circle class="hour-progress" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4"
+                        stroke-dasharray="0 60" stroke-dashoffset="15" stroke-linecap="butt"></circle>
+                    <circle class="clock-ring-inner" cx="11" cy="11" r="8.7493" fill="transparent" stroke-width="0.2">
                     </circle>
-                    <circle class="hour-marks" cx="2.1" cy="2.1" r="1.6" fill="transparent" stroke-width="0.2"
-                        stroke-dasharray="0.06 0.7777583" stroke-dashoffset="0.8677583333333333">
+                    <circle class="hour-marks" cx="11" cy="11" r="8.3" fill="transparent" stroke-width="1"
+                        stroke-dasharray="0.34583 4" stroke-dashoffset="0.144375">
                     </circle>
                     <g class="icon icon-7">
-                        <use width="0.4" xlink:href="#icon_rise"></use>
+                        <use width="2" xlink:href="#icon_rise_outline"></use>
                     </g>
                     <text class="number">12</text>
                     <text class="number">1</text>
@@ -421,34 +427,33 @@
                     <text class="number">10</text>
                     <text class="number">11</text>
 
-                    <circle class="mid-circle" cx="2.105" cy="2.105" r="0.1" class="center-dot" />
+                    <circle class="mid-circle" cx="11" cy="11" r="0.5" class="center-dot" />
                     <g class="hour-hand">
-                        <line x1="2.105" y1="2.105" x2="2.105" y2="1.2" stroke-width="0.1" stroke-linecap="round"
+                        <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" stroke-linecap="butt"
                             class="hour-arm" />
-                        <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                        <circle class="sizing-box" cx="11" cy="11" r="9" fill="transparent" />
                     </g>
                     <g class="min-hand">
-                        <line x1="2.105" y1="2.105" x2="2.105" y2="0.7" stroke-width="0.05" stroke-linecap="round"
+                        <line x1="11" y1="11" x2="11" y2="4.5" stroke-width="0.3" stroke-linecap="butt"
                             class="min-arm" />
-                        <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                        <circle class="sizing-box" cx="11" cy="11" r="9" fill="transparent" />
                     </g>
                 </svg>
-
             </div>
             <div class="clock" id="pm_clock">
                 <div class="clock-label">PM</div>
-                <svg viewBox="0 0 4.21 4.21">
-                    <circle class="clock-ring" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4">
+                <svg viewBox="0 0 22 22">
+                    <circle class="clock-ring" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4">
                     </circle>
-                    <circle class="hour-progress" cx="2.1" cy="2.1" r="1.90986" fill="transparent" stroke-width="0.4"
-                        stroke-dasharray="7 5" stroke-dashoffset="3" stroke-linecap="round"></circle>
-                    <circle class="clock-ring-inner" cx="2.1" cy="2.1" r="1.70" fill="transparent" stroke-width="0.02">
+                    <circle class="hour-progress" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4"
+                        stroke-dasharray="0 60" stroke-dashoffset="15" stroke-linecap="butt"></circle>
+                    <circle class="clock-ring-inner" cx="11" cy="11" r="8.7493" fill="transparent" stroke-width="0.2">
                     </circle>
-                    <circle class="hour-marks" cx="2.1" cy="2.1" r="1.6" fill="transparent" stroke-width="0.2"
-                        stroke-dasharray="0.06 0.7777583" stroke-dashoffset="0.8677583333333333">
+                    <circle class="hour-marks" cx="11" cy="11" r="8.3" fill="transparent" stroke-width="1"
+                        stroke-dasharray="0.34583 4" stroke-dashoffset="0.144375">
                     </circle>
                     <g class="icon icon-9">
-                        <use width="0.4" xlink:href="#icon_sleep"></use>
+                        <use width="2" xlink:href="#icon_sleep_outline"></use>
                     </g>
                     <text class="number">12</text>
                     <text class="number">1</text>
@@ -463,16 +468,16 @@
                     <text class="number">10</text>
                     <text class="number">11</text>
 
-                    <circle class="mid-circle" cx="2.105" cy="2.105" r="0.1" class="center-dot" />
+                    <circle class="mid-circle" cx="11" cy="11" r="0.5" class="center-dot" />
                     <g class="hour-hand">
-                        <line x1="2.105" y1="2.105" x2="2.105" y2="1.2" stroke-width="0.1" stroke-linecap="round"
+                        <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" stroke-linecap="butt"
                             class="hour-arm" />
-                        <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                        <circle class="sizing-box" cx="11" cy="11" r="9" fill="transparent" />
                     </g>
                     <g class="min-hand">
-                        <line x1="2.105" y1="2.105" x2="2.105" y2="0.7" stroke-width="0.05" stroke-linecap="round"
+                        <line x1="11" y1="11" x2="11" y2="4.5" stroke-width="0.3" stroke-linecap="butt"
                             class="min-arm" />
-                        <circle class="sizing-box" cx="2.105" cy="2.105" r="1.35" fill="transparent" />
+                        <circle class="sizing-box" cx="11" cy="11" r="9" fill="transparent" />
                     </g>
                 </svg>
             </div>
@@ -551,20 +556,32 @@
             const hoursRemaining = 12 - hour;
             const pmHour = Math.max(0, hour - 12);
             const pmHoursRemaining = 24 - hour;
-            updateClock(hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining);
+            const minElapsed = min + sec / 60;
+            const minRemaining = 60 - minElapsed;
+            updateClock(hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining, minElapsed, minRemaining);
             updateDarkMode(hr);
             updateCalendar(day);
         };
 
         setInterval(runClock, 1000);
 
-        const updateClock = (hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining) => {
+        const updateClock = (hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining, minElapsed, minRemaining) => {
             if (hr < 12) {
-                activateClock(amClock, pmClock, amClockProgress, amHourHand, amMinHand, hour, hoursRemaining, hrPosition, minPosition);
+                activateClock(amClock, pmClock, amClockProgress, amHourHand, amMinHand, hour, hoursRemaining, hrPosition, minPosition, minElapsed, minRemaining);
             } else {
-                activateClock(pmClock, amClock, pmClockProgress, pmHourHand, pmMinHand, pmHour, pmHoursRemaining, hrPosition, minPosition);
-                amClockProgress.setAttribute("stroke-dasharray", "12 0");
+                activateClock(pmClock, amClock, pmClockProgress, pmHourHand, pmMinHand, pmHour, pmHoursRemaining, hrPosition, minPosition, minElapsed, minRemaining);
+                amClockProgress.setAttribute("stroke-dasharray", "0 60");
             }
+        }
+
+        const activateClock = (activeClock, inactiveClock, activeClockProgress, activeHourHand, activeMinHand, hour, hoursRemaining, hrPosition, minPosition, minElapsed, minRemaining) => {
+            if (!activeClock.classList.contains("active")) {
+                activeClock.classList.add("active");
+                inactiveClock.classList.remove("active");
+            }
+            activeClockProgress.setAttribute("stroke-dasharray", `${minElapsed} ${minRemaining}`);
+            activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
+            activeMinHand.style.transform = `rotate(${minPosition}deg)`;
         }
 
         const updateDarkMode = (hr) => {
@@ -572,7 +589,7 @@
             document.documentElement.classList.toggle("dark", isNight);
         }
 
-        const calDays = document.querySelector("#calendar .day");
+        const calDays = document.querySelectorAll("#calendar .day");
         const updateCalendar = (day) => {
             const activeDay = calDays[day];
             if (!activeDay.classList.contains("active")) {
@@ -586,15 +603,6 @@
             }
         }
 
-        const activateClock = (activeClock, inactiveClock, activeClockProgress, activeHourHand, activeMinHand, hour, hoursRemaining, hrPosition, minPosition) => {
-            if (!activeClock.classList.contains("active")) {
-                activeClock.classList.add("active");
-                inactiveClock.classList.remove("active");
-            }
-            activeClockProgress.setAttribute("stroke-dasharray", `${hour} ${hoursRemaining}`);
-            activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
-            activeMinHand.style.transform = `rotate(${minPosition}deg)`;
-        }
 
         // Weather Functions
 
