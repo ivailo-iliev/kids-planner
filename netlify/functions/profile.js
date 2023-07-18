@@ -29,16 +29,24 @@ exports.handler = async function (event, context) {
     "Language": currentLanguage,
     "Weather Location ID": weatherLocationId,
     "Display Name": displayName,
-    "Sleep hour": sleepHour,
-    "Wake up hour": wakeUpHour
+    "☀️": iconSun,
+    "🌙": iconMoon,
+    "🍎": iconApple,
+    "🛌": iconBed,
+    "🥐": iconCroissant,
+    "🍴": iconRestaurant
   } = profileData.fields;
 
   const filteredData = {
     currentLanguage,
     weatherLocationId,
     displayName,
-    sleepHour,
-    wakeUpHour
+    iconApple,
+    iconBed,
+    iconCroissant,
+    iconMoon,
+    iconRestaurant,
+    iconSun
   };
 
   return {
