@@ -679,51 +679,7 @@
                 "Sunday": "Неделя"
             }
         };
-        let profile = {
-            "currentLanguage": "bg",
-            "weatherLocationId": 51097,
-            "displayName": "Елена",
-            "iconApple": ["10"],
-            "iconBed": ["14"],
-            "iconCroissant": ["16"],
-            "iconMoon": ["21"],
-            "iconRestaurant": ["8", "13", "20"],
-            "iconSun": ["7"]
-        };
-
-        function updateClockIcons(profile) {
-
-            // Select the clock elements
-            let amClock = document.querySelector("#am_clock svg");
-            let pmClock = document.querySelector("#pm_clock svg");
-
-            // Iterate over profile properties
-            for (let key in profile) {
-
-                // Process only properties that start with "icon"
-                if (key.startsWith("icon")) {
-
-                    // Iterate over array values in each property
-                    profile[key].forEach(num => {
-                        let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                        g.classList.add("icon", `icon-${num}`);
-
-                        let use = document.createElementNS("http://www.w3.org/2000/svg", "use");
-                        use.setAttributeNS(null, "width", "2");
-                        use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#${key}`);
-
-                        g.appendChild(use);
-
-                        // Append to corresponding SVG
-                        if (num >= 0 && num <= 11) {
-                            amClock.appendChild(g);
-                        } else if (num >= 12 && num <= 23) {
-                            pmClock.appendChild(g);
-                        }
-                    });
-                }
-            }
-        }
+        let profile;
 
         const getProfile = async () => {
             try {
@@ -769,6 +725,39 @@
                 dayNameElements[i].textContent = localDayName;
             }
         };
+        function updateClockIcons(profile) {
+
+            // Select the clock elements
+            const amClock = document.querySelector("#am_clock svg");
+            const pmClock = document.querySelector("#pm_clock svg");
+
+            // Iterate over profile properties
+            for (let key in profile) {
+
+                // Process only properties that start with "icon"
+                if (key.startsWith("icon")) {
+
+                    // Iterate over array values in each property
+                    profile[key].forEach(num => {
+                        let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                        g.classList.add("icon", `icon-${num}`);
+
+                        let use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+                        use.setAttributeNS(null, "width", "2");
+                        use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#${key}`);
+
+                        g.appendChild(use);
+
+                        // Append to corresponding SVG
+                        if (num >= 0 && num <= 11) {
+                            amClock.appendChild(g);
+                        } else if (num >= 12 && num <= 23) {
+                            pmClock.appendChild(g);
+                        }
+                    });
+                }
+            }
+        }
         getProfile();
 
         // Weather Functions
