@@ -57,17 +57,19 @@ exports.handler = async function (event, context) {
         }
       }
     ]
-  };
-
+  }
+  
   const airtableHeaders = {
-    "Authorization": `Bearer ${process.env.AIRTABLE_TOKEN}`
+    "Authorization": `Bearer ${process.env.AIRTABLE_TOKEN}`,
+    "Content-Type": "application/json",
+    "Accept-Encoding": "gzip, deflate"
   };
 
   const airtableApi = "https://api.airtable.com/v0/appCu46edF9GYofCL/current-weather";
 
   let updateResponse;
   try {
-    updateResponse = await doRequest(airtableApi, 'PATCH', airtableHeaders, weatherDataCache);
+    updateResponse = await doRequest(airtableApi, 'PUT', airtableHeaders, weatherDataCache);
   } catch (error) {
     return {
       statusCode: 500,
