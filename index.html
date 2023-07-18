@@ -210,7 +210,7 @@
             fill: #096fe0;
         }
 
-        .number {
+        .numbers text {
             pointer-events: none;
             text-anchor: middle;
             font-size: 1.5px;
@@ -235,79 +235,79 @@
             stroke-width: 0;
         }
 
-        .clock .number:nth-of-type(1),
+        .clock .numbers text:nth-of-type(1),
         .clock .icon-12,
         .clock .icon-0 {
             --index: 0;
         }
 
-        .clock .number:nth-of-type(2),
+        .clock .numbers text:nth-of-type(2),
         .clock .icon-1,
         .clock .icon-13 {
             --index: 1;
         }
 
-        .clock .number:nth-of-type(3),
+        .clock .numbers text:nth-of-type(3),
         .clock .icon-2,
         .clock .icon-14 {
             --index: 2;
         }
 
-        .clock .number:nth-of-type(4),
+        .clock .numbers text:nth-of-type(4),
         .clock .icon-3,
         .clock .icon-15 {
             --index: 3;
         }
 
-        .clock .number:nth-of-type(5),
+        .clock .numbers text:nth-of-type(5),
         .clock .icon-4,
         .clock .icon-16 {
             --index: 4;
         }
 
-        .clock .number:nth-of-type(6),
+        .clock .numbers text:nth-of-type(6),
         .clock .icon-5,
         .clock .icon-17 {
             --index: 5;
         }
 
-        .clock .number:nth-of-type(7),
+        .clock .numbers text:nth-of-type(7),
         .clock .icon-6,
         .clock .icon-18 {
             --index: 6;
         }
 
-        .clock .number:nth-of-type(8),
+        .clock .numbers text:nth-of-type(8),
         .clock .icon-7,
         .clock .icon-19 {
             --index: 7;
         }
 
-        .clock .number:nth-of-type(9),
+        .clock .numbers text:nth-of-type(9),
         .clock .icon-8,
         .clock .icon-20 {
             --index: 8;
         }
 
-        .clock .number:nth-of-type(10),
+        .clock .numbers text:nth-of-type(10),
         .clock .icon-9,
         .clock .icon-21 {
             --index: 9;
         }
 
-        .clock .number:nth-of-type(11),
+        .clock .numbers text:nth-of-type(11),
         .clock .icon-10,
         .clock .icon-22 {
             --index: 10;
         }
 
-        .clock .number:nth-of-type(12),
+        .clock .numbers text:nth-of-type(12),
         .clock .icon-11,
         .clock .icon-23 {
             --index: 11;
         }
 
-        .clock .number {
+        .clock .numbers text {
             --translate-x: calc(var(--center) + var(--number-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-x));
             --translate-y: calc(var(--center) + var(--number-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-y));
             transform: translate(var(--translate-x), var(--translate-y));
@@ -427,19 +427,21 @@
                     <circle class="hour-marks" cx="11" cy="11" r="8.3" fill="transparent" stroke-width="1"
                         stroke-dasharray="0.34583 4" stroke-dashoffset="0.144375">
                     </circle>
-                    <text class="number">12</text>
-                    <text class="number">1</text>
-                    <text class="number">2</text>
-                    <text class="number">3</text>
-                    <text class="number">4</text>
-                    <text class="number">5</text>
-                    <text class="number">6</text>
-                    <text class="number">7</text>
-                    <text class="number">8</text>
-                    <text class="number">9</text>
-                    <text class="number">10</text>
-                    <text class="number">11</text>
-
+                    <g class="numbers">
+                        <text>12</text>
+                        <text>1</text>
+                        <text>2</text>
+                        <text>3</text>
+                        <text>4</text>
+                        <text>5</text>
+                        <text>6</text>
+                        <text>7</text>
+                        <text>8</text>
+                        <text>9</text>
+                        <text>10</text>
+                        <text>11</text>
+                    </g>
+                    <g class="icons"></g>
                     <circle class="mid-circle" cx="11" cy="11" r="0.5" class="center-dot" />
                     <g class="hour-hand">
                         <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" stroke-linecap="butt"
@@ -465,18 +467,22 @@
                     <circle class="hour-marks" cx="11" cy="11" r="8.3" fill="transparent" stroke-width="1"
                         stroke-dasharray="0.34583 4" stroke-dashoffset="0.144375">
                     </circle>
-                    <text class="number">12</text>
-                    <text class="number">1</text>
-                    <text class="number">2</text>
-                    <text class="number">3</text>
-                    <text class="number">4</text>
-                    <text class="number">5</text>
-                    <text class="number">6</text>
-                    <text class="number">7</text>
-                    <text class="number">8</text>
-                    <text class="number">9</text>
-                    <text class="number">10</text>
-                    <text class="number">11</text>
+                    
+                    <g class="numbers">
+                        <text>12</text>
+                        <text>1</text>
+                        <text>2</text>
+                        <text>3</text>
+                        <text>4</text>
+                        <text>5</text>
+                        <text>6</text>
+                        <text>7</text>
+                        <text>8</text>
+                        <text>9</text>
+                        <text>10</text>
+                        <text>11</text>
+                    </g>
+                    <g class="icons"></g>
 
                     <circle class="mid-circle" cx="11" cy="11" r="0.5" class="center-dot" />
                     <g class="hour-hand">
@@ -728,8 +734,8 @@
         function updateClockIcons(profile) {
 
             // Select the clock elements
-            const amClock = document.querySelector("#am_clock svg");
-            const pmClock = document.querySelector("#pm_clock svg");
+            const amClock = document.querySelector("#am_clock svg .icons");
+            const pmClock = document.querySelector("#pm_clock svg .icons");
 
             // Iterate over profile properties
             for (let key in profile) {
