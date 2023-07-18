@@ -527,10 +527,35 @@
         const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
         let currentLanguage = queryParams.get("lang") || "en";
-        let titleFormats = {
-            "bg": `Календар на ${profile?.displayName || ' '}`,
-            "en": `${profile?.displayName || ' '}’ Planner`
+        const root = document.documentElement;
+        const cal = document.getElementById("calendar");
+        const calDays = cal.getElementsByClassName("day");
+        const amClock = document.getElementById("am_clock");
+        const pmClock = document.getElementById("pm_clock");
+        const amClockProgress = amClock.getElementsByClassName("hour-progress")[0];
+        const pmClockProgress = pmClock.getElementsByClassName("hour-progress")[0];
+        const amHourHand = amClock.getElementsByClassName("hour-hand")[0];
+        const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
+        const amMinHand = amClock.getElementsByClassName("min-hand")[0];
+        const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
+
+        const updateDarkMode = (hr) => {
+            const isNight = hr >= 21 || hr < 7;
+            root.classList.toggle("dark", isNight);
+        }
+
+
+        const localTimeOfDay = {
+            "en": {
+                "AM": "AM",
+                "PM": "PM"
+            },
+            "bg": {
+                "AM": "Преди обед",
+                "PM": "След обед"
+            }
         };
+
         let manifestData = {
             "id": "https://kids-planner.netlify.app/",
             "scope": "https://kids-planner.netlify.app/",
@@ -571,45 +596,23 @@
                 }
             ]
         };
+        const getFormattedTitle = (displayName, language) => {
+            const titles = {
+                "bg": `Календар на ${displayName}`,
+                "en": `${displayName}’ Planner`
+            };
+
+            return titles[language];
+        }
         const updateManifest = (name) => {
             let formattedName = name || manifestData.name;
 
-            manifestData.name = titleFormats[currentLanguage].replace(' ', formattedName);
-            manifestData.short_name = titleFormats[currentLanguage].replace(' ', formattedName);
-
+            manifestData.name = getFormattedTitle(formattedName, currentLanguage);
+            manifestData.short_name = getFormattedTitle(formattedName, currentLanguage);
             const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
             const manifestUrl = URL.createObjectURL(manifestBlob);
             document.querySelector('#manifestPlaceholder').href = manifestUrl;
         };
-        const root = document.documentElement;
-        const cal = document.getElementById("calendar");
-        const calDays = cal.getElementsByClassName("day");
-        const amClock = document.getElementById("am_clock");
-        const pmClock = document.getElementById("pm_clock");
-        const amClockProgress = amClock.getElementsByClassName("hour-progress")[0];
-        const pmClockProgress = pmClock.getElementsByClassName("hour-progress")[0];
-        const amHourHand = amClock.getElementsByClassName("hour-hand")[0];
-        const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
-        const amMinHand = amClock.getElementsByClassName("min-hand")[0];
-        const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
-
-        const updateDarkMode = (hr) => {
-            const isNight = hr >= 21 || hr < 7;
-            root.classList.toggle("dark", isNight);
-        }
-
-
-        const localTimeOfDay = {
-            "en": {
-                "AM": "AM",
-                "PM": "PM"
-            },
-            "bg": {
-                "AM": "Преди обед",
-                "PM": "След обед"
-            }
-        };
-
         let profile;
         const getProfile = async () => {
             try {
@@ -622,7 +625,9 @@
             }
 
             currentLanguage = profile?.currentLanguage || currentLanguage;
-            document.title = titleFormats[currentLanguage].replace(' ', profile?.displayName || manifestData.name); updateManifest(profile?.displayName);
+            document.title = getFormattedTitle(profile?.displayName || manifestData.name, currentLanguage);
+
+            updateManifest(profile?.displayName);
             return profile;
         };
 
