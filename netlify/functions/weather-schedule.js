@@ -19,7 +19,7 @@ async function doRequest(apiUrl, method = 'GET', headers = {}, body = null) {
 }
 
 exports.handler = async function (event, context) {
-  const currentWeatherApi = `"https://dataservice.accuweather.com/currentconditions/v1/51097?apikey=${process.env.ACCUWEATHER_API_KEY}&language=bg-bg&details=true"`;
+  const currentWeatherApi = `https://dataservice.accuweather.com/currentconditions/v1/51097?apikey=${process.env.ACCUWEATHER_API_KEY}&language=bg-bg&details=true`;
   const todayForecastApi = `https://dataservice.accuweather.com/forecasts/v1/daily/1day/51097?apikey=${process.env.ACCUWEATHER_API_KEY}&language=bg-bg&details=true&metric=true`;
 
   const forecastRequestHeaders = {

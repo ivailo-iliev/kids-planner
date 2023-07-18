@@ -1,2 +1,2 @@
 [functions."weather-schedule"]
-schedule = "21 3-18 * * *"
+schedule = "42 3-18 * * *"
