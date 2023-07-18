@@ -598,17 +598,15 @@
         };
         const getFormattedTitle = (displayName, language) => {
             const titles = {
-                "bg": `Календар на ${displayName}`,
-                "en": `${displayName}’ Planner`
+                "bg": displayName ? `Календар на ${displayName}` : "Kids Planner",
+                "en": displayName ? `${displayName}’ Planner` : "Kids Planner"
             };
 
             return titles[language];
         }
         const updateManifest = (name) => {
-            let formattedName = name || manifestData.name;
-
-            manifestData.name = getFormattedTitle(formattedName, currentLanguage);
-            manifestData.short_name = getFormattedTitle(formattedName, currentLanguage);
+            manifestData.name = getFormattedTitle(name, currentLanguage);
+            manifestData.short_name = getFormattedTitle(name, currentLanguage);
             const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
             const manifestUrl = URL.createObjectURL(manifestBlob);
             document.querySelector('#manifestPlaceholder').href = manifestUrl;
