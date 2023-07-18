@@ -524,12 +524,13 @@
     </div>
 
     <script>
+        //Get URL query parameters
         const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
         let currentLanguage = queryParams.get("lang") || "en";
-        const root = document.documentElement;
-        const cal = document.getElementById("calendar");
-        const calDays = cal.getElementsByClassName("day");
+
+
+        // Clock Functions
         const amClock = document.getElementById("am_clock");
         const pmClock = document.getElementById("pm_clock");
         const amClockProgress = amClock.getElementsByClassName("hour-progress")[0];
@@ -538,23 +539,106 @@
         const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
         const amMinHand = amClock.getElementsByClassName("min-hand")[0];
         const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
+        const runClock = () => {
+            const d = new Date();
+            const day = (d.getDay() + 6) % 7;
+            const hr = d.getHours();
+            const min = d.getMinutes();
+            const sec = d.getSeconds();
+            const hrPosition = (hr * 360) / 12 + (min * (360 / 60)) / 12;
+            const minPosition = (min * 360) / 60 + (sec * (360 / 60)) / 60;
+            const hour = hr + min / 60;
+            const hoursRemaining = 12 - hour;
+            const pmHour = Math.max(0, hour - 12);
+            const pmHoursRemaining = 24 - hour;
+            updateClock(hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining);
+            updateDarkMode(hr);
+            updateCalendar(day);
+        };
+
+        setInterval(runClock, 1000);
+
+        const updateClock = (hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining) => {
+            if (hr < 12) {
+                activateClock(amClock, pmClock, amClockProgress, amHourHand, amMinHand, hour, hoursRemaining, hrPosition, minPosition);
+            } else {
+                activateClock(pmClock, amClock, pmClockProgress, pmHourHand, pmMinHand, pmHour, pmHoursRemaining, hrPosition, minPosition);
+                amClockProgress.setAttribute("stroke-dasharray", "12 0");
+            }
+        }
 
         const updateDarkMode = (hr) => {
             const isNight = hr >= 21 || hr < 7;
-            root.classList.toggle("dark", isNight);
+            document.documentElement.classList.toggle("dark", isNight);
         }
 
-
-        const localTimeOfDay = {
-            "en": {
-                "AM": "AM",
-                "PM": "PM"
-            },
-            "bg": {
-                "AM": "Преди обед",
-                "PM": "След обед"
+        const calDays = document.querySelector("#calendar .day");
+        const updateCalendar = (day) => {
+            const activeDay = calDays[day];
+            if (!activeDay.classList.contains("active")) {
+                [...calDays].forEach((dayElement, index) => {
+                    dayElement.classList.remove("active", "past");
+                    if (index < day) {
+                        dayElement.classList.add("past");
+                    }
+                });
+                activeDay.classList.add("active");
             }
-        };
+        }
+
+        const activateClock = (activeClock, inactiveClock, activeClockProgress, activeHourHand, activeMinHand, hour, hoursRemaining, hrPosition, minPosition) => {
+            if (!activeClock.classList.contains("active")) {
+                activeClock.classList.add("active");
+                inactiveClock.classList.remove("active");
+            }
+            activeClockProgress.setAttribute("stroke-dasharray", `${hour} ${hoursRemaining}`);
+            activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
+            activeMinHand.style.transform = `rotate(${minPosition}deg)`;
+        }
+
+        // Weather Functions
+
+        const weather = document.getElementById("weather");
+        const weatherIcon = document.getElementById("weather_icon");
+        const currentTemp = document.getElementById("current_temp");
+        const maxTemp = document.getElementById("max_temp");
+        const iconSnow = document.getElementById("icon_snow");
+        const iconRain = document.getElementById("icon_rain");
+
+        const getWeather = async () => {
+            let currentWeather, todayForecast;
+
+            try {
+                const response = await fetch('/.netlify/functions/weather');
+                const data = await response.json();
+                todayForecast = data.todayForecastData;
+                currentWeather = data.currentWeatherData;
+            } catch (error) {
+                console.error('Error:', error);
+                return;
+            }
+
+            if (currentWeather && todayForecast) {
+                return { currentWeather, todayForecast };
+            }
+        }
+
+        const updateWeather = (currentWeather, todayForecast) => {
+            currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
+            maxTemp.innerText = todayForecast.DailyForecasts[0].Temperature.Maximum.Value;
+            switch (todayForecast.DailyForecasts[0].Day.PrecipitationType) {
+                case "Rain": iconRain.style.display = "inline"; break;
+                case "Snow": iconSnow.style.display = "inline"; break;
+            }
+            weatherIcon.style.backgroundImage = `url(https://www.accuweather.com/images/weathericons/${todayForecast.DailyForecasts[0].Day.Icon}.svg)`;
+            weather.style.display = "block";
+        }
+
+        let weatherPromise = getWeather();
+        weatherPromise.then(({ currentWeather, todayForecast }) => updateWeather(currentWeather, todayForecast));
+
+
+        // Localization Functions
 
         let manifestData = {
             "id": "https://kids-planner.netlify.app/",
@@ -598,13 +682,14 @@
         };
         const getFormattedTitle = (displayName, language) => {
             const titles = {
-                "bg": displayName ? `Календар на ${displayName}` : "Kids Planner",
+                "bg": displayName ? `Календар на ${displayName}` : "Детски календар",
                 "en": displayName ? `${displayName}’ Planner` : "Kids Planner"
             };
 
             return titles[language];
         }
         const updateManifest = (name) => {
+            document.title = getFormattedTitle(profile?.displayName, currentLanguage);
             manifestData.name = getFormattedTitle(name, currentLanguage);
             manifestData.short_name = getFormattedTitle(name, currentLanguage);
             const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
@@ -623,11 +708,20 @@
             }
 
             currentLanguage = profile?.currentLanguage || currentLanguage;
-            document.title = getFormattedTitle(profile?.displayName, currentLanguage);
             updateManifest(profile?.displayName);
             return profile;
         };
 
+        const localTimeOfDay = {
+            "en": {
+                "AM": "AM",
+                "PM": "PM"
+            },
+            "bg": {
+                "AM": "Преди обед",
+                "PM": "След обед"
+            }
+        };
         const updateTextContent = () => {
             amClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['AM'];
             pmClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['PM'];
@@ -636,112 +730,6 @@
 
         let profilePromise = getProfile();
         profilePromise.then(() => updateTextContent());
-
-        const runClock = () => {
-            const d = new Date();
-            const day = (d.getDay() + 6) % 7;
-            const hr = d.getHours();
-            const min = d.getMinutes();
-            const sec = d.getSeconds();
-            const hrPosition = (hr * 360) / 12 + (min * (360 / 60)) / 12;
-            const minPosition = (min * 360) / 60 + (sec * (360 / 60)) / 60;
-            const hour = hr + min / 60;
-            const hoursRemaining = 12 - hour;
-            const pmHour = Math.max(0, hour - 12);
-            const pmHoursRemaining = 24 - hour;
-            updateClock(hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining);
-            updateDarkMode(hr);
-            updateCalendar(day);
-        };
-
-        setInterval(runClock, 1000);
-
-        const updateClock = (hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining) => {
-            if (hr < 12) {
-                activateClock(amClock, pmClock, amClockProgress, amHourHand, amMinHand, hour, hoursRemaining, hrPosition, minPosition);
-            } else {
-                activateClock(pmClock, amClock, pmClockProgress, pmHourHand, pmMinHand, pmHour, pmHoursRemaining, hrPosition, minPosition);
-                amClockProgress.setAttribute("stroke-dasharray", "12 0");
-            }
-        }
-
-        const activateClock = (activeClock, inactiveClock, activeClockProgress, activeHourHand, activeMinHand, hour, hoursRemaining, hrPosition, minPosition) => {
-            if (!activeClock.classList.contains("active")) {
-                activeClock.classList.add("active");
-                inactiveClock.classList.remove("active");
-            }
-            activeClockProgress.setAttribute("stroke-dasharray", `${hour} ${hoursRemaining}`);
-            activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
-            activeMinHand.style.transform = `rotate(${minPosition}deg)`;
-        }
-
-        const updateCalendar = (day) => {
-            const activeDay = calDays[day];
-            if (!activeDay.classList.contains("active")) {
-                [...calDays].forEach((dayElement, index) => {
-                    dayElement.classList.remove("active", "past");
-                    if (index < day) {
-                        dayElement.classList.add("past");
-                    }
-                });
-                activeDay.classList.add("active");
-            }
-        }
-
-        const weather = document.getElementById("weather");
-        const weatherIcon = document.getElementById("weather_icon");
-        const currentTemp = document.getElementById("current_temp");
-        const maxTemp = document.getElementById("max_temp");
-        const iconSnow = document.getElementById("icon_snow");
-        const iconRain = document.getElementById("icon_rain");
-
-        const getWeather = async () => {
-            let currentWeather, todayForecast;
-
-            try {
-                const response = await fetch('/.netlify/functions/weather');
-                const data = await response.json();
-                todayForecast = data.todayForecastData;
-                currentWeather = data.currentWeatherData;
-            } catch (error) {
-                console.error('Error:', error);
-                return;
-            }
-
-            if (currentWeather && todayForecast) {
-                return { currentWeather, todayForecast };
-            }
-        }
-
-        const updateWeather = (currentWeather, todayForecast) => {
-            currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
-            maxTemp.innerText = todayForecast.DailyForecasts[0].Temperature.Maximum.Value;
-            switch (todayForecast.DailyForecasts[0].Day.PrecipitationType) {
-                case "Rain": iconRain.style.display = "inline"; break;
-                case "Snow": iconSnow.style.display = "inline"; break;
-            }
-            weatherIcon.style.backgroundImage = `url(https://www.accuweather.com/images/weathericons/${todayForecast.DailyForecasts[0].Day.Icon}.svg)`;
-            weather.style.display = "block";
-        }
-
-        let weatherPromise = getWeather();
-        weatherPromise.then(({ currentWeather, todayForecast }) => updateWeather(currentWeather, todayForecast));
-
-        const getCalendar = async () => {
-            let calendarData;
-
-            try {
-                const response = await fetch(`/.netlify/functions/calendar?id=${userId}`);
-                calendarData = await response.json();
-            } catch (error) {
-                console.error('Error:', error);
-                return;
-            }
-
-            if (calendarData) {
-                return calendarData;
-            }
-        }
 
         const localDayNames = {
             "en": {
@@ -781,6 +769,24 @@
             }
         };
 
+        // Calendar Functions
+
+        const getCalendar = async () => {
+            let calendarData;
+
+            try {
+                const response = await fetch(`/.netlify/functions/calendar?id=${userId}`);
+                calendarData = await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return;
+            }
+
+            if (calendarData) {
+                return calendarData;
+            }
+        }
+
         const updateCalendarImages = (calendarData) => {
             // Get the list of day elements once
             const dayElements = document.getElementsByClassName("day");
@@ -808,6 +814,10 @@
             }
         };
 
+        let calendarPromise = getCalendar();
+        calendarPromise.then((calendarData) => updateCalendarImages(calendarData));
+
+        // Refresh
         const refreshData = async () => {
             const h = new Date().getHours();
             if (h >= 6 && h < 21) {
@@ -816,9 +826,6 @@
                 updateCalendarImages(calendarData);
             }
         };
-
-        let calendarPromise = getCalendar();
-        calendarPromise.then((calendarData) => updateCalendarImages(calendarData));
         setInterval(refreshData, 30 * 60 * 1000);
 
     </script>
