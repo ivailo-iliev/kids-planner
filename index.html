@@ -782,12 +782,15 @@
             }
         }
         const updateWeather = (currentWeather, todayForecast) => {
+            let precipitationType = todayForecast.DailyForecasts[0].Day.PrecipitationType;
+            let precipitationIconDisplay = (precipitationType === "Rain" || precipitationType === "Snow") ? "inline" : "none";
+
             const weatherHTML = `
             <div class="weather-text">
                 <span class="current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}</span> ▸
                 <span class="max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
-                    <use href="${todayForecast.DailyForecasts[0].Day.PrecipitationType}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48" style="display: ${precipitationIconDisplay}">
+                    <use href="#${precipitationType}">
                 </svg>
             </div>
             <div class="weather-icon" style="background-image: url('https://www.accuweather.com/images/weathericons/${todayForecast.DailyForecasts[0].Day.Icon}.svg');"></div>
