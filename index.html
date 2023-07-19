@@ -339,31 +339,27 @@
         }
 
         .weather {
-            width: 100%;
-            height: 90%;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             display: none;
         }
 
+        .weather-text {
+            height: 2.5rem;
+            line-height: 0.8;
+            white-space: nowrap;
+        }
+
         .current-temp {
-            font-size: 3rem;
+            font-size: 2.6rem;
         }
 
         .weather-text svg {
-            width: 1.8rem;
-            height: 1.8rem;
+            max-width: 1.6rem;
+            max-height: 1.6rem;
             display: none;
             vertical-align: text-top;
         }
 
-        .weather-text {
-            height: 3rem;
-            white-space: nowrap;
-        }
-
-        .weather-icon {
-            height: calc(100% - 3rem);
-        }
     </style>
 
 </head>
@@ -807,11 +803,11 @@
             <div class="weather-text">
                 <span class="current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}°</span> ▸
                 <span class="max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}°</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48" style="display: ${precipitationIconDisplay}">
+                <svg viewBox="0 -960 960 960" style="display: ${precipitationIconDisplay}">
                     <use href="#${precipitationType}">
                 </svg>
             </div>
-            <div class="weather-icon"><svg><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}"></use></svg></div>
+            <div class="weather-icon"><svg viewBox="0 0 288 288"><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}"></use></svg></div>
             `;
 
             // Get the container and set its innerHTML
