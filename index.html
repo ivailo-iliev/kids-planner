@@ -349,13 +349,7 @@
             font-size: 3rem;
         }
 
-        .current-temp::after,
-        .max-temp::after {
-            content: "°";
-        }
-
-        #icon_snow,
-        #icon_rain {
+        .weather-text svg {
             width: 1.8rem;
             height: 1.8rem;
             display: none;
@@ -811,13 +805,13 @@
 
             const weatherHTML = `
             <div class="weather-text">
-                <span class="current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}</span> ▸
-                <span class="max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}</span>
+                <span class="current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}°</span> ▸
+                <span class="max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}°</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48" style="display: ${precipitationIconDisplay}">
                     <use href="#${precipitationType}">
                 </svg>
             </div>
-            <svg class="weather-icon"><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}"></use></svg>
+            <div class="weather-icon"><svg><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}"></use></svg></div>
             `;
 
             // Get the container and set its innerHTML
