@@ -413,6 +413,14 @@
                         <path
                             d="M531.192-50.5q-79.574 0-149.713-30.477T259.332-163.36q-52.008-51.905-82.42-122.082Q146.5-355.618 146.5-435.086q0-138.122 86-244.268Q318.5-785.5 456.5-813 441-714 470-625.25T567.5-468q66.5 66.5 157.25 94.75T909-361q-25.5 136-132.5 223.25T531.192-50.5Zm-.192-67q89.5 0 166.25-46.5T814-289q-83.717-4.949-159.858-39.225Q578-362.5 518.5-422q-60-60-93.5-135.5T385.5-717Q307-675.5 260.25-599.816T213.5-435q0 132.292 92.604 224.896Q398.708-117.5 531-117.5ZM518.5-422Z" />
                     </symbol>
+                    <symbol id="Snow" viewBox="0 -960 960 960">
+                        <path
+                            d="M450-80v-195L301-126l-43-42 192-192v-90h-90L172-262l-44-41 147-147H80v-60h195L125-660l43-43 192 193h90v-91L262-789l42-44 146 147v-194h60v194l150-150 42 43-192 192v91h91l189-189 43 42-147 147h194v60H686l148 149-41 43-192-192h-91v90l192 193-41 43-151-151v195h-60Z" />
+                    </symbol>
+                    <symbol id="Rain" viewBox="0 -960 960 960">
+                        <path
+                            d="M479-208q16 0 24.5-5.5T512-230q0-11-8.5-17t-25.5-6q-42 0-85.5-26.5T337-373q-2-9-9-14.5t-15-5.5q-11 0-17 8.5t-4 17.5q15 84 71 121.5T479-208Zm1 128q-137 0-228.5-94T160-408q0-100 79.5-217.5T480-880q161 137 240.5 254.5T800-408q0 140-91.5 234T480-80Zm0-60q112 0 186-76.5T740-408q0-79-66.5-179.5T480-800Q353-688 286.5-587.5T220-408q0 115 74 191.5T480-140Zm0-340Z" />
+                    </symbol>
                 </defs>
             </svg>
             <div class="clock" id="am_clock">
@@ -467,7 +475,7 @@
                     <circle class="hour-marks" cx="11" cy="11" r="8.3" fill="transparent" stroke-width="1"
                         stroke-dasharray="0.34583 4" stroke-dashoffset="0.144375">
                     </circle>
-                    
+
                     <g class="numbers">
                         <text>12</text>
                         <text>1</text>
@@ -497,22 +505,7 @@
                     </g>
                 </svg>
             </div>
-
-            <div class="weather" id="weather">
-                <div class="weather-text">
-                    <span class="current-temp" id="current_temp"></span> ▸
-                    <span class="max-temp" id="max_temp"></span>
-                    <svg id="icon_snow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
-                        <path
-                            d="M450-80v-195L301-126l-43-42 192-192v-90h-90L172-262l-44-41 147-147H80v-60h195L125-660l43-43 192 193h90v-91L262-789l42-44 146 147v-194h60v194l150-150 42 43-192 192v91h91l189-189 43 42-147 147h194v60H686l148 149-41 43-192-192h-91v90l192 193-41 43-151-151v195h-60Z" />
-                    </svg>
-                    <svg id="icon_rain" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
-                        <path
-                            d="M479-208q16 0 24.5-5.5T512-230q0-11-8.5-17t-25.5-6q-42 0-85.5-26.5T337-373q-2-9-9-14.5t-15-5.5q-11 0-17 8.5t-4 17.5q15 84 71 121.5T479-208Zm1 128q-137 0-228.5-94T160-408q0-100 79.5-217.5T480-880q161 137 240.5 254.5T800-408q0 140-91.5 234T480-80Zm0-60q112 0 186-76.5T740-408q0-79-66.5-179.5T480-800Q353-688 286.5-587.5T220-408q0 115 74 191.5T480-140Zm0-340Z" />
-                    </svg>
-                </div>
-                <div class="weather-icon" id="weather_icon"></div>
-            </div>
+            <div class="weather" id="weather"></div>
         </div>
 
         <div class="calendar" id="calendar">
@@ -767,12 +760,7 @@
         getProfile();
 
         // Weather Functions
-        const weather = document.getElementById("weather");
-        const weatherIcon = document.getElementById("weather_icon");
-        const currentTemp = document.getElementById("current_temp");
-        const maxTemp = document.getElementById("max_temp");
-        const iconSnow = document.getElementById("icon_snow");
-        const iconRain = document.getElementById("icon_rain");
+        const weatherContainer = document.getElementById("weather");
         const getWeather = async () => {
             try {
                 const response = await fetch('/.netlify/functions/weather');
@@ -794,14 +782,20 @@
             }
         }
         const updateWeather = (currentWeather, todayForecast) => {
-            currentTemp.innerText = currentWeather[0].RealFeelTemperature.Metric.Value;
-            maxTemp.innerText = todayForecast.DailyForecasts[0].Temperature.Maximum.Value;
-            switch (todayForecast.DailyForecasts[0].Day.PrecipitationType) {
-                case "Rain": iconRain.style.display = "inline"; break;
-                case "Snow": iconSnow.style.display = "inline"; break;
-            }
-            weatherIcon.style.backgroundImage = `url(https://www.accuweather.com/images/weathericons/${todayForecast.DailyForecasts[0].Day.Icon}.svg)`;
-            weather.style.display = "block";
+            const weatherHTML = `
+            <div class="weather-text">
+                <span class="current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}</span> ▸
+                <span class="max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="48">
+                    <use href="${todayForecast.DailyForecasts[0].Day.PrecipitationType}">
+                </svg>
+            </div>
+            <div class="weather-icon" style="background-image: url('https://www.accuweather.com/images/weathericons/${todayForecast.DailyForecasts[0].Day.Icon}.svg');"></div>
+            `;
+
+            // Get the container and set its innerHTML
+            weatherContainer.innerHTML = weatherHTML;
+            weatherContainer.style.display = "block";
         }
         getWeather();
 
