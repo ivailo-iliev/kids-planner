@@ -59,46 +59,65 @@
         .parent {
             display: flex;
             flex-direction: column;
-            flex-wrap: nowrap;
             box-sizing: border-box;
+            padding: 1vw;
         }
 
         .calendar,
         .widgets {
             display: flex;
             flex-direction: row;
-            flex-wrap: nowrap;
-            padding: 1vw;
             box-sizing: border-box;
             gap: 1vw;
-            width: 100%;
         }
 
         .widgets {
-            width: 100%;
-            height: 40vh;
-            flex-basis: 39vh;
-            padding-bottom: 2vh;
             justify-content: center;
-            gap: 2vw;
+            align-items: center;
+            flex-basis: 40%;
+            flex-grow: 1;
+            flex-shrink: 1;
         }
 
-        .widgets>div {
-            flex: none;
-            order: 0;
-            align-self: center;
+        .clock,
+        .weather {
+            flex-basis: 24vw;
+            box-sizing: border-box;
             text-align: center;
-            flex-grow: 0;
-            flex-shrink: 1;
-            flex-basis: 20%;
-            height: 100%;
+        }
+
+        .day-name,
+        .clock-label,
+        .weather-text {
+            font-style: normal;
+            font-size: 2.8vh;
+            line-height: 3vh;
+            text-transform: uppercase;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .current-temp {
+            font-size: 1.5em;
+        }
+
+        .weather-text svg {
+            max-width: 1em;
+            max-height: 1em;
+            display: none;
+            vertical-align: text-top;
+        }
+
+        .clock>svg, .weather>svg
+        {
+            max-height: 32vh;
+            max-width: 100%;
         }
 
         .calendar {
-            height: 60vh;
-            flex-basis: 60vh;
+            flex-basis: 60%;
             flex-grow: 1;
-            flex-shrink: 0;
+            flex-shrink: 1;
         }
 
         .day {
@@ -139,15 +158,6 @@
             font-weight: 700;
         }
 
-        .day-name,
-        .clock-label {
-            font-style: normal;
-            font-size: 16px;
-            line-height: 19px;
-            text-transform: uppercase;
-            text-align: center;
-        }
-
         .event {
             background-size: cover;
             background-position: center center;
@@ -157,36 +167,19 @@
 
             /* Inside auto layout */
             flex: none;
-            order: 1;
             align-self: stretch;
             flex-grow: 1;
             max-height: 60%;
         }
 
-        .clock {
-            display: flex;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            box-sizing: border-box;
-        }
-
-        .clock-label {
-            height: 1.5em;
-        }
-
-        .clock svg {
-            height: 90%;
-        }
-
-        .clock-ring {
+        .clock .clock-ring {
             stroke: #EBEBEB;
         }
 
-        .clock-ring-inner,
-        .active .hour-progress,
-        #am_clock .hour-progress,
-        .hour-marks {
-            stroke: url(#0);
+        .clock .clock-ring-inner,
+        .clock .active .hour-progress,
+        .clock .hour-marks {
+            stroke: url(#gradient-1);
         }
 
         .clock .icon use {
@@ -196,21 +189,21 @@
             stroke-width: 10px;
         }
 
-        .hour-hand,
-        .min-hand {
+        .clock .hour-hand,
+        .clock .min-hand {
             transform-origin: 11px 11px;
         }
 
-        .active .hour-hand line,
-        .active .min-hand line {
+        .clock.active .hour-hand line,
+        .clock.active .min-hand line {
             stroke: #096fe0;
         }
 
-        .mid-circle {
+        .clock .mid-circle {
             fill: #096fe0;
         }
 
-        .numbers text {
+        .clock .numbers text {
             pointer-events: none;
             text-anchor: middle;
             font-size: 1.5px;
@@ -232,7 +225,6 @@
         .clock .icon use {
             pointer-events: none;
             fill: #999;
-            stroke-width: 0;
         }
 
         .clock .numbers text:nth-of-type(1),
@@ -338,39 +330,6 @@
             stroke: #333;
         }
 
-        .weather {
-            font-size: 1.6rem;
-            display: none;
-        }
-
-        .weather-text {
-            height: 2.5rem;
-            line-height: 0.8;
-            white-space: nowrap;
-        }
-
-        .current-temp {
-            font-size: 2.6rem;
-        }
-
-        .weather-text svg {
-            max-width: 1.6rem;
-            max-height: 1.6rem;
-            display: none;
-            vertical-align: text-top;
-        }
-
-        .weather-icon
-        {
-            height: calc(100% - 2.5rem);
-        }
-
-        .weather-icon svg
-        {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
     </style>
 
 </head>
@@ -382,7 +341,7 @@
             <svg class="symbols-library" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
-                    <linearGradient id="0" x1="0.5" y1="0" x2="0.5" y2="1">
+                    <linearGradient id="gradient-1" x1="0.5" y1="0" x2="0.5" y2="1">
                         <stop offset="40%" stop-color="#096fe0" />
                         <stop offset="60%" stop-color="#3df5a7" />
                     </linearGradient>
@@ -475,7 +434,7 @@
                         <text>11</text>
                     </g>
                     <g class="icons"></g>
-                    <circle class="mid-circle" cx="11" cy="11" r="0.5" class="center-dot" />
+                    <circle class="mid-circle" cx="11" cy="11" r="0.5" />
                     <g class="hour-hand">
                         <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" stroke-linecap="butt"
                             class="hour-arm" />
@@ -517,7 +476,7 @@
                     </g>
                     <g class="icons"></g>
 
-                    <circle class="mid-circle" cx="11" cy="11" r="0.5" class="center-dot" />
+                    <circle class="mid-circle" cx="11" cy="11" r="0.5" />
                     <g class="hour-hand">
                         <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" stroke-linecap="butt"
                             class="hour-arm" />
@@ -814,13 +773,12 @@
             <div class="weather-text">
                 <span class="current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}°</span> ▸
                 <span class="max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}°</span>
-                <svg viewBox="0 -960 960 960" style="display: ${precipitationIconDisplay}">
+                <svg viewBox="0 0 960 960" style="display: ${precipitationIconDisplay}">
                     <use href="#${precipitationType}">
                 </svg>
             </div>
-            <div class="weather-icon"><svg viewBox="0 0 288 288"><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}"></use></svg></div>
+            <svg viewBox="0 0 300 300"><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}" width="250" height="250" x="25" y="25"></use></svg>
             `;
-
             // Get the container and set its innerHTML
             weatherContainer.innerHTML = weatherHTML;
             weatherContainer.style.display = "block";
