@@ -1023,7 +1023,7 @@
                     if (recordFields[photoFieldName]) {
                         let eventNode = document.createElement("div");
                         eventNode.className = "event";
-                        eventNode.style.backgroundImage = `url(${recordFields[photoFieldName].thumbnails.large.url})`;
+                        eventNode.style.backgroundImage = `url(${recordFields[photoFieldName][0].thumbnails.large.url})`;
                         currentDay.appendChild(eventNode);
                     }
                 }
