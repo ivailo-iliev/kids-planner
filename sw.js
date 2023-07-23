@@ -1,4 +1,15 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
+// Imports Workbox from the CDN. Note that "6.2.0" of the URL
+// is the version of the Workbox runtime.
+
+const imageAssetRoute = new workbox.routing.Route(({request}) => {
+  return request.destination === 'image';
+}, new workbox.strategies.CacheFirst({
+  cacheName: 'image-assets'
+}));
+
+workbox.routing.registerRoute(staticAssetRoute);
+
 // Enable debug logs
 workbox.setConfig({
   debug: true
@@ -51,6 +62,7 @@ workbox.routing.registerRoute(
   });
   
 // JPEG images caching with CacheFirst (fallback to network) strategy
+/*
 workbox.routing.registerRoute(
     new RegExp('^https://v5.airtableusercontent.com'),
     new workbox.strategies.CacheFirst({
@@ -63,4 +75,4 @@ workbox.routing.registerRoute(
       ]
     })
   );
-  
+  */
