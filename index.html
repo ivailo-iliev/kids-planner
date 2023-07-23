@@ -777,8 +777,8 @@
         }
         const updateDarkMode = (hour) => {
             if (profile?.sleepTimeSec && profile?.wakeUpTimeSec) {
-                const sleepTimeHour = sleepTimeSec / 3600; 
-                const wakeUpTimeHour = wakeUpTimeSec / 3600; 
+                const sleepTimeHour = profile.sleepTimeSec / 3600; 
+                const wakeUpTimeHour = profile.wakeUpTimeSec / 3600; 
                 const isNight = hour >= sleepTimeHour || hour < wakeUpTimeHour;
                 document.documentElement.classList.toggle("dark", isNight);
             }
