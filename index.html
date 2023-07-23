@@ -729,6 +729,7 @@
         const queryParams = new URLSearchParams(window.location.search);
         const userId = queryParams.get("id");
         let currentLanguage = queryParams.get("lang") || "en";
+        let profile;
 
         // Clock Functions
         const amClock = document.getElementById("am_clock");
@@ -869,7 +870,6 @@
                 "Sunday": "Неделя"
             }
         };
-        let profile;
 
         const getProfile = async () => {
             try {
