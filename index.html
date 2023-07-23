@@ -754,7 +754,7 @@
             const minElapsed = min + sec / 60;
             const minRemaining = 60 - minElapsed;
             updateClock(hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining, minElapsed, minRemaining);
-            updateDarkMode(hr);
+            updateDarkMode(hour);
             updateCalendar(day);
         };
         const updateClock = (hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining, minElapsed, minRemaining) => {
@@ -774,9 +774,13 @@
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
         }
-        const updateDarkMode = (hr) => {
-            const isNight = hr >= 21 || hr < 7;
-            document.documentElement.classList.toggle("dark", isNight);
+        const updateDarkMode = (hour) => {
+            if (profile?.sleepTimeSec && profile?.wakeUpTimeSec) {
+                const sleepTimeHour = sleepTimeSec / 3600; 
+                const wakeUpTimeHour = wakeUpTimeSec / 3600; 
+                const isNight = hour >= sleepTimeHour || hour < wakeUpTimeHour;
+                document.documentElement.classList.toggle("dark", isNight);
+            }
         }
         const calDays = document.querySelectorAll("#calendar .day");
         const updateCalendar = (day) => {

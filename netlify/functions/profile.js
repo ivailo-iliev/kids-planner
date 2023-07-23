@@ -27,7 +27,8 @@ exports.handler = async function (event, context) {
 
   const {
     "Language": currentLanguage,
-    "Weather Location ID": weatherLocationId,
+    "Wake up time": wakeUpTimeSec,
+    "Sleep time": sleepTimeSec,
     "Display Name": displayName,
     "☀️": iconSun,
     "🌙": iconMoon,
@@ -39,7 +40,8 @@ exports.handler = async function (event, context) {
 
   const filteredData = {
     currentLanguage,
-    weatherLocationId,
+    sleepTimeSec,
+    wakeUpTimeSec,
     displayName,
     iconApple,
     iconBed,
