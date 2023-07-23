@@ -731,6 +731,17 @@
         let currentLanguage = queryParams.get("lang") || "en";
         let profile;
 
+        //Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
         // Clock Functions
         const amClock = document.getElementById("am_clock");
         const pmClock = document.getElementById("pm_clock");
@@ -777,8 +788,8 @@
         }
         const updateDarkMode = (hour) => {
             if (profile?.sleepTimeSec && profile?.wakeUpTimeSec) {
-                const sleepTimeHour = profile.sleepTimeSec / 3600; 
-                const wakeUpTimeHour = profile.wakeUpTimeSec / 3600; 
+                const sleepTimeHour = profile.sleepTimeSec / 3600;
+                const wakeUpTimeHour = profile.wakeUpTimeSec / 3600;
                 const isNight = hour >= sleepTimeHour || hour < wakeUpTimeHour;
                 document.documentElement.classList.toggle("dark", isNight);
             }
