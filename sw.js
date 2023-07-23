@@ -2,8 +2,6 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox
 // Imports Workbox from the CDN. Note that "6.2.0" of the URL
 // is the version of the Workbox runtime.
 // sw.js
-import { registerRoute, Route } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
 // Handle images:
 const imageRoute = new Route(({ request }) => {
