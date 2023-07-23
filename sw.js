@@ -1,8 +1,7 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
-
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 // Enable debug logs
 workbox.setConfig({
-  debug: true,
+  debug: true
 });
 
 // Precache static assets and the start page
@@ -16,23 +15,23 @@ workbox.precaching.precacheAndRoute([
   { url: '/icon-192x192.png', revision: '1' },
   { url: '/icon-512x512.png', revision: '1' },
   { url: '/icon-64x64.png', revision: '1' },
-  { url: '/maskable-icon-512x512.png', revision: '1' },
+  { url: '/maskable-icon-512x512.png', revision: '1' }
 ], {
-  cacheName: 'start-page-cache',
+  cacheName: 'start-page-cache'
 });
 
 // Google Fonts caching with CacheOnly strategy
 workbox.routing.registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
   new workbox.strategies.CacheOnly({
-    cacheName: 'google-fonts-stylesheets',
+    cacheName: 'google-fonts-stylesheets'
   })
 );
 
 workbox.routing.registerRoute(
   /^https:\/\/fonts\.gstatic\.com/,
   new workbox.strategies.CacheOnly({
-    cacheName: 'google-fonts-webfonts',
+    cacheName: 'google-fonts-webfonts'
   })
 );
 
@@ -44,24 +43,24 @@ workbox.routing.registerRoute(
         cacheName: `${api}-api-cache`,
         plugins: [
           new workbox.expiration.ExpirationPlugin({
-            maxAgeSeconds: 24 * 60 * 60, // One day
-          }),
-        ],
+            maxAgeSeconds: 24 * 60 * 60 // One day
+          })
+        ]
       })
     );
   });
   
 // JPEG images caching with CacheFirst (fallback to network) strategy
 workbox.routing.registerRoute(
-    new RegExp('^https://.*\.airtableusercontent\.com'),
+    new RegExp('^https://v5.airtableusercontent.com'),
     new workbox.strategies.CacheFirst({
       cacheName: 'images-cache',
       plugins: [
         new workbox.expiration.ExpirationPlugin({
           maxEntries: 100,
           maxAgeSeconds: 30 * 24 * 60 * 60, // One month
-        }),
-      ],
+        })
+      ]
     })
   );
   
