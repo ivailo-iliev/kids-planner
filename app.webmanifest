@@ -1,40 +1,40 @@
 {
-            "id": "https://kids-planner.netlify.app/",
-            "scope": "https://kids-planner.netlify.app/",
-            "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
-            "name": "Kids Planner",
-            "short_name": "Kids Planner",
-            "theme_color": "#ffffff",
-            "background_color": "#ffffff",
-            "display": "fullscreen",
-            "orientation": "landscape",
-            icons: [
-                {
-                    src: 'https://kids-planner.netlify.app/icon-64x64.png',
-                    sizes: '64x64',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-192x192.png',
-                    sizes: '192x192',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png',
-                    purpose: 'any'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/maskable-icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png',
-                    purpose: 'maskable'
-                }
-            ]
-        };
+    "id": "https://kids-planner.netlify.app/",
+    "scope": "https://kids-planner.netlify.app/",
+    "start_url": "https://kids-planner.netlify.app/",
+    "name": "Kids Planner",
+    "short_name": "Kids Planner",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "fullscreen",
+    "orientation": "landscape",
+    "icons": [
+        {
+            "src": "https://kids-planner.netlify.app/icon-64x64.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        },
+        {
+            "src": "https://kids-planner.netlify.app/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://kids-planner.netlify.app/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "https://kids-planner.netlify.app/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "https://kids-planner.netlify.app/maskable-icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
