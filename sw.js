@@ -8,7 +8,7 @@ const imageAssetRoute = new workbox.routing.Route(({request}) => {
   cacheName: 'image-assets'
 }));
 
-workbox.routing.registerRoute(staticAssetRoute);
+workbox.routing.registerRoute(imageAssetRoute);
 
 // Enable debug logs
 workbox.setConfig({
