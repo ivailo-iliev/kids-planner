@@ -7,7 +7,7 @@ workbox.setConfig({
 
 // Precache static assets and the start page
 workbox.precaching.precacheAndRoute([
-  { url: '/', revision: '1' }, // replace '123456' with the actual version or hash
+  { url: '/', revision: '2' }, // replace '123456' with the actual version or hash
   { url: '/apple-touch-icon.png', revision: '1' },
   { url: '/favicon-16x16.png', revision: '1' },
   { url: '/favicon-32x32.png', revision: '1' },
@@ -17,8 +17,6 @@ workbox.precaching.precacheAndRoute([
   { url: '/icon-512x512.png', revision: '1' },
   { url: '/icon-64x64.png', revision: '1' },
   { url: '/maskable-icon-512x512.png', revision: '1' },
-  { url: '/images/icons/icon-72x72.png', revision: '1' },
-  { url: '/images/icons/icon-96x96.png', revision: '1' },
 ], {
   cacheName: 'start-page-cache',
 });
