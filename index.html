@@ -814,10 +814,10 @@
         let manifestData = {
             "id": "https://kids-planner.netlify.app/",
             "scope": "https://kids-planner.netlify.app/",
-            "start_url": `https://kids-planner.netlify.app/${userId}`,
+            "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
             "name": "Kids Planner",
             "short_name": "Kids Planner",
-            "description": "A static, non-interactive weekly planner for pre-school children. Features a clock, weather widget and a weekly calendar with activities.",
+            "description": "",
             "lang": "en",
             "theme_color": "#ffffff",
             "background_color": "#ffffff",
@@ -896,6 +896,11 @@
             }
         };
 
+        const localDescriptions = {
+            "en": "A static, non-interactive weekly planner for pre-school children. Features a clock, weather widget and a weekly calendar with activities.",
+            "bg": "Статичен, неинтерактивен седмичен планер за деца в предучилищна възраст. Разполага с часовник, прогноза за времето и седмичен календар с активности."
+        };
+
         const getProfile = async () => {
             try {
                 const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
@@ -927,6 +932,7 @@
             manifestData.name = getFormattedTitle(name, currentLanguage);
             manifestData.short_name = getFormattedTitle(name, currentLanguage);
             manifestData.lang = currentLanguage;
+            manifestData.description = localDescriptions[currentLanguage];
             const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
             const manifestUrl = URL.createObjectURL(manifestBlob);
             document.querySelector('#manifestPlaceholder').href = manifestUrl;
