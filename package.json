@@ -1,12 +1,16 @@
 {
-  "type": "commonjs",
-  "name": "weather",
+  "name": "kids-planner",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-        "build": "workbox generateSW workbox-config.js"
-      },
+    "build": "esbuild --outfile=sw.js --bundle sw.config.js && workbox injectManifest"
+  },
   "devDependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "workbox-cli": "^7.0.0",
+    "workbox-precaching": "^7.0.0"
+  },
+  "dependencies": {
+    "esbuild": "^0.18.16"
   }
 }
