@@ -9,6 +9,7 @@ lerna-debug.log*
 
 *.bak.js
 *config.js
+*source.js
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

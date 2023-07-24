@@ -3327,7 +3327,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }));
   }
 
-  // sw.config.js
+  // sw-config.js
   precacheAndRoute(
     self.__WB_MANIFEST,
     { ignoreURLParametersMatching: [/.*/] }

@@ -17,7 +17,7 @@
     <meta name="apple-mobile-web-app-title" content="Kids Planner">
 
     <!-- Make the app title different than the page title and configure icons - Android. -->
-    <link rel="manifest" id="manifestPlaceholder" type="application/manifest+json" href="/app.webmanifest">
+    <link rel="manifest" id="manifestPlaceholder" type="application/manifest+json">
 
     <!-- IE configuration for icons and colors is in browserconfig.xml -->
 
@@ -814,41 +814,55 @@
         let manifestData = {
             "id": "https://kids-planner.netlify.app/",
             "scope": "https://kids-planner.netlify.app/",
-            "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
+            "start_url": `https://kids-planner.netlify.app/${userId}`,
             "name": "Kids Planner",
             "short_name": "Kids Planner",
+            "description": "A static, non-interactive weekly planner for pre-school children. Features a clock, weather widget and a weekly calendar with activities.",
+            "lang": "en",
             "theme_color": "#ffffff",
             "background_color": "#ffffff",
             "display": "fullscreen",
             "orientation": "landscape",
-            icons: [
+            "categories": [
+                "education",
+                "kids",
+                "productivity"
+            ],
+            "screenshots": [
                 {
-                    src: 'https://kids-planner.netlify.app/icon-64x64.png',
-                    sizes: '64x64',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-192x192.png',
-                    sizes: '192x192',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png',
-                    purpose: 'any'
-                },
-                {
-                    src: 'https://kids-planner.netlify.app/maskable-icon-512x512.png',
-                    sizes: '512x512',
-                    type: 'image/png',
-                    purpose: 'maskable'
+                    "src": "https://kids-planner.netlify.app/screenshot.png",
+                    "type": "image/png",
+                    "sizes": "1280x800"
                 }
+            ],
+            "icons": [
+                {
+                    "src": "https://kids-planner.netlify.app/icon-64x64.png",
+                    "sizes": "64x64",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://kids-planner.netlify.app/icon-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://kids-planner.netlify.app/icon-512x512.png",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://kids-planner.netlify.app/icon-512x512.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "any"
+                },
+                {
+                    "src": "https://kids-planner.netlify.app/maskable-icon-512x512.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "maskable"
+                },
             ]
         };
         const localTimeOfDay = {
@@ -912,6 +926,7 @@
             document.title = getFormattedTitle(name, currentLanguage);
             manifestData.name = getFormattedTitle(name, currentLanguage);
             manifestData.short_name = getFormattedTitle(name, currentLanguage);
+            manifestData.lang = currentLanguage;
             const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
             const manifestUrl = URL.createObjectURL(manifestBlob);
             document.querySelector('#manifestPlaceholder').href = manifestUrl;
