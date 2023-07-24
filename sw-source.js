@@ -3329,7 +3329,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
 
   // sw.config.js
   precacheAndRoute(
-    [{"revision":"ce7d934e58348d15ee9680f65776aa19","url":"apple-touch-icon.png"},{"revision":"80831d9e320636507b51f1b87d28a967","url":"favicon-16x16.png"},{"revision":"e6c71985200c8fc9f4d14d06cfd35ead","url":"favicon-32x32.png"},{"revision":"d522b1f6a5ef7878e39f6353c755440d","url":"favicon.ico"},{"revision":"fb6e87d2d0d2edd3fc5a3bd49523d4d8","url":"favicon.svg"},{"revision":"cc91396883f5219250b61abedb5ff2a0","url":"icon-192x192.png"},{"revision":"53c6721a7fb6ab69ea8c5afd37fdd296","url":"icon-512x512.png"},{"revision":"9f18e33818e5b3b596b8b09b79dea042","url":"icon-64x64.png"},{"revision":"30c383ed67160a8a116ef807692c411c","url":"index.html"},{"revision":"2de631f201c8250208491c881c4e5374","url":"maskable-icon-512x512.png"}],
+    self.__WB_MANIFEST,
     { ignoreURLParametersMatching: [/.*/] }
   );
   googleFontsCache();

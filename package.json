@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild --outfile=sw.js --bundle sw.config.js"
+    "build": "esbuild --outfile=sw-source.js --bundle sw-config.js && workbox injectManifest workbox-config.js"
   },
   "devDependencies": {
     "node-fetch": "^2.6.1",
