@@ -1,2 +1,8 @@
 [functions."weather-schedule"]
 schedule = "42 3-18 * * *"
+
+[[headers]]
+  for = "/sw.js"
+
+  [headers.values]
+  Cache-Control = "no-cache"
