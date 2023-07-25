@@ -3344,7 +3344,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   googleFontsCache();
   registerRoute(
     ({ url }) => url.pathname === "/.netlify/functions/profile",
-    new NetworkFirst({ cacheName: "profile-cache" })
+    new NetworkFirst({ cacheName: "profile-cache", ignoreVary: true })
   );
   registerRoute(
     ({ url }) => url.pathname === "/.netlify/functions/weather",
@@ -3355,7 +3355,12 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           maxAgeSeconds: 1 * 24 * 60 * 60
           // 1 Days
         })
-      ]
+      ],
+      ignoreVary: true
     })
+  );
+  registerRoute(
+    ({ request }) => request.destination === "manifest",
+    new CacheFirst({ cacheName: "manifest-cache", ignoreVary: true })
   );
 })();
