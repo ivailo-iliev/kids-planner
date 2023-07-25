@@ -3333,7 +3333,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   }
 
   // sw-config.js
-  addEventListener("install", (event) => {
+  self.addEventListener("install", (event) => {
     self.skipWaiting();
   });
   clientsClaim();

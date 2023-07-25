@@ -54,7 +54,7 @@
             font-family: "Sofia Sans Condensed", sans-serif;
             box-sizing: border-box;
             user-select: none;
-            background-color: greenyellow;
+            background-color:aqua;
         }
 
         .parent {
@@ -738,8 +738,10 @@
                 navigator.serviceWorker.register('/sw.js').then(registration => {
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
+                        console.log(newWorker.state);
                         newWorker.addEventListener('statechange', () => {
                             if (newWorker.state === 'installed') {
+                                console.log(newWorker.state);
                                 window.location.reload();
                             }
                         });
