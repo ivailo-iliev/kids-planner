@@ -3359,8 +3359,4 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       ignoreVary: true
     })
   );
-  registerRoute(
-    ({ request }) => request.destination === "manifest",
-    new CacheFirst({ cacheName: "manifest-cache", ignoreVary: true })
-  );
 })();
