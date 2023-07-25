@@ -3327,7 +3327,16 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }));
   }
 
+  // node_modules/workbox-core/clientsClaim.js
+  function clientsClaim() {
+    self.addEventListener("activate", () => self.clients.claim());
+  }
+
   // sw-config.js
+  addEventListener("install", (event) => {
+    self.skipWaiting();
+  });
+  clientsClaim();
   precacheAndRoute(
     self.__WB_MANIFEST,
     { ignoreURLParametersMatching: [/.*/] }

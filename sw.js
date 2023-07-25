@@ -3327,9 +3327,18 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }));
   }
 
+  // node_modules/workbox-core/clientsClaim.js
+  function clientsClaim() {
+    self.addEventListener("activate", () => self.clients.claim());
+  }
+
   // sw-config.js
+  addEventListener("install", (event) => {
+    self.skipWaiting();
+  });
+  clientsClaim();
   precacheAndRoute(
-    [{"revision":"43ac5f3cba1d6054cf05db4ac9fb9edc","url":"apple-touch-icon.png"},{"revision":"607b32b3b2f11280e81cd9effd564e32","url":"favicon-16x16.png"},{"revision":"dd2e388c20368cb6505ff75e4d68e66a","url":"favicon-32x32.png"},{"revision":"d522b1f6a5ef7878e39f6353c755440d","url":"favicon.ico"},{"revision":"fb6e87d2d0d2edd3fc5a3bd49523d4d8","url":"favicon.svg"},{"revision":"e07d07b7a3467ef3c030806470f61b2d","url":"icon-192x192.png"},{"revision":"782b30dcb4fabfec6459094e6097892a","url":"icon-512x512.png"},{"revision":"84d23fc7f639cc383ab5c7f643b88bce","url":"icon-64x64.png"},{"revision":"b0730e3284ca52b70b4b5276c64c83ae","url":"index.html"},{"revision":"effa56abb953ec9619bd49509c4cfdd1","url":"maskable-icon-512x512.png"},{"revision":"47871e06205f0a98eab98aac1c23d791","url":"screenshot.png"}],
+    [{"revision":"43ac5f3cba1d6054cf05db4ac9fb9edc","url":"apple-touch-icon.png"},{"revision":"607b32b3b2f11280e81cd9effd564e32","url":"favicon-16x16.png"},{"revision":"dd2e388c20368cb6505ff75e4d68e66a","url":"favicon-32x32.png"},{"revision":"d522b1f6a5ef7878e39f6353c755440d","url":"favicon.ico"},{"revision":"fb6e87d2d0d2edd3fc5a3bd49523d4d8","url":"favicon.svg"},{"revision":"e07d07b7a3467ef3c030806470f61b2d","url":"icon-192x192.png"},{"revision":"782b30dcb4fabfec6459094e6097892a","url":"icon-512x512.png"},{"revision":"84d23fc7f639cc383ab5c7f643b88bce","url":"icon-64x64.png"},{"revision":"380d24b312d0fe7ae2b7c6874ff5bc22","url":"index.html"},{"revision":"effa56abb953ec9619bd49509c4cfdd1","url":"maskable-icon-512x512.png"},{"revision":"47871e06205f0a98eab98aac1c23d791","url":"screenshot.png"}],
     { ignoreURLParametersMatching: [/.*/] }
   );
   googleFontsCache();
