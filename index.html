@@ -419,8 +419,7 @@
             background-color: #000000;
         }
 
-        .dark .clock
-        {
+        .dark .clock {
             --background-color: black;
         }
 
@@ -437,12 +436,10 @@
             fill: #096fe0;
         }
 
-        .dark .clock .numbers
-        {
+        .dark .clock .numbers {
             fill: #096fe0;
         }
-
-</style>
+    </style>
 
 </head>
 
@@ -831,25 +828,25 @@
         let profile;
 
         // Register service worker
-        /*        if ('serviceWorker' in navigator) {
-                    window.addEventListener('load', function () {
-                        navigator.serviceWorker.register('/sw.js').then(registration => {
-                            registration.addEventListener('updatefound', () => {
-                                const newWorker = registration.installing;
-                                newWorker.addEventListener('statechange', () => {
-                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                        window.location.reload();
-                                    }
-                                });
-                            });
-        
-                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                        }, err => {
-                            console.log('ServiceWorker registration failed: ', err);
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                window.location.reload();
+                            }
                         });
                     });
-                }
-        */
+
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
         // Clock Functions
         const amClock = document.getElementById("am_clock");
         const pmClock = document.getElementById("pm_clock");
