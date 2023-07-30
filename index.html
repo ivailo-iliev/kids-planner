@@ -202,13 +202,92 @@
             max-height: 60%;
         }
 
-        .clock .clock-ring {
-            stroke: #EBEBEB;
+        .clock {
+            --pi: 3.1415926535897932;
+            --viewbox: 22px;
+            --center: calc(var(--viewbox)/2);
+            --icon-radius: 5.4px;
+            --number-radius: 9.5px;
+            --icon-offset-x: -1px;
+            --icon-offset-y: -11px;
+            --number-offset-x: 0px;
+            --number-offset-y: 0.5px;
+            --hour-mark-radius: 10.7px;
+            --hour-mark-circumference: calc(2*var(--pi)*var(--hour-mark-radius));
+            --hour-mark-width: calc(var(--hour-mark-circumference)/12*0.04);
+            --hour-mark-gap: calc(var(--hour-mark-circumference)/12*0.96);
+            --hour-mark-offset: calc(var(--hour-mark-width)/2);
+            --slices-radius: 5.5px;
+            --slices-circumference: calc(2*var(--pi)*var(--slices-radius));
+            --slices-width: calc(var(--slices-circumference)/4*0.03);
+            --slices-gap: calc(var(--slices-circumference)/4*0.97);
+            --slices-offset: calc(var(--slices-width)/2);
+            --elapsed-time: 0deg;
+            --background-color: white;
         }
 
-        .clock .clock-ring-inner,
-        .clock.active .hour-progress,
+        .clock .clock-slices {
+            r: 5.5px;
+            fill: none;
+            stroke: var(--background-color);
+            stroke-width: 11px;
+            stroke-dashoffset: var(--slices-offset);
+            stroke-dasharray: var(--slices-width) var(--slices-gap);
+        }
+
         .clock .hour-marks {
+            stroke: #349EE8;
+            stroke-width: 0.8px;
+            stroke-dasharray: var(--hour-mark-width) var(--hour-mark-gap);
+            stroke-dashoffset: var(--hour-mark-offset);
+            r: var(--hour-mark-radius);
+            fill: none;
+        }
+
+        .clock .clock-ring-progress {
+            r: 5.5px;
+            fill: none;
+            stroke: var(--background-color);
+            stroke-width: 11;
+            stroke-dashoffset: 8.7px;
+        }
+
+        .clock svg {
+            border-radius: 50%;
+            border: solid 1px #349EE8;
+        }
+
+        .clock.active svg {
+            background: url('orange.jpg') no-repeat center/cover;
+        }
+
+        .geddy .clock {
+            --hour-mark-radius: 9.2px;
+            --number-radius: 8px;
+        }
+
+        .geddy .clock svg {
+            background: #ebebeb;
+            border: none;
+        }
+
+        .geddy .clock .clock-ring-progress {
+            stroke-width: 12px;
+        }
+
+        .geddy .clock .clock-ring-inner {
+            r: 9.6px;
+            fill: var(--background-color);
+            stroke-width: 0.1;
+        }
+
+        .geddy .clock .hour-marks {
+            stroke-width: 1px;
+        }
+
+        .geddy .clock .clock-ring-inner,
+        .geddy .clock.active .clock-ring-progress,
+        .geddy .clock .hour-marks {
             stroke: url(#gradient-1);
         }
 
@@ -226,11 +305,11 @@
 
         .clock.active .hour-hand line,
         .clock.active .min-hand line {
-            stroke: #096fe0;
+            stroke: black;
         }
 
         .clock .mid-circle {
-            fill: #096fe0;
+            fill: black;
         }
 
         .clock .numbers text {
@@ -238,18 +317,6 @@
             text-anchor: middle;
             font-size: 1.5px;
             font-weight: 700;
-        }
-
-        .clock {
-            --pi: 3.1415926535897932;
-            --viewbox: 22px;
-            --center: calc(var(--viewbox)/2);
-            --icon-radius: 5.4px;
-            --number-radius: 7px;
-            --icon-offset-x: -1px;
-            --icon-offset-y: -11px;
-            --number-offset-x: 0px;
-            --number-offset-y: 0.5px;
         }
 
         .clock .icon use {
@@ -352,14 +419,30 @@
             background-color: #000000;
         }
 
+        .dark .clock
+        {
+            --background-color: black;
+        }
+
         .dark .calendar {
             visibility: hidden;
         }
 
-        .dark .clock-ring {
-            stroke: #333;
+        .dark .clock.active .hour-hand line,
+        .dark .clock.active .min-hand line {
+            stroke: #096fe0;
         }
-    </style>
+
+        .dark .clock .mid-circle {
+            fill: #096fe0;
+        }
+
+        .dark .clock .numbers
+        {
+            fill: #096fe0;
+        }
+
+</style>
 
 </head>
 
@@ -371,7 +454,7 @@
             <svg class="symbols-library" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
-                    <linearGradient id="gradient-1" x1="0.5" y1="0" x2="0.5" y2="1">
+                    <linearGradient id="gradient-1" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="40%" stop-color="#096fe0" />
                         <stop offset="60%" stop-color="#3df5a7" />
                     </linearGradient>
@@ -639,15 +722,10 @@
             <div class="clock" id="am_clock">
                 <div class="clock-label">AM</div>
                 <svg viewBox="0 0 22 22">
-                    <circle class="clock-ring" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4">
-                    </circle>
-                    <circle class="hour-progress" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4"
-                        stroke-dasharray="0 60" stroke-dashoffset="15" stroke-linecap="butt"></circle>
-                    <circle class="clock-ring-inner" cx="11" cy="11" r="8.7493" fill="transparent" stroke-width="0.2">
-                    </circle>
-                    <circle class="hour-marks" cx="11" cy="11" r="8.3" fill="transparent" stroke-width="1"
-                        stroke-dasharray="0.34583 4" stroke-dashoffset="0.144375">
-                    </circle>
+                    <circle class="clock-ring-progress" cx="11" cy="11"></circle>
+                    <circle class="clock-slices" cx="11" cy="11"></circle>
+                    <circle class="clock-ring-inner" cx="11" cy="11"></circle>
+                    <circle class="hour-marks" cx="11" cy="11"></circle>
                     <g class="numbers">
                         <text>12</text>
                         <text>1</text>
@@ -679,15 +757,10 @@
             <div class="clock" id="pm_clock">
                 <div class="clock-label">PM</div>
                 <svg viewBox="0 0 22 22">
-                    <circle class="clock-ring" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4">
-                    </circle>
-                    <circle class="hour-progress" cx="11" cy="11" r="9.5493" fill="transparent" stroke-width="1.4"
-                        stroke-dasharray="0 60" stroke-dashoffset="15" stroke-linecap="butt"></circle>
-                    <circle class="clock-ring-inner" cx="11" cy="11" r="8.7493" fill="transparent" stroke-width="0.2">
-                    </circle>
-                    <circle class="hour-marks" cx="11" cy="11" r="8.3" fill="transparent" stroke-width="1"
-                        stroke-dasharray="0.34583 4" stroke-dashoffset="0.144375">
-                    </circle>
+                    <circle class="clock-ring-progress" cx="11" cy="11"></circle>
+                    <circle class="clock-slices" cx="11" cy="11"></circle>
+                    <circle class="clock-ring-inner" cx="11" cy="11"></circle>
+                    <circle class="hour-marks" cx="11" cy="11"></circle>
 
                     <g class="numbers">
                         <text>12</text>
@@ -758,32 +831,30 @@
         let profile;
 
         // Register service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        console.log(newWorker.state);
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed') {
-                                console.log(newWorker.state);
-                                window.location.reload();
-                            }
+        /*        if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', function () {
+                        navigator.serviceWorker.register('/sw.js').then(registration => {
+                            registration.addEventListener('updatefound', () => {
+                                const newWorker = registration.installing;
+                                newWorker.addEventListener('statechange', () => {
+                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                        window.location.reload();
+                                    }
+                                });
+                            });
+        
+                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                        }, err => {
+                            console.log('ServiceWorker registration failed: ', err);
                         });
                     });
-
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
-
+                }
+        */
         // Clock Functions
         const amClock = document.getElementById("am_clock");
         const pmClock = document.getElementById("pm_clock");
-        const amClockProgress = amClock.getElementsByClassName("hour-progress")[0];
-        const pmClockProgress = pmClock.getElementsByClassName("hour-progress")[0];
+        const amClockProgress = amClock.getElementsByClassName("clock-ring-progress")[0];
+        const pmClockProgress = pmClock.getElementsByClassName("clock-ring-progress")[0];
         const amHourHand = amClock.getElementsByClassName("hour-hand")[0];
         const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
         const amMinHand = amClock.getElementsByClassName("min-hand")[0];
@@ -819,6 +890,8 @@
                 activeClock.classList.add("active");
                 inactiveClock.classList.remove("active");
             }
+            minElapsed = (5.5 * 2 * Math.PI / 60) * minElapsed;
+            minRemaining = (5.5 * 2 * Math.PI / 60) * minRemaining;
             activeClockProgress.setAttribute("stroke-dasharray", `${minElapsed} ${minRemaining}`);
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
