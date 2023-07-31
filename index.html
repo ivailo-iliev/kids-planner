@@ -41,7 +41,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@200;400;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Cabin&family=Sofia+Sans+Condensed:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
         html,
@@ -212,7 +212,7 @@
             --icon-offset-x: -1px;
             --icon-offset-y: -11px;
             --number-offset-x: 0px;
-            --number-offset-y: 0.5px;
+            --number-offset-y: 0.6px;
             --hour-mark-radius: 10.7px;
             --hour-mark-circumference: calc(2*var(--pi)*var(--hour-mark-radius));
             --hour-mark-width: calc(var(--hour-mark-circumference)/12*0.04);
@@ -318,13 +318,14 @@
         .clock .numbers text {
             pointer-events: none;
             text-anchor: middle;
-            font-size: 1.5px;
-            font-weight: 700;
+            font-size: 1.6px;
+            font-weight: normal;
+            font-family: Cabin;
         }
 
         .clock .icon use {
             pointer-events: none;
-            fill: #808080;
+            fill: #333;
         }
 
         .clock .numbers text:nth-of-type(1),
