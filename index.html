@@ -5,33 +5,15 @@
     <meta charset="utf-8">
     <title>Kids Planner</title>
 
-    <!-- CONFIGURATION -->
-
-    <!-- Allow web app to be run in full-screen mode - iOS. -->
+    <link rel="preload" href="SofiaSansCondensed-subset.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <!-- Allow web app to be run in full-screen mode - Android. -->
     <meta name="mobile-web-app-capable" content="yes">
-
-    <!-- Make the app title different than the page title - iOS. -->
     <meta name="apple-mobile-web-app-title" content="Kids Planner">
-
-    <!-- Make the app title different than the page title and configure icons - Android. -->
     <link rel="manifest" id="manifestPlaceholder" type="application/manifest+json">
-
-    <!-- IE configuration for icons and colors is in browserconfig.xml -->
-
-    <!-- Configure the status bar - iOS. -->
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
-
-    <!-- Set the viewport. -->
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
-
-    <!-- Disable automatic phone number detection. -->
     <meta name="format-detection" content="telephone=no">
-
-    <!-- Android dock color -->
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -74,21 +56,17 @@
             height: 100%;
             background-color: rgba(255, 255, 255, 0.7);
             z-index: 9999;
-
-            /* Set the SVG icon as the background */
             background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 115.563 115.563"><path d="M24.413 31.538h86.172a4.992 4.992 0 0 1 4.978 4.977v64.069a4.992 4.992 0 0 1-4.978 4.977H24.413a4.991 4.991 0 0 1-4.977-4.977v-64.07a4.991 4.991 0 0 1 4.977-4.976zm.194 34.531a2.605 2.605 0 1 1 0 5.21 2.605 2.605 0 0 1 0-5.21zm4.783-26.754h77.618v58.64H29.39v-58.64z"/><path d="M0 91.15V4.976C0 2.239 2.24 0 4.978 0h64.068c2.738 0 4.978 2.24 4.978 4.977v30.02h-7.606V8.555H7.778v77.618h9.635v9.955H4.978A4.992 4.992 0 0 1 0 91.149z"/><path fill="none" d="M79.793 6.193a13.769 13.769 0 0 1 14.162 14.162"/><path fill-rule="nonzero" d="M79.727 3.806a16.149 16.149 0 0 1 6.428 1.135 16.161 16.161 0 0 1 5.466 3.585 16.155 16.155 0 0 1 3.585 5.467 16.137 16.137 0 0 1 1.136 6.428l-4.776-.13a11.386 11.386 0 0 0-.798-4.538 11.377 11.377 0 0 0-2.535-3.837 11.366 11.366 0 0 0-3.838-2.536 11.39 11.39 0 0 0-4.538-.799l-.13-4.775z"/><path d="m88.164 18.095 11.785.388L93.722 29z"/></svg>');
             background-repeat: no-repeat;
             background-position: center;
             background-size: 50vw 50vw;
         }
 
-        /* When the device is in portrait mode, the overlay appears */
         @media screen and (orientation:portrait) {
             #overlay {
                 display: block;
             }
         }
-
 
         .calendar,
         .widgets {
@@ -166,8 +144,6 @@
             border: 1px solid #D9D9D9;
             border-radius: 5px;
             height: 100%;
-
-            /* Inside auto layout */
             flex: none;
             order: 0;
             align-self: center;
@@ -197,8 +173,6 @@
             border-radius: 5px;
             border: 1px solid white;
             box-sizing: border-box;
-
-            /* Inside auto layout */
             flex: none;
             align-self: stretch;
             flex-grow: 1;
@@ -434,15 +408,15 @@
 
         .dark .clock.active .hour-hand line,
         .dark .clock.active .min-hand line {
-            stroke: #096fe0;
+            stroke: white;
         }
 
         .dark .clock .mid-circle {
-            fill: #096fe0;
+            fill: white;
         }
 
         .dark .clock .numbers {
-            fill: #096fe0;
+            fill: white;
         }
     </style>
 
