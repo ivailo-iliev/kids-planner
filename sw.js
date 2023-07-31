@@ -2160,65 +2160,6 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }
   };
 
-  // node_modules/workbox-strategies/CacheFirst.js
-  var CacheFirst = class extends Strategy {
-    /**
-     * @private
-     * @param {Request|string} request A request to run this strategy for.
-     * @param {workbox-strategies.StrategyHandler} handler The event that
-     *     triggered the request.
-     * @return {Promise<Response>}
-     */
-    async _handle(request, handler) {
-      const logs = [];
-      if (true) {
-        finalAssertExports.isInstance(request, Request, {
-          moduleName: "workbox-strategies",
-          className: this.constructor.name,
-          funcName: "makeRequest",
-          paramName: "request"
-        });
-      }
-      let response = await handler.cacheMatch(request);
-      let error = void 0;
-      if (!response) {
-        if (true) {
-          logs.push(`No response found in the '${this.cacheName}' cache. Will respond with a network request.`);
-        }
-        try {
-          response = await handler.fetchAndCachePut(request);
-        } catch (err) {
-          if (err instanceof Error) {
-            error = err;
-          }
-        }
-        if (true) {
-          if (response) {
-            logs.push(`Got response from network.`);
-          } else {
-            logs.push(`Unable to get a response from the network.`);
-          }
-        }
-      } else {
-        if (true) {
-          logs.push(`Found a cached response in the '${this.cacheName}' cache.`);
-        }
-      }
-      if (true) {
-        logger.groupCollapsed(messages2.strategyStart(this.constructor.name, request));
-        for (const log of logs) {
-          logger.log(log);
-        }
-        messages2.printFinalResponse(response);
-        logger.groupEnd();
-      }
-      if (!response) {
-        throw new WorkboxError("no-response", { url: request.url, error });
-      }
-      return response;
-    }
-  };
-
   // node_modules/workbox-strategies/plugins/cacheOkAndOpaquePlugin.js
   var cacheOkAndOpaquePlugin = {
     /**
@@ -2398,230 +2339,10 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }
   };
 
-  // node_modules/workbox-strategies/StaleWhileRevalidate.js
-  var StaleWhileRevalidate = class extends Strategy {
-    /**
-     * @param {Object} [options]
-     * @param {string} [options.cacheName] Cache name to store and retrieve
-     * requests. Defaults to cache names provided by
-     * {@link workbox-core.cacheNames}.
-     * @param {Array<Object>} [options.plugins] [Plugins]{@link https://developers.google.com/web/tools/workbox/guides/using-plugins}
-     * to use in conjunction with this caching strategy.
-     * @param {Object} [options.fetchOptions] Values passed along to the
-     * [`init`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
-     * of [non-navigation](https://github.com/GoogleChrome/workbox/issues/1796)
-     * `fetch()` requests made by this strategy.
-     * @param {Object} [options.matchOptions] [`CacheQueryOptions`](https://w3c.github.io/ServiceWorker/#dictdef-cachequeryoptions)
-     */
-    constructor(options = {}) {
-      super(options);
-      if (!this.plugins.some((p) => "cacheWillUpdate" in p)) {
-        this.plugins.unshift(cacheOkAndOpaquePlugin);
-      }
-    }
-    /**
-     * @private
-     * @param {Request|string} request A request to run this strategy for.
-     * @param {workbox-strategies.StrategyHandler} handler The event that
-     *     triggered the request.
-     * @return {Promise<Response>}
-     */
-    async _handle(request, handler) {
-      const logs = [];
-      if (true) {
-        finalAssertExports.isInstance(request, Request, {
-          moduleName: "workbox-strategies",
-          className: this.constructor.name,
-          funcName: "handle",
-          paramName: "request"
-        });
-      }
-      const fetchAndCachePromise = handler.fetchAndCachePut(request).catch(() => {
-      });
-      void handler.waitUntil(fetchAndCachePromise);
-      let response = await handler.cacheMatch(request);
-      let error;
-      if (response) {
-        if (true) {
-          logs.push(`Found a cached response in the '${this.cacheName}' cache. Will update with the network response in the background.`);
-        }
-      } else {
-        if (true) {
-          logs.push(`No response found in the '${this.cacheName}' cache. Will wait for the network response.`);
-        }
-        try {
-          response = await fetchAndCachePromise;
-        } catch (err) {
-          if (err instanceof Error) {
-            error = err;
-          }
-        }
-      }
-      if (true) {
-        logger.groupCollapsed(messages2.strategyStart(this.constructor.name, request));
-        for (const log of logs) {
-          logger.log(log);
-        }
-        messages2.printFinalResponse(response);
-        logger.groupEnd();
-      }
-      if (!response) {
-        throw new WorkboxError("no-response", { url: request.url, error });
-      }
-      return response;
-    }
-  };
-
-  // node_modules/workbox-cacheable-response/_version.js
-  try {
-    self["workbox:cacheable-response:7.0.0"] && _();
-  } catch (e) {
-  }
-
-  // node_modules/workbox-cacheable-response/CacheableResponse.js
-  var CacheableResponse = class {
-    /**
-     * To construct a new CacheableResponse instance you must provide at least
-     * one of the `config` properties.
-     *
-     * If both `statuses` and `headers` are specified, then both conditions must
-     * be met for the `Response` to be considered cacheable.
-     *
-     * @param {Object} config
-     * @param {Array<number>} [config.statuses] One or more status codes that a
-     * `Response` can have and be considered cacheable.
-     * @param {Object<string,string>} [config.headers] A mapping of header names
-     * and expected values that a `Response` can have and be considered cacheable.
-     * If multiple headers are provided, only one needs to be present.
-     */
-    constructor(config = {}) {
-      if (true) {
-        if (!(config.statuses || config.headers)) {
-          throw new WorkboxError("statuses-or-headers-required", {
-            moduleName: "workbox-cacheable-response",
-            className: "CacheableResponse",
-            funcName: "constructor"
-          });
-        }
-        if (config.statuses) {
-          finalAssertExports.isArray(config.statuses, {
-            moduleName: "workbox-cacheable-response",
-            className: "CacheableResponse",
-            funcName: "constructor",
-            paramName: "config.statuses"
-          });
-        }
-        if (config.headers) {
-          finalAssertExports.isType(config.headers, "object", {
-            moduleName: "workbox-cacheable-response",
-            className: "CacheableResponse",
-            funcName: "constructor",
-            paramName: "config.headers"
-          });
-        }
-      }
-      this._statuses = config.statuses;
-      this._headers = config.headers;
-    }
-    /**
-     * Checks a response to see whether it's cacheable or not, based on this
-     * object's configuration.
-     *
-     * @param {Response} response The response whose cacheability is being
-     * checked.
-     * @return {boolean} `true` if the `Response` is cacheable, and `false`
-     * otherwise.
-     */
-    isResponseCacheable(response) {
-      if (true) {
-        finalAssertExports.isInstance(response, Response, {
-          moduleName: "workbox-cacheable-response",
-          className: "CacheableResponse",
-          funcName: "isResponseCacheable",
-          paramName: "response"
-        });
-      }
-      let cacheable = true;
-      if (this._statuses) {
-        cacheable = this._statuses.includes(response.status);
-      }
-      if (this._headers && cacheable) {
-        cacheable = Object.keys(this._headers).some((headerName) => {
-          return response.headers.get(headerName) === this._headers[headerName];
-        });
-      }
-      if (true) {
-        if (!cacheable) {
-          logger.groupCollapsed(`The request for '${getFriendlyURL(response.url)}' returned a response that does not meet the criteria for being cached.`);
-          logger.groupCollapsed(`View cacheability criteria here.`);
-          logger.log(`Cacheable statuses: ` + JSON.stringify(this._statuses));
-          logger.log(`Cacheable headers: ` + JSON.stringify(this._headers, null, 2));
-          logger.groupEnd();
-          const logFriendlyHeaders = {};
-          response.headers.forEach((value, key) => {
-            logFriendlyHeaders[key] = value;
-          });
-          logger.groupCollapsed(`View response status and headers here.`);
-          logger.log(`Response status: ${response.status}`);
-          logger.log(`Response headers: ` + JSON.stringify(logFriendlyHeaders, null, 2));
-          logger.groupEnd();
-          logger.groupCollapsed(`View full response details here.`);
-          logger.log(response.headers);
-          logger.log(response);
-          logger.groupEnd();
-          logger.groupEnd();
-        }
-      }
-      return cacheable;
-    }
-  };
-
-  // node_modules/workbox-cacheable-response/CacheableResponsePlugin.js
-  var CacheableResponsePlugin = class {
-    /**
-     * To construct a new CacheableResponsePlugin instance you must provide at
-     * least one of the `config` properties.
-     *
-     * If both `statuses` and `headers` are specified, then both conditions must
-     * be met for the `Response` to be considered cacheable.
-     *
-     * @param {Object} config
-     * @param {Array<number>} [config.statuses] One or more status codes that a
-     * `Response` can have and be considered cacheable.
-     * @param {Object<string,string>} [config.headers] A mapping of header names
-     * and expected values that a `Response` can have and be considered cacheable.
-     * If multiple headers are provided, only one needs to be present.
-     */
-    constructor(config) {
-      this.cacheWillUpdate = async ({ response }) => {
-        if (this._cacheableResponse.isResponseCacheable(response)) {
-          return response;
-        }
-        return null;
-      };
-      this._cacheableResponse = new CacheableResponse(config);
-    }
-  };
-
   // node_modules/workbox-core/_private/dontWaitFor.js
   function dontWaitFor(promise) {
     void promise.then(() => {
     });
-  }
-
-  // node_modules/workbox-core/registerQuotaErrorCallback.js
-  function registerQuotaErrorCallback(callback) {
-    if (true) {
-      finalAssertExports.isType(callback, "function", {
-        moduleName: "workbox-core",
-        funcName: "register",
-        paramName: "callback"
-      });
-    }
-    quotaErrorCallbacks.add(callback);
-    if (true) {
-      logger.log("Registered a callback to respond to quota errors.", callback);
-    }
   }
 
   // node_modules/idb/build/wrap-idb-value.js
@@ -3129,6 +2850,21 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }
   };
 
+  // node_modules/workbox-core/registerQuotaErrorCallback.js
+  function registerQuotaErrorCallback(callback) {
+    if (true) {
+      finalAssertExports.isType(callback, "function", {
+        moduleName: "workbox-core",
+        funcName: "register",
+        paramName: "callback"
+      });
+    }
+    quotaErrorCallbacks.add(callback);
+    if (true) {
+      logger.log("Registered a callback to respond to quota errors.", callback);
+    }
+  }
+
   // node_modules/workbox-expiration/ExpirationPlugin.js
   var ExpirationPlugin = class {
     /**
@@ -3298,35 +3034,6 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }
   };
 
-  // node_modules/workbox-recipes/_version.js
-  try {
-    self["workbox:recipes:7.0.0"] && _();
-  } catch (e) {
-  }
-
-  // node_modules/workbox-recipes/googleFontsCache.js
-  function googleFontsCache(options = {}) {
-    const sheetCacheName = `${options.cachePrefix || "google-fonts"}-stylesheets`;
-    const fontCacheName = `${options.cachePrefix || "google-fonts"}-webfonts`;
-    const maxAgeSeconds = options.maxAgeSeconds || 60 * 60 * 24 * 365;
-    const maxEntries = options.maxEntries || 30;
-    registerRoute(({ url }) => url.origin === "https://fonts.googleapis.com", new StaleWhileRevalidate({
-      cacheName: sheetCacheName
-    }));
-    registerRoute(({ url }) => url.origin === "https://fonts.gstatic.com", new CacheFirst({
-      cacheName: fontCacheName,
-      plugins: [
-        new CacheableResponsePlugin({
-          statuses: [0, 200]
-        }),
-        new ExpirationPlugin({
-          maxAgeSeconds,
-          maxEntries
-        })
-      ]
-    }));
-  }
-
   // node_modules/workbox-core/clientsClaim.js
   function clientsClaim() {
     self.addEventListener("activate", () => self.clients.claim());
@@ -3338,10 +3045,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   });
   clientsClaim();
   precacheAndRoute(
-    [{"revision":"43ac5f3cba1d6054cf05db4ac9fb9edc","url":"apple-touch-icon.png"},{"revision":"607b32b3b2f11280e81cd9effd564e32","url":"favicon-16x16.png"},{"revision":"dd2e388c20368cb6505ff75e4d68e66a","url":"favicon-32x32.png"},{"revision":"d522b1f6a5ef7878e39f6353c755440d","url":"favicon.ico"},{"revision":"fb6e87d2d0d2edd3fc5a3bd49523d4d8","url":"favicon.svg"},{"revision":"e07d07b7a3467ef3c030806470f61b2d","url":"icon-192x192.png"},{"revision":"782b30dcb4fabfec6459094e6097892a","url":"icon-512x512.png"},{"revision":"84d23fc7f639cc383ab5c7f643b88bce","url":"icon-64x64.png"},{"revision":"b564451aa66b92c0354089c33a504069","url":"index.html"},{"revision":"effa56abb953ec9619bd49509c4cfdd1","url":"maskable-icon-512x512.png"},{"revision":"47871e06205f0a98eab98aac1c23d791","url":"screenshot.png"}],
+    [{"revision":"43ac5f3cba1d6054cf05db4ac9fb9edc","url":"apple-touch-icon.png"},{"revision":"607b32b3b2f11280e81cd9effd564e32","url":"favicon-16x16.png"},{"revision":"dd2e388c20368cb6505ff75e4d68e66a","url":"favicon-32x32.png"},{"revision":"d522b1f6a5ef7878e39f6353c755440d","url":"favicon.ico"},{"revision":"fb6e87d2d0d2edd3fc5a3bd49523d4d8","url":"favicon.svg"},{"revision":"e07d07b7a3467ef3c030806470f61b2d","url":"icon-192x192.png"},{"revision":"782b30dcb4fabfec6459094e6097892a","url":"icon-512x512.png"},{"revision":"84d23fc7f639cc383ab5c7f643b88bce","url":"icon-64x64.png"},{"revision":"a053cc1a69a0a8b1cf94900d525bca73","url":"index.html"},{"revision":"effa56abb953ec9619bd49509c4cfdd1","url":"maskable-icon-512x512.png"},{"revision":"47871e06205f0a98eab98aac1c23d791","url":"screenshot.png"},{"revision":"a2d5470c41d2e483dcd16517d8d00783","url":"SofiaSansCondensed-subset.woff2"}],
     { ignoreURLParametersMatching: [/.*/] }
   );
-  googleFontsCache();
   registerRoute(
     ({ url }) => url.pathname === "/.netlify/functions/profile",
     new NetworkFirst({ cacheName: "profile-cache", ignoreVary: true })

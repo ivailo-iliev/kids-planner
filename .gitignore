@@ -134,3 +134,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 sw-source.js
+sw-source.js
