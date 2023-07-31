@@ -184,6 +184,7 @@
 
         .day.active {
             background-image: linear-gradient(0deg, rgba(61, 245, 167, 1) 50%, rgba(9, 111, 224, 1) 100%);
+            background: linear-gradient(0deg, hsla(4, 84%, 49%, 1) 0%, hsla(37, 89%, 52%, 1) 100%);
             color: white;
             font-weight: 700;
         }
@@ -236,7 +237,7 @@
         }
 
         .clock .hour-marks {
-            stroke: #349EE8;
+            stroke: #29A00C;
             stroke-width: 0.8px;
             stroke-dasharray: var(--hour-mark-width) var(--hour-mark-gap);
             stroke-dashoffset: var(--hour-mark-offset);
@@ -254,11 +255,15 @@
 
         .clock svg {
             border-radius: 50%;
-            border: solid 1px #349EE8;
+            border: solid 1.5px #29A00C;
         }
 
-        .clock.active svg {
-            background: url('orange.jpg') no-repeat center/cover;
+        #am_clock svg {
+            background: url('orange.jpg') no-repeat center/102.5%;
+        }
+
+        #pm_clock svg {
+            background: url('watermelon.jpg') no-repeat center/102.5%;
         }
 
         .geddy .clock {
@@ -877,6 +882,7 @@
         const updateClock = (hr, hrPosition, minPosition, hour, hoursRemaining, pmHour, pmHoursRemaining, minElapsed, minRemaining) => {
             if (hr < 12) {
                 activateClock(amClock, pmClock, amClockProgress, amHourHand, amMinHand, hour, hoursRemaining, hrPosition, minPosition, minElapsed, minRemaining);
+                pmClockProgress.setAttribute("stroke-dasharray", "0 60");
             } else {
                 activateClock(pmClock, amClock, pmClockProgress, pmHourHand, pmMinHand, pmHour, pmHoursRemaining, hrPosition, minPosition, minElapsed, minRemaining);
                 amClockProgress.setAttribute("stroke-dasharray", "0 60");
