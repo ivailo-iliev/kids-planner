@@ -89,6 +89,7 @@
             flex-basis: 24vw;
             box-sizing: border-box;
             text-align: center;
+            overflow: hidden;
         }
 
         .day-name,
@@ -100,6 +101,10 @@
             text-transform: uppercase;
             text-align: center;
             white-space: nowrap;
+        }
+
+        .clock-label {
+            line-height: 2;
         }
 
         .weather-text {
@@ -120,7 +125,7 @@
 
         .clock>svg,
         .weather>svg {
-            max-height: 32vh;
+            max-height: 30vh;
             max-width: 100%;
         }
 
@@ -234,11 +239,11 @@
             border: solid 1.5px #29A00C;
         }
 
-        #am_clock svg {
+        .am-clock svg {
             background: url('orange.jpg') no-repeat center/102.5%;
         }
 
-        #pm_clock svg {
+        .pm-clock svg {
             background: url('watermelon.jpg') no-repeat center/102.5%;
         }
 
@@ -300,7 +305,7 @@
 
         .clock .icon use {
             pointer-events: none;
-            fill: #333;
+            fill: #666;
         }
 
         .clock .numbers text:nth-of-type(1),
@@ -419,8 +424,8 @@
             fill: white;
         }
 
-        .dark #am_clock svg,
-        .dark #pm_clock svg {
+        .dark .am-clock svg,
+        .dark .pm-clock svg {
             background: none;
         }
     </style>
@@ -700,7 +705,7 @@
                     </symbol>
                 </defs>
             </svg>
-            <div class="clock" id="am_clock">
+            <div class="clock am-clock" id="am_clock">
                 <div class="clock-label">AM</div>
                 <svg viewBox="0 0 22 22">
                     <circle class="clock-ring-progress" cx="11" cy="11"></circle>
@@ -735,7 +740,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="clock" id="pm_clock">
+            <div class="clock pm-clock" id="pm_clock">
                 <div class="clock-label">PM</div>
                 <svg viewBox="0 0 22 22">
                     <circle class="clock-ring-progress" cx="11" cy="11"></circle>
@@ -874,7 +879,7 @@
             }
             minElapsed = (5.5 * 2 * Math.PI / 60) * minElapsed;
             minRemaining = (5.5 * 2 * Math.PI / 60) * minRemaining;
-            activeClockProgress.setAttribute("stroke-dasharray", `${minElapsed} ${minRemaining}`);
+            activeClockProgress.setAttribute("stroke-dasharray", `${minRemaining} ${minElapsed}`);
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
         }
@@ -1006,6 +1011,7 @@
             } catch (error) {
                 console.error('Error:', error);
             } finally {
+                document.body.className = profile?.theme.toLowerCase() || '';
                 updateManifest(profile?.displayName);
                 updateTextContent();
                 updateClockIcons(profile);
