@@ -828,7 +828,6 @@
                             }
                         });
                     });
-
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 }, err => {
                     console.log('ServiceWorker registration failed: ', err);
@@ -877,11 +876,9 @@
                 activeClock.classList.add("active");
                 inactiveClock.classList.remove("active");
             }
-            console.log(minElapsed);
             minElapsed = (5.5 * 2 * Math.PI / 60) * minElapsed;
-            console.log(minElapsed);
             minRemaining = (5.5 * 2 * Math.PI / 60) * minRemaining;
-            activeClockProgress.setAttribute("stroke-dasharray", `0 ${minElapsed} ${minRemaining}`);
+            activeClockProgress.setAttribute("stroke-dasharray", `${minElapsed} ${minRemaining}`);
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
         }
