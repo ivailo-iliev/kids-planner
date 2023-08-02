@@ -881,7 +881,7 @@
             minElapsed = (5.5 * 2 * Math.PI / 60) * minElapsed;
             console.log(minElapsed);
             minRemaining = (5.5 * 2 * Math.PI / 60) * minRemaining;
-            activeClockProgress.setAttribute("stroke-dasharray", ` ${minElapsed} ${minRemaining} ${minElapsed}`);
+            activeClockProgress.setAttribute("stroke-dasharray", `0 ${minElapsed} ${minRemaining}`);
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
         }
