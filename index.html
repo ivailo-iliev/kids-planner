@@ -231,7 +231,9 @@
             fill: none;
             stroke: var(--background-color);
             stroke-width: 11;
-            stroke-dashoffset: 8.7px;
+            stroke-dashoffset: 0px;
+            transform: rotate(-90deg);
+            transform-origin: center;
         }
 
         .clock svg {
@@ -878,7 +880,7 @@
             }
             minElapsed = (5.5 * 2 * Math.PI / 60) * minElapsed;
             minRemaining = (5.5 * 2 * Math.PI / 60) * minRemaining;
-            activeClockProgress.setAttribute("stroke-dasharray", `${minElapsed} ${minRemaining}`);
+            activeClockProgress.setAttribute("stroke-dasharray", `0 ${minElapsed} ${minRemaining}`);
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
         }
