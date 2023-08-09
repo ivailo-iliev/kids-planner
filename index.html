@@ -166,10 +166,13 @@
         }
 
         .day.active {
-            background-image: linear-gradient(0deg, rgba(61, 245, 167, 1) 50%, rgba(9, 111, 224, 1) 100%);
-            background: linear-gradient(0deg, hsla(4, 84%, 49%, 1) 0%, hsla(37, 89%, 52%, 1) 100%);
+            background-image: linear-gradient(0deg, hsla(4, 84%, 49%, 1) 0%, hsla(37, 89%, 52%, 1) 100%);
             color: white;
             font-weight: 700;
+        }
+
+        .geddy .day.active {
+            background-image: linear-gradient(0deg, rgba(61, 245, 167, 1) 50%, rgba(9, 111, 224, 1) 100%);
         }
 
         .event {
@@ -189,15 +192,15 @@
             --viewbox: 22px;
             --center: calc(var(--viewbox)/2);
             --icon-radius: 7.8px;
-            --number-radius: 9.5px;
+            --number-radius: 9.3px;
             --icon-offset-x: -1px;
             --icon-offset-y: -11px;
             --number-offset-x: 0px;
-            --number-offset-y: 0.6px;
-            --hour-mark-radius: 10.7px;
+            --number-offset-y: 0.8px;
+            --hour-mark-radius: 7.6px;
             --hour-mark-circumference: calc(2*var(--pi)*var(--hour-mark-radius));
-            --hour-mark-width: calc(var(--hour-mark-circumference)/12*0.04);
-            --hour-mark-gap: calc(var(--hour-mark-circumference)/12*0.96);
+            --hour-mark-width: calc(var(--hour-mark-circumference)/12*0.005);
+            --hour-mark-gap: calc(var(--hour-mark-circumference)/12*0.995);
             --hour-mark-offset: calc(var(--hour-mark-width)/2);
             --slices-radius: 5.5px;
             --slices-circumference: calc(2*var(--pi)*var(--slices-radius));
@@ -218,10 +221,11 @@
         }
 
         .clock .hour-marks {
-            stroke: #29A00C;
-            stroke-width: 0.8px;
+            stroke: black;
+            stroke-width: 0.6px;
             stroke-dasharray: var(--hour-mark-width) var(--hour-mark-gap);
             stroke-dashoffset: var(--hour-mark-offset);
+            stroke-linecap: round;
             r: var(--hour-mark-radius);
             fill: none;
         }
@@ -251,8 +255,16 @@
 
         .geddy .clock {
             --hour-mark-radius: 9.2px;
+            --hour-mark-width: calc(var(--hour-mark-circumference)/12*0.04);
+            --hour-mark-gap: calc(var(--hour-mark-circumference)/12*0.96);
             --number-radius: 8px;
+            --number-offset-y: 0.6px;
             --icon-radius: 5.4px;
+        }
+
+        .clock .hour-marks {
+            stroke-width: 0.6px;
+            stroke-linecap: butt;
         }
 
         .geddy .clock svg {
@@ -301,8 +313,20 @@
         .clock .numbers text {
             pointer-events: none;
             text-anchor: middle;
+        }
+
+        .clock .numbers text {
+            font-size: 2.6px;
+            font-weight: 500;
+            stroke-width: 0.2px;
+            stroke: #ffffff80;
+            paint-order: stroke;
+        }
+
+        .geddy .clock .numbers text {
             font-size: 1.6px;
-            font-weight: normal;
+            font-weight: 500;
+            stroke: none;
         }
 
         .clock .icon use {
@@ -818,7 +842,7 @@
         let currentLanguage = queryParams.get("lang") || "en";
         let profile;
 
-        // Register service worker
+        // // Register service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
                 navigator.serviceWorker.register('/sw.js').then(registration => {
