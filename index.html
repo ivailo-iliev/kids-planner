@@ -40,8 +40,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            font-family: "Sofia Sans Condensed", sans-serif;
-            box-sizing: border-box;
+            font-family: 'Sofia Sans Condensed', sans-serif;
             user-select: none;
         }
 
@@ -59,7 +58,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: hsl(0deg 0% 100% / 70%);
             z-index: 9999;
             background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 115.563 115.563"><path d="M24.413 31.538h86.172a4.992 4.992 0 0 1 4.978 4.977v64.069a4.992 4.992 0 0 1-4.978 4.977H24.413a4.991 4.991 0 0 1-4.977-4.977v-64.07a4.991 4.991 0 0 1 4.977-4.976zm.194 34.531a2.605 2.605 0 1 1 0 5.21 2.605 2.605 0 0 1 0-5.21zm4.783-26.754h77.618v58.64H29.39v-58.64z"/><path d="M0 91.15V4.976C0 2.239 2.24 0 4.978 0h64.068c2.738 0 4.978 2.24 4.978 4.977v30.02h-7.606V8.555H7.778v77.618h9.635v9.955H4.978A4.992 4.992 0 0 1 0 91.149z"/><path fill="none" d="M79.793 6.193a13.769 13.769 0 0 1 14.162 14.162"/><path fill-rule="nonzero" d="M79.727 3.806a16.149 16.149 0 0 1 6.428 1.135 16.161 16.161 0 0 1 5.466 3.585 16.155 16.155 0 0 1 3.585 5.467 16.137 16.137 0 0 1 1.136 6.428l-4.776-.13a11.386 11.386 0 0 0-.798-4.538 11.377 11.377 0 0 0-2.535-3.837 11.366 11.366 0 0 0-3.838-2.536 11.39 11.39 0 0 0-4.538-.799l-.13-4.775z"/><path d="m88.164 18.095 11.785.388L93.722 29z"/></svg>');
             background-repeat: no-repeat;
@@ -84,9 +83,7 @@
         .widgets {
             justify-content: center;
             align-items: center;
-            flex-basis: 40%;
-            flex-grow: 1;
-            flex-shrink: 1;
+            flex: 1 1 40%;
         }
 
         .weather {
@@ -101,9 +98,9 @@
             overflow: hidden;
         }
 
-        .day-name,
-        .clock-label,
-        .weather-text {
+        .calendar__day-name,
+        .clock__label,
+        .weather__temp {
             font-style: normal;
             font-size: 2.8vh;
             line-height: 1;
@@ -112,39 +109,36 @@
             white-space: nowrap;
         }
 
-        .clock-label {
+        .clock__label {
             line-height: 2;
         }
 
-        .weather-text {
+        .weather__temp {
             font-size: 3.2vh;
         }
 
-        .current-temp {
+        .weather__current-temp {
             font-size: 1.5em;
         }
 
-        .weather-text svg {
+        .weather__percipitation-icon {
             max-width: 1em;
             max-height: 1em;
             display: none;
             vertical-align: text-top;
         }
 
-        .clock>svg,
-        .weather>svg {
+        .clock__face,
+        .weather__forecast-icon {
             max-height: 30vh;
             max-width: 100%;
         }
 
         .calendar {
-            flex-basis: 60%;
-            flex-grow: 1;
-            flex-shrink: 1;
+            flex: 1 1 60%;
         }
 
-        .day {
-            /* Monday */
+        .calendar__day {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -160,30 +154,24 @@
             flex: none;
             order: 0;
             align-self: center;
-            flex-grow: 1;
-            flex-shrink: 1;
-            flex-basis: 0;
+            flex: 1 1 0;
         }
 
-        .day.past {
+        .calendar__day--past {
             opacity: 0.5;
         }
 
-        .day.weekend {
-            background-color: #ffe1e166;
+        .calendar__day--weekend {
+            background-color: hsl(0deg 100% 94% / 40%);
         }
 
-        .day.active {
-            background-image: linear-gradient(0deg, #e62214 0%, #f29e18 100%);
+        .calendar__day--active {
             color: white;
             font-weight: 700;
-        }
-
-        .theme-geddy .day.active {
             background-image: linear-gradient(0deg, #3df5a7 50%, #096fe0 100%);
         }
 
-        .event {
+        .calendar__event {
             background-size: cover;
             background-position: center center;
             border-radius: 5px;
@@ -199,247 +187,192 @@
             --pi: 3.1415926535897932;
             --viewbox: 22px;
             --center: calc(var(--viewbox)/2);
-            --icon-radius: 7px;
+            --icon-radius: 6px;
             --icon-offset-x: -1px;
             --icon-offset-y: -11px;
-            --number-radius: 9.4px;
-            --number-offset-x: 0px;
-            --number-offset-y: 0.92px;
-            --hour-mark-radius: 7.6px;
-            --hour-mark-circumference: calc(2*var(--pi)*var(--hour-mark-radius));
-            --hour-mark-width: calc(var(--hour-mark-circumference)/12*0.005);
-            --hour-mark-gap: calc(var(--hour-mark-circumference)/12*0.995);
-            --hour-mark-offset: calc(var(--hour-mark-width)/2);
-            --slices-radius: 5.5px;
-            --slices-circumference: calc(2*var(--pi)*var(--slices-radius));
-            --slices-width: calc(var(--slices-circumference)/4*0.03);
-            --slices-gap: calc(var(--slices-circumference)/4*0.97);
-            --slices-offset: calc(var(--slices-width)/2);
-            --elapsed-time: 0deg;
+            --hour-marks-circumference: calc(2*var(--pi)*var(--hour-marks-radius));
+            --hour-marks-offset: calc(var(--hour-marks-width)/2);
+            --hour-marks-radius: 9.1px;
+            --hour-marks-width: calc(var(--hour-marks-circumference)/12*0.04);
+            --hour-marks-gap: calc(var(--hour-marks-circumference)/12*0.96);
+            --quarter-marks-radius: 5.5px;
+            --quarter-marks-circumference: calc(2*var(--pi)*var(--quarter-marks-radius));
+            --quarter-marks-width: calc(var(--quarter-marks-circumference)/4*0.03);
+            --quarter-marks-gap: calc(var(--quarter-marks-circumference)/4*0.97);
+            --quarter-marks-offset: calc(var(--quarter-marks-width)/2);
             --background-color: white;
+            --icon-color: hsl(0deg 0% 60%);
+            --clock-hands-color: #096fe0;
+            --number-radius: 7.8px;
+            --number-offset-x: 0px;
+            --number-offset-y: 0.6px;
+            --number-color: #096fe0;
+            --number-outline: none;
         }
 
-        .clock .clock-slices {
+        .clock__quarter-marks {
             r: 5.5px;
             fill: none;
             stroke: var(--background-color);
             stroke-width: 11px;
-            stroke-dashoffset: var(--slices-offset);
-            stroke-dasharray: var(--slices-width) var(--slices-gap);
+            stroke-dashoffset: var(--quarter-marks-offset);
+            stroke-dasharray: var(--quarter-marks-width) var(--quarter-marks-gap);
         }
 
-        .clock .hour-marks {
+        .clock__hour-marks {
             stroke: black;
-            stroke-width: 0.6px;
-            stroke-dasharray: var(--hour-mark-width) var(--hour-mark-gap);
-            stroke-dashoffset: var(--hour-mark-offset);
-            stroke-linecap: round;
-            r: var(--hour-mark-radius);
+            stroke-dasharray: var(--hour-marks-width) var(--hour-marks-gap);
+            stroke-dashoffset: var(--hour-marks-offset);
+            r: var(--hour-marks-radius);
             fill: none;
-            display: none;
+            stroke-linecap: butt;
+            display: inline;
+            stroke-width: 1px;
         }
 
-        .clock .clock-ring-progress {
+        .clock__progress-ring {
             r: 5.5px;
             fill: none;
             stroke: var(--background-color);
-            stroke-width: 11;
-            stroke-dashoffset: 0px;
-            transform: rotate(-90deg);
-            transform-origin: center;
-        }
-
-        .clock svg {
-            border-radius: 50%;
-            border: solid 1.5px #29A00C;
-        }
-
-        .am-clock svg {
-            background: url('orange.jpg') no-repeat center/102.5%;
-        }
-
-        .pm-clock svg {
-            background: url('watermelon.jpg') no-repeat center/102.5%;
-        }
-
-        .theme-geddy .clock {
-            --hour-mark-radius: 9.1px;
-            --hour-mark-width: calc(var(--hour-mark-circumference)/12*0.04);
-            --hour-mark-gap: calc(var(--hour-mark-circumference)/12*0.96);
-            --number-radius: 7.8px;
-            --number-offset-y: 0.6px;
-            --icon-radius: 6px;
-        }
-
-        .theme-geddy .clock .hour-marks {
-            stroke-width: 0.6px;
-            stroke-linecap: butt;
-            display: inline;
-        }
-
-        .theme-geddy .clock svg {
-            background: #ebebeb;
-            border: none;
-        }
-
-        .theme-geddy .clock .clock-ring-progress {
             stroke-width: 12px;
             stroke-dashoffset: 8.7px;
             transform: none;
         }
 
-        .theme-geddy .clock .clock-ring-inner {
+        .clock__face {
+            border-radius: 50%;
+            background: #ebebeb;
+            border: none;
+        }
+
+        .clock__hour-hand,
+        .clock__minute-hand {
+            transform-origin: 11px 11px;
+        }
+
+        .clock--active .clock__hour-hand line,
+        .clock--active .clock__minute-hand line {
+            stroke: var(--clock-hands-color);
+        }
+
+        .clock__center-point {
+            fill: var(--clock-hands-color);
+        }
+
+        .clock__numbers {
+            pointer-events: none;
+            text-anchor: middle;
+            stroke-width: 0.2px;
+            fill: var(--number-color);
+            stroke: var(--number-outline);
+            paint-order: stroke;
+            font-family: 'Wix Madefor Display', sans-serif;
+            letter-spacing: -0.05em;
+            font-size: 1.6px;
+            font-weight: 500;
+        }
+
+        .clock__inner-ring {
             r: 9.6px;
             fill: var(--background-color);
             stroke-width: 0.1;
         }
 
-        .theme-geddy .clock .hour-marks {
-            stroke-width: 1px;
+        .clock__inner-ring,
+        .clock--active .clock__progress-ring,
+        .clock__hour-marks {
+            stroke: url('#gradient-1');
         }
 
-        .theme-geddy .clock .clock-ring-inner,
-        .theme-geddy .clock.active .clock-ring-progress,
-        .theme-geddy .clock .hour-marks {
-            stroke: url(#gradient-1);
-        }
-
-        .clock .icon use {
+        .clock__icon use {
             pointer-events: none;
-        }
-
-        .clock .hour-hand,
-        .clock .min-hand {
-            transform-origin: 11px 11px;
-        }
-
-        .clock.active .hour-hand line,
-        .clock.active .min-hand line {
-            stroke: black;
-        }
-
-        .clock .mid-circle {
-            fill: black;
-        }
-
-        .theme-geddy .clock.active .hour-hand line,
-        .theme-geddy .clock.active .min-hand line {
-            stroke: #096fe0;
-        }
-
-        .theme-geddy .clock .mid-circle {
-            fill: #096fe0;
-        }
-
-        .clock .numbers text {
-            pointer-events: none;
-            text-anchor: middle;
-            font-size: 2.6px;
-            font-weight: 500;
-            stroke-width: 0.2px;
-            fill: #c7f0bd;
-            fill: black;
-            stroke: #000000cc;
-            stroke: rgba(255, 255, 255, 0.6);
-            paint-order: stroke;
-            font-family: 'Wix Madefor Display', sans-serif;
-            letter-spacing: -0.05em;
-        }
-
-        .theme-geddy .clock .numbers text {
-            font-size: 1.6px;
-            font-weight: 500;
-            stroke: none;
-            fill: #096fe0;
-        }
-
-        .clock .icon use {
-            pointer-events: none;
-            fill: #999999;
+            fill: var(--icon-color);
             mix-blend-mode: difference;
         }
 
-        .clock .numbers text:nth-of-type(1),
-        .clock .icon-12,
-        .clock .icon-0 {
+        .clock__numbers text:nth-of-type(1),
+        .clock__icon-12,
+        .clock__icon-0 {
             --index: 0;
         }
 
-        .clock .numbers text:nth-of-type(2),
-        .clock .icon-1,
-        .clock .icon-13 {
+        .clock__numbers text:nth-of-type(2),
+        .clock__icon-1,
+        .clock__icon-13 {
             --index: 1;
         }
 
-        .clock .numbers text:nth-of-type(3),
-        .clock .icon-2,
-        .clock .icon-14 {
+        .clock__numbers text:nth-of-type(3),
+        .clock__icon-2,
+        .clock__icon-14 {
             --index: 2;
         }
 
-        .clock .numbers text:nth-of-type(4),
-        .clock .icon-3,
-        .clock .icon-15 {
+        .clock__numbers text:nth-of-type(4),
+        .clock__icon-3,
+        .clock__icon-15 {
             --index: 3;
         }
 
-        .clock .numbers text:nth-of-type(5),
-        .clock .icon-4,
-        .clock .icon-16 {
+        .clock__numbers text:nth-of-type(5),
+        .clock__icon-4,
+        .clock__icon-16 {
             --index: 4;
         }
 
-        .clock .numbers text:nth-of-type(6),
-        .clock .icon-5,
-        .clock .icon-17 {
+        .clock__numbers text:nth-of-type(6),
+        .clock__icon-5,
+        .clock__icon-17 {
             --index: 5;
         }
 
-        .clock .numbers text:nth-of-type(7),
-        .clock .icon-6,
-        .clock .icon-18 {
+        .clock__numbers text:nth-of-type(7),
+        .clock__icon-6,
+        .clock__icon-18 {
             --index: 6;
         }
 
-        .clock .numbers text:nth-of-type(8),
-        .clock .icon-7,
-        .clock .icon-19 {
+        .clock__numbers text:nth-of-type(8),
+        .clock__icon-7,
+        .clock__icon-19 {
             --index: 7;
         }
 
-        .clock .numbers text:nth-of-type(9),
-        .clock .icon-8,
-        .clock .icon-20 {
+        .clock__numbers text:nth-of-type(9),
+        .clock__icon-8,
+        .clock__icon-20 {
             --index: 8;
         }
 
-        .clock .numbers text:nth-of-type(10),
-        .clock .icon-9,
-        .clock .icon-21 {
+        .clock__numbers text:nth-of-type(10),
+        .clock__icon-9,
+        .clock__icon-21 {
             --index: 9;
         }
 
-        .clock .numbers text:nth-of-type(11),
-        .clock .icon-10,
-        .clock .icon-22 {
+        .clock__numbers text:nth-of-type(11),
+        .clock__icon-10,
+        .clock__icon-22 {
             --index: 10;
         }
 
-        .clock .numbers text:nth-of-type(12),
-        .clock .icon-11,
-        .clock .icon-23 {
+        .clock__numbers text:nth-of-type(12),
+        .clock__icon-11,
+        .clock__icon-23 {
             --index: 11;
         }
 
-        .clock .numbers text {
+        .clock__numbers text {
             --translate-x: calc(var(--center) + var(--number-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-x));
             --translate-y: calc(var(--center) + var(--number-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-y));
+
             transform: translate(var(--translate-x), var(--translate-y));
         }
 
-        .clock .icon {
+        .clock__icon {
             --translate-x: calc(var(--center) + var(--icon-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--icon-offset-x));
             --translate-y: calc(var(--center) + var(--icon-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--icon-offset-y));
+
             transform: translate(var(--translate-x), var(--translate-y));
         }
 
@@ -450,39 +383,73 @@
             overflow: hidden;
         }
 
-        .dark {
+        .theme-fruits .calendar__day--active {
+            background-image: linear-gradient(0deg, #e62214 0%, #f29e18 100%);
+        }
+
+        .theme-fruits .clock {
+            --hour-marks-radius: 7.6px;
+            --hour-marks-width: calc(var(--hour-marks-circumference)/12*0.005);
+            --hour-marks-gap: calc(var(--hour-marks-circumference)/12*0.995);
+            --number-radius: 9.4px;
+            --number-offset-y: 0.92px;
+            --icon-radius: 7px;
+            --clock-hands-color: black;
+            --number-color: black;
+            --number-outline: hsl(0deg 0% 100% / 60%);
+            --bezel-color: #29A00C;
+        }
+
+        .theme-fruits .clock__hour-marks,
+        .theme-fruits .clock__inner-ring {
+            display: none;
+        }
+
+        .theme-fruits .clock__face {
+            border: solid 1.5px var(--bezel-color);
+        }
+
+        .theme-fruits .am-clock>.clock__face {
+            background: url('orange.jpg') no-repeat center/102.5%;
+        }
+
+        .theme-fruits .pm-clock>.clock__face {
+            background: url('watermelon.jpg') no-repeat center/102.5%;
+        }
+
+        .theme-fruits .clock__numbers {
+            font-size: 2.6px;
+        }
+
+        .theme-fruits .clock__progress-ring {
+            stroke: var(--background-color);
+            stroke-width: 11;
+            stroke-dashoffset: 0;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        .sleep.theme-fruits .clock__face {
+            background: none;
+        }
+
+        .sleep {
             background-color: black;
         }
 
-        .dark .clock {
-            --background-color: black;
-        }
-
-        .dark .calendar {
+        .sleep .calendar {
             visibility: hidden;
         }
 
-        .dark .clock.active .hour-hand line,
-        .dark .clock.active .min-hand line {
-            stroke: #999;
+        .sleep .clock {
+            --background-color: black;
+            --clock-hands-color: hsl(0deg 0% 60%);
+            --number-color: hsl(0deg 0% 60%);
+            --number-outline: none;
         }
 
-        .dark .clock .mid-circle {
-            fill: #999;
-        }
-
-        .dark .clock .numbers text {
-            fill: #999;
-            stroke: none;
-        }
-
-        .dark .am-clock svg,
-        .dark .pm-clock svg {
-            background: none;
-        }
-        .dark.theme-geddy .am-clock svg,
-        .dark.theme-geddy .pm-clock svg {
-            background: #333;
+        .sleep .clock__face {
+            background: hsl(0deg 0% 20%);
         }
     </style>
 
@@ -761,14 +728,14 @@
                     </symbol>
                 </defs>
             </svg>
-            <div class="clock am-clock" id="am_clock">
-                <div class="clock-label">AM</div>
-                <svg viewBox="0 0 22 22">
-                    <circle class="clock-ring-progress" cx="11" cy="11"></circle>
-                    <circle class="clock-slices" cx="11" cy="11"></circle>
-                    <circle class="clock-ring-inner" cx="11" cy="11"></circle>
-                    <circle class="hour-marks" cx="11" cy="11"></circle>
-                    <g class="numbers">
+            <div class="clock am-clock" id="am-clock">
+                <div class="clock__label">AM</div>
+                <svg class="clock__face" viewBox="0 0 22 22">
+                    <circle class="clock__progress-ring" cx="11" cy="11"></circle>
+                    <circle class="clock__quarter-marks" cx="11" cy="11"></circle>
+                    <circle class="clock__inner-ring" cx="11" cy="11"></circle>
+                    <circle class="clock__hour-marks" cx="11" cy="11"></circle>
+                    <g class="clock__numbers">
                         <text>12</text>
                         <text>1</text>
                         <text>2</text>
@@ -782,28 +749,28 @@
                         <text> 10</text>
                         <text>11</text>
                     </g>
-                    <g class="icons">
+                    <g class="clock__icons">
                     </g>
-                    <circle class="mid-circle" cx="11" cy="11" r="0.5" />
-                    <g class="hour-hand">
+                    <circle class="clock__center-point" cx="11" cy="11" r="0.5" />
+                    <g class="clock__hour-hand">
                         <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" />
                         <circle cx="11" cy="11" r="9" fill="transparent" />
                     </g>
-                    <g class="min-hand">
+                    <g class="clock__minute-hand">
                         <line x1="11" y1="11" x2="11" y2="4.2" stroke-width="0.3" />
                         <circle cx="11" cy="11" r="9" fill="transparent" />
                     </g>
                 </svg>
             </div>
-            <div class="clock pm-clock" id="pm_clock">
-                <div class="clock-label">PM</div>
-                <svg viewBox="0 0 22 22">
-                    <circle class="clock-ring-progress" cx="11" cy="11"></circle>
-                    <circle class="clock-slices" cx="11" cy="11"></circle>
-                    <circle class="clock-ring-inner" cx="11" cy="11"></circle>
-                    <circle class="hour-marks" cx="11" cy="11"></circle>
+            <div class="clock pm-clock" id="pm-clock">
+                <div class="clock__label">PM</div>
+                <svg class="clock__face" viewBox="0 0 22 22">
+                    <circle class="clock__progress-ring" cx="11" cy="11"></circle>
+                    <circle class="clock__quarter-marks" cx="11" cy="11"></circle>
+                    <circle class="clock__inner-ring" cx="11" cy="11"></circle>
+                    <circle class="clock__hour-marks" cx="11" cy="11"></circle>
 
-                    <g class="numbers">
+                    <g class="clock__numbers">
                         <text>12</text>
                         <text>1</text>
                         <text>2</text>
@@ -817,14 +784,14 @@
                         <text> 10</text>
                         <text>11</text>
                     </g>
-                    <g class="icons"></g>
+                    <g class="clock__icons"></g>
 
-                    <circle class="mid-circle" cx="11" cy="11" r="0.5" />
-                    <g class="hour-hand">
+                    <circle class="clock__center-point" cx="11" cy="11" r="0.5" />
+                    <g class="clock__hour-hand">
                         <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" />
                         <circle cx="11" cy="11" r="9" fill="transparent" />
                     </g>
-                    <g class="min-hand">
+                    <g class="clock__minute-hand">
                         <line x1="11" y1="11" x2="11" y2="4.2" stroke-width="0.3" />
                         <circle cx="11" cy="11" r="9" fill="transparent" />
                     </g>
@@ -834,29 +801,29 @@
         </div>
 
         <div class="calendar" id="calendar">
-            <div class="day">
-                <div class="day-name">Monday</div>
+            <div class="calendar__day">
+                <div class="calendar__day-name">Monday</div>
             </div>
-            <div class="day">
-                <div class="day-name">Tuesday</div>
+            <div class="calendar__day">
+                <div class="calendar__day-name">Tuesday</div>
             </div>
-            <div class="day">
-                <div class="day-name">Wednesday</div>
+            <div class="calendar__day">
+                <div class="calendar__day-name">Wednesday</div>
             </div>
-            <div class="day">
-                <div class="day-name">Thursday</div>
+            <div class="calendar__day">
+                <div class="calendar__day-name">Thursday</div>
             </div>
-            <div class="day">
-                <div class="day-name">Friday</div>
+            <div class="calendar__day">
+                <div class="calendar__day-name">Friday</div>
             </div>
-            <div class="day weekend">
-                <div class="day-name">Saturday</div>
+            <div class="calendar__day calendar__day--weekend">
+                <div class="calendar__day-name">Saturday</div>
             </div>
-            <div class="day weekend">
-                <div class="day-name">Sunday</div>
+            <div class="calendar__day calendar__day--weekend">
+                <div class="calendar__day-name">Sunday</div>
             </div>
-            <div class="day">
-                <div class="day-name">Monday</div>
+            <div class="calendar__day">
+                <div class="calendar__day-name">Monday</div>
             </div>
         </div>
         <!-- end // Calendar -->
@@ -889,14 +856,14 @@
         }
 
         // Clock Functions
-        const amClock = document.getElementById("am_clock");
-        const pmClock = document.getElementById("pm_clock");
-        const amClockProgress = amClock.getElementsByClassName("clock-ring-progress")[0];
-        const pmClockProgress = pmClock.getElementsByClassName("clock-ring-progress")[0];
-        const amHourHand = amClock.getElementsByClassName("hour-hand")[0];
-        const pmHourHand = pmClock.getElementsByClassName("hour-hand")[0];
-        const amMinHand = amClock.getElementsByClassName("min-hand")[0];
-        const pmMinHand = pmClock.getElementsByClassName("min-hand")[0];
+        const amClock = document.getElementById("am-clock");
+        const pmClock = document.getElementById("pm-clock");
+        const amClockProgress = amClock.getElementsByClassName("clock__progress-ring")[0];
+        const pmClockProgress = pmClock.getElementsByClassName("clock__progress-ring")[0];
+        const amHourHand = amClock.getElementsByClassName("clock__hour-hand")[0];
+        const pmHourHand = pmClock.getElementsByClassName("clock__hour-hand")[0];
+        const amMinHand = amClock.getElementsByClassName("clock__minute-hand")[0];
+        const pmMinHand = pmClock.getElementsByClassName("clock__minute-hand")[0];
         const root = document.documentElement;
         let currentThemeClass = null;
         const runClock = () => {
@@ -927,9 +894,9 @@
             }
         }
         const activateClock = (activeClock, inactiveClock, activeClockProgress, activeHourHand, activeMinHand, hour, hoursRemaining, hrPosition, minPosition, minElapsed, minRemaining) => {
-            if (!activeClock.classList.contains("active")) {
-                activeClock.classList.add("active");
-                inactiveClock.classList.remove("active");
+            if (!activeClock.classList.contains("clock--active")) {
+                activeClock.classList.add("clock--active");
+                inactiveClock.classList.remove("clock--active");
             }
             minElapsed = (5.5 * 2 * Math.PI / 60) * minElapsed;
             minRemaining = (5.5 * 2 * Math.PI / 60) * minRemaining;
@@ -943,20 +910,20 @@
                 const sleepTimeHour = profile.sleepTimeSec / 3600;
                 const wakeUpTimeHour = profile.wakeUpTimeSec / 3600;
                 const isNight = hour >= sleepTimeHour || hour < wakeUpTimeHour;
-                root.classList.toggle("dark", isNight);
+                root.classList.toggle("sleep", isNight);
             }
         }
-        const calDays = document.querySelectorAll("#calendar .day");
+        const calDays = document.querySelectorAll("#calendar .calendar__day");
         const updateCalendar = (day) => {
             const activeDay = calDays[day];
-            if (!activeDay.classList.contains("active")) {
+            if (!activeDay.classList.contains("calendar__day--active")) {
                 [...calDays].forEach((dayElement, index) => {
-                    dayElement.classList.remove("active", "past");
+                    dayElement.classList.remove("calendar__day--active", "calendar__day--past");
                     if (index < day) {
-                        dayElement.classList.add("past");
+                        dayElement.classList.add("calendar__day--past");
                     }
                 });
-                activeDay.classList.add("active");
+                activeDay.classList.add("calendar__day--active");
             }
         }
         runClock();
@@ -1102,9 +1069,9 @@
             document.querySelector('#manifestPlaceholder').href = manifestUrl;
         };
         const updateTextContent = () => {
-            amClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['AM'];
-            pmClock.getElementsByClassName("clock-label")[0].textContent = localTimeOfDay[currentLanguage]['PM'];
-            const dayNameElements = document.getElementsByClassName("day-name");
+            amClock.getElementsByClassName("clock__label")[0].textContent = localTimeOfDay[currentLanguage]['AM'];
+            pmClock.getElementsByClassName("clock__label")[0].textContent = localTimeOfDay[currentLanguage]['PM'];
+            const dayNameElements = document.getElementsByClassName("calendar__day-name");
             for (let i = 0; i < dayNameElements.length; i++) {
                 let initialDayName = dayNameElements[i].textContent;
                 let localDayName = localDayNames[currentLanguage][initialDayName];
@@ -1114,8 +1081,8 @@
         function updateClockIcons(profile) {
 
             // Select the clock elements
-            const amClock = document.querySelector("#am_clock svg .icons");
-            const pmClock = document.querySelector("#pm_clock svg .icons");
+            const amClockIcons = document.querySelector("#am-clock .clock__icons");
+            const pmClockIcons = document.querySelector("#pm-clock .clock__icons");
 
             // Iterate over profile properties
             for (let key in profile) {
@@ -1126,7 +1093,7 @@
                     // Iterate over array values in each property
                     profile[key].forEach(num => {
                         let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                        g.classList.add("icon", `icon-${num}`);
+                        g.classList.add("clock__icon", `clock__icon-${num}`);
 
                         let use = document.createElementNS("http://www.w3.org/2000/svg", "use");
                         use.setAttributeNS(null, "width", "2");
@@ -1136,9 +1103,9 @@
 
                         // Append to corresponding SVG
                         if (num >= 0 && num <= 11) {
-                            amClock.appendChild(g);
+                            amClockIcons.appendChild(g);
                         } else if (num >= 12 && num <= 23) {
-                            pmClock.appendChild(g);
+                            pmClockIcons.appendChild(g);
                         }
                     });
                 }
@@ -1173,13 +1140,13 @@
             let precipitationIconDisplay = (precipitationType === "Rain" || precipitationType === "Snow") ? "inline" : "none";
 
             const weatherHTML = `
-            <div class="weather-text">
-                <span class="current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}°</span> ▸ <span class="max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}°</span>
-                <svg viewBox="0 0 960 960" style="display: ${precipitationIconDisplay}">
+            <div class="weather__temp">
+                <span class="weather__current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}°</span> ▸ <span class="weather__max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}°</span>
+                <svg viewBox="0 0 960 960" class="weather__percipitation-icon" style="display: ${precipitationIconDisplay}">
                     <use href="#${precipitationType}">
                 </svg>
             </div>
-            <svg viewBox="0 0 300 300"><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}" width="250" height="250" x="25" y="25"></use></svg>
+            <svg viewBox="0 0 300 300" class="weather__forecast-icon"><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}" width="250" height="250" x="25" y="25"></use></svg>
             `;
             // Get the container and set its innerHTML
             weatherContainer.innerHTML = weatherHTML;
@@ -1208,7 +1175,7 @@
         }
         const updateCalendarImages = (calendarData) => {
             // Get the list of day elements once
-            const dayElements = document.getElementsByClassName("day");
+            const dayElements = document.getElementsByClassName("calendar__day");
 
             for (let i = 0; i < calendarData.records.length; i++) {
                 // create fragment
@@ -1221,14 +1188,14 @@
 
                     if (recordFields[photoFieldName]) {
                         let eventNode = document.createElement("div");
-                        eventNode.className = "event";
+                        eventNode.className = "calendar__event";
                         eventNode.style.backgroundImage = `url(${recordFields[photoFieldName][0].thumbnails.large.url})`;
                         currentDay.appendChild(eventNode);
                     }
                 }
 
                 // Remove old "event" elements
-                let eventNodes = dayElements[i].getElementsByClassName("event");
+                let eventNodes = dayElements[i].getElementsByClassName("calendar__event");
                 while (eventNodes[0]) {
                     eventNodes[0].parentNode.removeChild(eventNodes[0]);
                 }
