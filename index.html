@@ -1037,9 +1037,7 @@
                 updateManifest(profile?.displayName);
                 updateTextContent();
                 updateClockIcons(profile);
-                setClockFeatures(profile?.clockFeatures, profile?.clockProgressMode);
-                console.log(profile.clockFeatures);
-                console.log(profile.clockProgressMode);
+                setClockFeatures(profile);
             }
         }
         const setTheme = (theme) => {
@@ -1053,14 +1051,15 @@
             }
         }
 
-        const setClockFeatures = ({ clockFeatures }, clockProgressMode) => {
-            if (clockFeatures === undefined) return;
-
+        const setClockFeatures = ({ clockFeatures = [], clockProgressMode = "" } = {}) => {
             clockFeatures
                 .map(feature => feature.replace(/\s+/g, '-').toLowerCase())
-                .forEach(className => root.classList.add(`clock-feature-${className}`));
-            const progressModeClassName = clockProgressMode.replace(/\s+/g, '-').toLowerCase();
-            root.classList.add(`clock-progress-${progressModeClassName}`);
+                .forEach(className => root.classList.add(`clock-${className}`));
+
+            if (clockProgressMode.trim()) {
+                const progressModeClassName = clockProgressMode.replace(/\s+/g, '-').toLowerCase();
+                root.classList.add(`clock-progress-${progressModeClassName}`);
+            }
         };
 
         const getFormattedTitle = (displayName, language) => {
