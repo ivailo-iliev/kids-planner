@@ -200,7 +200,7 @@
             --quarter-marks-width: calc(var(--quarter-marks-circumference)/4*0.03);
             --quarter-marks-gap: calc(var(--quarter-marks-circumference)/4*0.97);
             --quarter-marks-offset: calc(var(--quarter-marks-width)/2);
-            --background-color: white;
+            --page-background: white;
             --icon-color: hsl(0deg 0% 60%);
             --clock-hands-color: #096fe0;
             --number-radius: 7.8px;
@@ -208,46 +208,56 @@
             --number-offset-y: 0.6px;
             --number-color: #096fe0;
             --number-outline: none;
+            --am-clock-background: linear-gradient(0deg, #3df5a7 40%, #096fe0 60%);
+            --pm-clock-background: linear-gradient(0deg, #3df5a7 40%, #096fe0 60%);
+            --progress-color: #ebebeb;
+            --bezel-color: white;
+        }
+
+        .clock__face {
+            border-radius: 50%;
+            outline: solid 1.5px var(--bezel-color);
+            outline-offset: -1px;
+        }
+
+        .am-clock .clock__face {
+            background: var(--am-clock-background);
+        }
+
+        .pm-clock .clock__face {
+            background: var(--pm-clock-background);
         }
 
         .clock__quarter-marks {
             r: 5.5px;
             fill: none;
-            stroke: var(--background-color);
+            stroke: var(--page-background);
             stroke-width: 11px;
             stroke-dashoffset: var(--quarter-marks-offset);
             stroke-dasharray: var(--quarter-marks-width) var(--quarter-marks-gap);
         }
 
         .clock__hour-marks {
-            stroke: black;
             stroke-dasharray: var(--hour-marks-width) var(--hour-marks-gap);
             stroke-dashoffset: var(--hour-marks-offset);
             r: var(--hour-marks-radius);
-            fill: none;
-            stroke-linecap: butt;
-            display: inline;
             stroke-width: 1px;
+            fill: none;
         }
 
         .clock__progress-ring {
             r: 5.5px;
             fill: none;
-            stroke: var(--background-color);
-            stroke-width: 12px;
-            stroke-dashoffset: 8.7px;
-            transform: none;
-        }
-
-        .clock__face {
-            border-radius: 50%;
-            background: #ebebeb;
-            border: none;
+            stroke: var(--progress-color);
+            stroke-width: 11;
+            stroke-dashoffset: 0;
+            transform: rotate(-90deg);
+            transform-origin: center;
         }
 
         .clock__hour-hand,
         .clock__minute-hand {
-            transform-origin: 11px 11px;
+            transform-origin: center;
         }
 
         .clock--active .clock__hour-hand line,
@@ -269,19 +279,18 @@
             font-family: 'Wix Madefor Display', sans-serif;
             letter-spacing: -0.05em;
             font-size: 1.6px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .clock__inner-ring {
             r: 9.6px;
-            fill: var(--background-color);
+            fill: var(--page-background);
             stroke-width: 0.1;
         }
 
         .clock__inner-ring,
-        .clock--active .clock__progress-ring,
         .clock__hour-marks {
-            stroke: url('#gradient-1');
+            stroke: url('#background-geddy');
         }
 
         .clock__icon use {
@@ -380,7 +389,6 @@
             position: absolute;
             width: 0;
             height: 0;
-            overflow: hidden;
         }
 
         .theme-fruits .calendar__day--active {
@@ -398,6 +406,10 @@
             --number-color: black;
             --number-outline: hsl(0deg 0% 100% / 60%);
             --bezel-color: #29A00C;
+            --am-clock-background: url('orange.jpg') no-repeat center/102.5%;
+            ;
+            --pm-clock-background: url('watermelon.jpg') no-repeat center/102.5%;
+            --progress-color: white;
         }
 
         .theme-fruits .clock__hour-marks,
@@ -405,32 +417,12 @@
             display: none;
         }
 
-        .theme-fruits .clock__face {
-            border: solid 1.5px var(--bezel-color);
-        }
-
-        .theme-fruits .am-clock>.clock__face {
-            background: url('orange.jpg') no-repeat center/102.5%;
-        }
-
-        .theme-fruits .pm-clock>.clock__face {
-            background: url('watermelon.jpg') no-repeat center/102.5%;
-        }
-
         .theme-fruits .clock__numbers {
             font-size: 2.6px;
         }
 
         .theme-fruits .clock__progress-ring {
-            stroke: var(--background-color);
             stroke-width: 11;
-            stroke-dashoffset: 0;
-            transform: rotate(-90deg);
-            transform-origin: center;
-        }
-
-        .sleep.theme-fruits .clock__face {
-            background: none;
         }
 
         .sleep {
@@ -442,14 +434,24 @@
         }
 
         .sleep .clock {
-            --background-color: black;
+            --page-background: black;
             --clock-hands-color: hsl(0deg 0% 60%);
             --number-color: hsl(0deg 0% 60%);
             --number-outline: none;
+            --progress-color: hsl(0deg 0% 20%);
+            --bezel-color: black;
         }
 
-        .sleep .clock__face {
-            background: hsl(0deg 0% 20%);
+        .sleep .clock:not(.clock--active) {
+            --am-clock-background: hsl(0deg 0% 20%);
+            --pm-clock-background: hsl(0deg 0% 20%);
+        }
+
+        .sleep.theme-fruits .clock {
+            --am-clock-background: none;
+            --pm-clock-background: none;
+            --bezel-color: #29A00C;
+            --progress-color: none;
         }
     </style>
 
@@ -458,12 +460,10 @@
 <body>
     <div id="overlay"></div>
     <div class="parent">
-
         <div class="widgets">
-            <svg class="symbols-library" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+            <svg class="symbols-library">
                 <defs>
-                    <linearGradient id="gradient-1" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient id="background-geddy" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="40%" stop-color="#096fe0" />
                         <stop offset="60%" stop-color="#3df5a7" />
                     </linearGradient>
@@ -837,23 +837,23 @@
         let profile;
 
         // Register service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                window.location.reload();
-                            }
-                        });
-                    });
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
+        // if ('serviceWorker' in navigator) {
+        //     window.addEventListener('load', function () {
+        //         navigator.serviceWorker.register('/sw.js').then(registration => {
+        //             registration.addEventListener('updatefound', () => {
+        //                 const newWorker = registration.installing;
+        //                 newWorker.addEventListener('statechange', () => {
+        //                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+        //                         window.location.reload();
+        //                     }
+        //                 });
+        //             });
+        //             console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        //         }, err => {
+        //             console.log('ServiceWorker registration failed: ', err);
+        //         });
+        //     });
+        // }
 
         // Clock Functions
         const amClock = document.getElementById("am-clock");
@@ -901,7 +901,7 @@
             minElapsed = (5.5 * 2 * Math.PI / 60) * minElapsed;
             minRemaining = (5.5 * 2 * Math.PI / 60) * minRemaining;
             const progressMode = currentThemeClass === "theme-fruits" ? "0 " : "";
-            activeClockProgress.setAttribute("stroke-dasharray", `${progressMode}${minElapsed} ${minRemaining}`);
+            activeClockProgress.setAttribute("stroke-dasharray", `0 ${minElapsed} ${minRemaining}`);
             activeHourHand.style.transform = `rotate(${hrPosition}deg)`;
             activeMinHand.style.transform = `rotate(${minPosition}deg)`;
         }
@@ -1037,6 +1037,9 @@
                 updateManifest(profile?.displayName);
                 updateTextContent();
                 updateClockIcons(profile);
+                setClockFeatures(profile?.clockFeatures, profile?.clockProgressMode);
+                console.log(profile.clockFeatures);
+                console.log(profile.clockProgressMode);
             }
         }
         const setTheme = (theme) => {
@@ -1049,6 +1052,16 @@
                 currentThemeClass = newThemeClass;
             }
         }
+
+        const setClockFeatures = ({ clockFeatures }, clockProgressMode) => {
+            if (clockFeatures === undefined) return;
+
+            clockFeatures
+                .map(feature => feature.replace(/\s+/g, '-').toLowerCase())
+                .forEach(className => root.classList.add(`clock-feature-${className}`));
+            const progressModeClassName = clockProgressMode.replace(/\s+/g, '-').toLowerCase();
+            root.classList.add(`clock-progress-${progressModeClassName}`);
+        };
 
         const getFormattedTitle = (displayName, language) => {
             const titles = {

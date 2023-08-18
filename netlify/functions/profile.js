@@ -36,7 +36,9 @@ exports.handler = async function (event, context) {
     "🍎": iconApple,
     "🛌": iconBed,
     "🥐": iconCroissant,
-    "🍴": iconRestaurant
+    "🍴": iconRestaurant,
+    "Clock features": clockFeatures,
+    "Clock progress ring": clockProgressMode
   } = profileData.fields;
 
   const filteredData = {
@@ -50,7 +52,9 @@ exports.handler = async function (event, context) {
     iconCroissant,
     iconMoon,
     iconRestaurant,
-    iconSun
+    iconSun,
+    clockFeatures,
+    clockProgressMode
   };
 
   return {
