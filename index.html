@@ -1275,12 +1275,11 @@
         // };
 
         const updateCalendarImages = (calendarData) => {
-            console.log(calendarData);
             // Construct an array of arrays containing URLs for each day
             const urlsPerDay = calendarData.records.map((record) =>
                 Object.values(record.fields)
-                    .flatMap((field) => field.map((item) => item.thumbnails?.large?.url))
-                    .filter(Boolean)
+                    .filter((field) => Array.isArray(field) && field[0]?.thumbnails?.large?.url)
+                    .flatMap((attachments) => attachments.map((attachment) => attachment.thumbnails.large.url))
             );
 
             // Create promises to load images for each day
