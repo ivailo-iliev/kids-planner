@@ -10,7 +10,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Kids Planner">
     <link rel="manifest" id="manifestPlaceholder" type="application/manifest+json">
-    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
     <meta name="format-detection" content="telephone=no">
@@ -58,7 +58,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: white;
             z-index: 9999;
             background-repeat: no-repeat;
             background-position: center;
@@ -75,6 +74,7 @@
 
         :root.loading #overlay {
             display: block;
+            background-color: white;
             background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g transform="translate(50 50)"><path fill="%23e90c59" d="M32.56-27.44a19.99 19.99 0 0 0-28.32 0L0-23.2l-4.24-4.24a19.99 19.99 0 0 0-28.32 0 19.99 19.99 0 0 0 0 28.32l4.24 4.24 9.92 9.84L0 33.36l18.4-18.4 9.92-9.92L32.56.8c7.76-7.84 7.76-20.48 0-28.24z"><animateTransform attributeName="transform" calcMode="spline" dur="1s" keySplines="0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1" keyTimes="0;0.05;0.39;0.45;0.6;1" repeatCount="indefinite" type="scale" values="0.68;0.8;0.60;0.72;0.68;0.64"/></path></g></svg>');
         }
 
