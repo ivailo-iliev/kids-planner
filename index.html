@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html class="loading">
 
 <head>
     <meta charset="utf-8">
@@ -60,16 +60,21 @@
             height: 100%;
             background-color: hsl(0deg 0% 100% / 70%);
             z-index: 9999;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 115.563 115.563"><path d="M24.413 31.538h86.172a4.992 4.992 0 0 1 4.978 4.977v64.069a4.992 4.992 0 0 1-4.978 4.977H24.413a4.991 4.991 0 0 1-4.977-4.977v-64.07a4.991 4.991 0 0 1 4.977-4.976zm.194 34.531a2.605 2.605 0 1 1 0 5.21 2.605 2.605 0 0 1 0-5.21zm4.783-26.754h77.618v58.64H29.39v-58.64z"/><path d="M0 91.15V4.976C0 2.239 2.24 0 4.978 0h64.068c2.738 0 4.978 2.24 4.978 4.977v30.02h-7.606V8.555H7.778v77.618h9.635v9.955H4.978A4.992 4.992 0 0 1 0 91.149z"/><path fill="none" d="M79.793 6.193a13.769 13.769 0 0 1 14.162 14.162"/><path fill-rule="nonzero" d="M79.727 3.806a16.149 16.149 0 0 1 6.428 1.135 16.161 16.161 0 0 1 5.466 3.585 16.155 16.155 0 0 1 3.585 5.467 16.137 16.137 0 0 1 1.136 6.428l-4.776-.13a11.386 11.386 0 0 0-.798-4.538 11.377 11.377 0 0 0-2.535-3.837 11.366 11.366 0 0 0-3.838-2.536 11.39 11.39 0 0 0-4.538-.799l-.13-4.775z"/><path d="m88.164 18.095 11.785.388L93.722 29z"/></svg>');
             background-repeat: no-repeat;
             background-position: center;
             background-size: 50vw 50vw;
+            background-image: url('data:image/svg+xml,<svg viewBox="0 0 100 100"><g transform="translate(50 50)"><path fill="%23e90c59" d="M32.56-27.44a19.99 19.99 0 0 0-28.32 0L0-23.2l-4.24-4.24a19.99 19.99 0 0 0-28.32 0 19.99 19.99 0 0 0 0 28.32l4.24 4.24 9.92 9.84L0 33.36l18.4-18.4 9.92-9.92L32.56.8c7.76-7.84 7.76-20.48 0-28.24z"><animateTransform attributeName="transform" calcMode="spline" dur="1s" keySplines="0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1" keyTimes="0;0.05;0.39;0.45;0.6;1" repeatCount="indefinite" type="scale" values="0.68;0.8;0.60;0.72;0.68;0.64"/></path></g></svg>');
         }
 
-        @media screen and (orientation:portrait) {
+        @media (orientation:portrait) {
             #overlay {
                 display: block;
+                background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 115.563 115.563"><path d="M24.413 31.538h86.172a4.992 4.992 0 0 1 4.978 4.977v64.069a4.992 4.992 0 0 1-4.978 4.977H24.413a4.991 4.991 0 0 1-4.977-4.977v-64.07a4.991 4.991 0 0 1 4.977-4.976zm.194 34.531a2.605 2.605 0 1 1 0 5.21 2.605 2.605 0 0 1 0-5.21zm4.783-26.754h77.618v58.64H29.39v-58.64z"/><path d="M0 91.15V4.976C0 2.239 2.24 0 4.978 0h64.068c2.738 0 4.978 2.24 4.978 4.977v30.02h-7.606V8.555H7.778v77.618h9.635v9.955H4.978A4.992 4.992 0 0 1 0 91.149z"/><path fill="none" d="M79.793 6.193a13.769 13.769 0 0 1 14.162 14.162"/><path fill-rule="nonzero" d="M79.727 3.806a16.149 16.149 0 0 1 6.428 1.135 16.161 16.161 0 0 1 5.466 3.585 16.155 16.155 0 0 1 3.585 5.467 16.137 16.137 0 0 1 1.136 6.428l-4.776-.13a11.386 11.386 0 0 0-.798-4.538 11.377 11.377 0 0 0-2.535-3.837 11.366 11.366 0 0 0-3.838-2.536 11.39 11.39 0 0 0-4.538-.799l-.13-4.775z"/><path d="m88.164 18.095 11.785.388L93.722 29z"/></svg>');
             }
+        }
+
+        :root.loading #overlay {
+            display: block;
         }
 
         .calendar,
@@ -239,7 +244,7 @@
             background: var(--pm-clock-background);
         }
 
-        :root.clock-quarter-marks .clock__quarter-marks {
+        :root[data-theme="fruits"] .clock__quarter-marks {
             r: var(--quarter-marks-radius);
             fill: none;
             stroke: var(--page-background);
@@ -329,7 +334,7 @@
             stroke: url('#background-geddy');
         }
 
-        .clock__icon use {
+        .clock__icon {
             pointer-events: none;
             fill: var(--icon-color);
         }
@@ -445,11 +450,11 @@
             height: 0;
         }
 
-        .theme-fruits .calendar__day--active {
+        :root[data-theme="fruits"] .calendar__day--active {
             background-image: linear-gradient(0deg, #e62214 0%, #f29e18 100%);
         }
 
-        .theme-fruits .clock {
+        :root[data-theme="fruits"] .clock {
             --hour-marks-radius: 7.6px;
             --hour-marks-width: calc(var(--hour-marks-circumference)/12*0.005);
             --hour-marks-gap: calc(var(--hour-marks-circumference)/12*0.995);
@@ -465,28 +470,28 @@
             --progress-color: white;
         }
 
-        .theme-fruits .clock__hour-marks,
-        .theme-fruits .clock__inner-ring {
+        :root[data-theme="fruits"] .clock__hour-marks,
+        :root[data-theme="fruits"] .clock__inner-ring {
             display: none;
         }
 
-        .theme-fruits .clock__hour-numbers {
+        :root[data-theme="fruits"] .clock__hour-numbers {
             font-size: 2.6px;
         }
 
-        .theme-fruits .clock__progress-ring {
+        :root[data-theme="fruits"] .clock__progress-ring {
             stroke-width: 11;
         }
 
-        .sleep {
+        :root.sleep {
             background-color: black;
         }
 
-        .sleep .calendar {
+        :root.sleep .calendar {
             visibility: hidden;
         }
 
-        .sleep .clock {
+        :root.sleep .clock {
             --page-background: black;
             --clock-hands-color: hsl(0deg 0% 60%);
             --number-color: hsl(0deg 0% 60%);
@@ -495,12 +500,12 @@
             --bezel-color: black;
         }
 
-        .sleep .clock:not(.clock--active) {
+        :root.sleep .clock:not(.clock--active) {
             --am-clock-background: hsl(0deg 0% 20%);
             --pm-clock-background: hsl(0deg 0% 20%);
         }
 
-        .sleep.theme-fruits .clock {
+        :root.sleep[data-theme="fruits"] .clock {
             --am-clock-background: none;
             --pm-clock-background: none;
             --bezel-color: #29A00C;
@@ -816,8 +821,8 @@
                         <text>50</text>
                         <text>55</text>
                     </g>
-                    <g class="clock__icons">
-                    </g>
+                    <g class="clock__icons"></g>
+
                     <circle class="clock__center-point" cx="11" cy="11" r="0.5" />
                     <g class="clock__hour-hand">
                         <line x1="11" y1="11" x2="11" y2="6.5" stroke-width="0.6" />
@@ -917,26 +922,25 @@
         let currentLanguage = queryParams.get("lang") || "en";
         let profile;
         const root = document.documentElement;
-        let currentThemeClass;
 
         // Register service worker
-        // if ('serviceWorker' in navigator) {
-        //     window.addEventListener('load', function () {
-        //         navigator.serviceWorker.register('/sw.js').then(registration => {
-        //             registration.addEventListener('updatefound', () => {
-        //                 const newWorker = registration.installing;
-        //                 newWorker.addEventListener('statechange', () => {
-        //                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-        //                         window.location.reload();
-        //                     }
-        //                 });
-        //             });
-        //             console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        //         }, err => {
-        //             console.log('ServiceWorker registration failed: ', err);
-        //         });
-        //     });
-        // }
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                window.location.reload();
+                            }
+                        });
+                    });
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
 
         // Clock Functions
         const clocks = {
@@ -959,9 +963,8 @@
             const sec = d.getSeconds();
             const hrElapsed = hr % 12 + min / 60;
             const minElapsed = min + sec / 60;
-            const isAM = hr < 12;
-            const activeClock = clocks[isAM ? 'am' : 'pm'];
-            const inactiveClock = clocks[isAM ? 'pm' : 'am'];
+            const activeClock = clocks[hr < 12 ? 'am' : 'pm'];
+            const inactiveClock = clocks[hr < 12 ? 'pm' : 'am'];
 
             if (!activeClock.clock.classList.contains("clock--active")) {
                 activeClock.clock.classList.add("clock--active");
@@ -993,9 +996,7 @@
             if (!activeDay.classList.contains("calendar__day--active")) {
                 [...calDays].forEach((dayElement, index) => {
                     dayElement.classList.remove("calendar__day--active", "calendar__day--past");
-                    if (index < day) {
-                        dayElement.classList.add("calendar__day--past");
-                    }
+                    if (index < day) dayElement.classList.add("calendar__day--past");
                 });
                 activeDay.classList.add("calendar__day--active");
             }
@@ -1117,17 +1118,12 @@
                 updateClockIcons(profile?.icons);
                 setClockFeatures(profile);
             }
+            root.classList.remove("loading");
         }
-        const setTheme = (theme) => {
-            if (theme === undefined) return;
 
-            const newThemeClass = `theme-${theme.toLowerCase()}`;
-            if (newThemeClass !== currentThemeClass) {
-                if (currentThemeClass) root.classList.remove(currentThemeClass);
-                root.classList.add(newThemeClass);
-                currentThemeClass = newThemeClass;
-            }
-        }
+        const setTheme = (theme = "") => {
+            root.setAttribute('data-theme', theme.toLowerCase());
+        };
 
         const setClockFeatures = ({ clockFeatures = [], clockProgressMode = "" } = {}) => {
             clockFeatures
@@ -1172,12 +1168,9 @@
         function updateClockIcons(icons = {}) {
             for (let icon in icons) {
                 icons[icon].forEach(hour => {
-                    const iconNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                    const iconNode = document.createElementNS("http://www.w3.org/2000/svg", "use");
                     iconNode.classList.add("clock__icon", `clock__icon-${hour}`);
-                    const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
-                    use.setAttributeNS(null, "width", "2");
-                    use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${icon}`);
-                    iconNode.appendChild(use);
+                    iconNode.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${icon}`);
                     (hour <= 11 ? clocks['am'] : clocks['pm']).icons.appendChild(iconNode);
                 });
             }
@@ -1207,8 +1200,8 @@
             }
         }
         const updateWeather = (currentWeather, todayForecast) => {
-            let precipitationType = todayForecast.DailyForecasts[0].Day.PrecipitationType;
-            let precipitationIconDisplay = (precipitationType === "Rain" || precipitationType === "Snow") ? "inline" : "none";
+            const precipitationType = todayForecast.DailyForecasts[0].Day.PrecipitationType;
+            const precipitationIconDisplay = (precipitationType === "Rain" || precipitationType === "Snow") ? "inline" : "none";
 
             const weatherHTML = `
             <div class="weather__temp">
@@ -1229,52 +1222,16 @@
         const getCalendar = async () => {
             try {
                 const response = await fetch(`/.netlify/functions/calendar?id=${userId}`);
-
                 if (!response.ok) {
                     let errorText = await response.text();
                     throw new Error(errorText);
                 }
-
                 const calendarData = await response.json();
-
-                if (calendarData) {
-                    updateCalendarImages(calendarData);
-                }
+                if (calendarData) updateCalendarImages(calendarData);
             } catch (error) {
                 console.error('Error:', error);
             }
         }
-        // const updateCalendarImages = (calendarData) => {
-        //     // Get the list of day elements once
-        //     const dayElements = document.getElementsByClassName("calendar__day");
-
-        //     for (let i = 0; i < calendarData.records.length; i++) {
-        //         // create fragment
-        //         let currentDay = document.createDocumentFragment();
-
-        //         // update photos
-        //         for (let p = 1; p <= 4; p++) {
-        //             const photoFieldName = `Attachments (from Photo${p})`;
-        //             const recordFields = calendarData.records[i].fields;
-
-        //             if (recordFields[photoFieldName]) {
-        //                 let eventNode = document.createElement("div");
-        //                 eventNode.className = "calendar__event";
-        //                 eventNode.style.backgroundImage = `url(${recordFields[photoFieldName][0].thumbnails.large.url})`;
-        //                 currentDay.appendChild(eventNode);
-        //             }
-        //         }
-
-        //         // Remove old "event" elements
-        //         let eventNodes = dayElements[i].getElementsByClassName("calendar__event");
-        //         while (eventNodes[0]) {
-        //             eventNodes[0].parentNode.removeChild(eventNodes[0]);
-        //         }
-
-        //         // Append new "event" elements
-        //         dayElements[i].appendChild(currentDay);
-        //     }
-        // };
 
         const updateCalendarImages = (calendarData) => {
             // Construct an array of arrays containing URLs for each day
@@ -1302,11 +1259,8 @@
             Promise.all(loadPromisesPerDay).then((newEventNodesPerDay) => {
                 // Iterate over the day elements and replace the old images with the new ones
                 [...calDays].forEach((dayElement, i) => {
-                    // Remove old events with the class "calendar__event"
                     const oldEvents = [...dayElement.getElementsByClassName('calendar__event')];
                     oldEvents.forEach((eventNode) => eventNode.remove());
-
-                    // Add the new events for this specific day
                     newEventNodesPerDay[i].forEach((eventNode) => dayElement.appendChild(eventNode));
                 });
             });
