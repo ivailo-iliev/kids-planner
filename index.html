@@ -1172,11 +1172,11 @@
         function updateClockIcons(icons = {}) {
             for (let icon in icons) {
                 icons[icon].forEach(hour => {
-                    const iconNode = document.createElement("g");
+                    const iconNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
                     iconNode.classList.add("clock__icon", `clock__icon-${hour}`);
-                    const use = document.createElement("use");
-                    use.setAttribute("width", "2");
-                    use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${icon}`);
+                    const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+                    use.setAttributeNS(null, "width", "2");
+                    use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${key}`);
                     iconNode.appendChild(use);
                     (hour <= 11 ? clocks['am'] : clocks['pm']).icons.appendChild(iconNode);
                 });
