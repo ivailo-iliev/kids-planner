@@ -1275,6 +1275,7 @@
         // };
 
         const updateCalendarImages = (calendarData) => {
+            console.log(calendarData);
             // Construct an array of arrays containing URLs for each day
             const urlsPerDay = calendarData.records.map((record) =>
                 Object.values(record.fields)
