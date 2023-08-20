@@ -329,8 +329,7 @@
             stroke: url('#background-geddy');
         }
 
-        .clock__icon {
-            width: 2;
+        .clock__icon use {
             pointer-events: none;
             fill: var(--icon-color);
         }
@@ -1173,9 +1172,12 @@
         function updateClockIcons(icons = {}) {
             for (let icon in icons) {
                 icons[icon].forEach(hour => {
-                    const iconNode = document.createElement("use");
+                    const iconNode = document.createElement("g");
                     iconNode.classList.add("clock__icon", `clock__icon-${hour}`);
-                    iconNode.setAttribute("href", `#icon-${icon}`);
+                    const use = document.createElement("use");
+                    use.setAttribute("width", "2");
+                    use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${icon}`);
+                    iconNode.appendChild(use);
                     (hour <= 11 ? clocks['am'] : clocks['pm']).icons.appendChild(iconNode);
                 });
             }
