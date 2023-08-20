@@ -1176,7 +1176,7 @@
                     iconNode.classList.add("clock__icon", `clock__icon-${hour}`);
                     const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
                     use.setAttributeNS(null, "width", "2");
-                    use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${key}`);
+                    use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${icon}`);
                     iconNode.appendChild(use);
                     (hour <= 11 ? clocks['am'] : clocks['pm']).icons.appendChild(iconNode);
                 });
