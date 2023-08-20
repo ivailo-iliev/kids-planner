@@ -31,32 +31,34 @@ exports.handler = async function (event, context) {
     "Sleep time": sleepTimeSec,
     "Display Name": displayName,
     "Theme": theme,
-    "☀️": iconSun,
-    "🌙": iconMoon,
-    "🍎": iconApple,
-    "🛌": iconBed,
-    "🥐": iconCroissant,
-    "🍴": iconRestaurant,
+    "☀️": sun,
+    "🌙": moon,
+    "🍎": apple,
+    "🛌": bed,
+    "🥐": croissant,
+    "🍴": restaurant,
     "Clock features": clockFeatures,
     "Clock progress ring": clockProgressMode
   } = profileData.fields;
-
+  
   const filteredData = {
     currentLanguage,
     sleepTimeSec,
     wakeUpTimeSec,
     displayName,
     theme,
-    iconApple,
-    iconBed,
-    iconCroissant,
-    iconMoon,
-    iconRestaurant,
-    iconSun,
+    icons: {
+      sun,
+      moon,
+      apple,
+      bed,
+      croissant,
+      restaurant,
+    },
     clockFeatures,
     clockProgressMode
   };
-
+  
   return {
     statusCode: 200,
     body: JSON.stringify(filteredData)
