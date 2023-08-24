@@ -15,11 +15,9 @@
         content="viewport-fit=cover, width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#ffffff">
-    <link rel="icon" type="image/png" sizes="192x192" href="/192i.png">
-    <!-- <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> -->
-    <link rel="icon" href="/link.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/180.png">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <style>
         @font-face {
             font-family: 'Sofia Sans Condensed';
@@ -59,9 +57,6 @@
             width: 100%;
             height: 100%;
             z-index: 9999;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 50vmin 50vmin;
         }
 
         @media (orientation:portrait) {
@@ -69,13 +64,15 @@
                 display: block;
                 background-color: hsl(0deg 0% 100% / 70%);
                 background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 115.563 115.563"><path d="M24.413 31.538h86.172a4.992 4.992 0 0 1 4.978 4.977v64.069a4.992 4.992 0 0 1-4.978 4.977H24.413a4.991 4.991 0 0 1-4.977-4.977v-64.07a4.991 4.991 0 0 1 4.977-4.976zm.194 34.531a2.605 2.605 0 1 1 0 5.21 2.605 2.605 0 0 1 0-5.21zm4.783-26.754h77.618v58.64H29.39v-58.64z"/><path d="M0 91.15V4.976C0 2.239 2.24 0 4.978 0h64.068c2.738 0 4.978 2.24 4.978 4.977v30.02h-7.606V8.555H7.778v77.618h9.635v9.955H4.978A4.992 4.992 0 0 1 0 91.149z"/><path fill="none" d="M79.793 6.193a13.769 13.769 0 0 1 14.162 14.162"/><path fill-rule="nonzero" d="M79.727 3.806a16.149 16.149 0 0 1 6.428 1.135 16.161 16.161 0 0 1 5.466 3.585 16.155 16.155 0 0 1 3.585 5.467 16.137 16.137 0 0 1 1.136 6.428l-4.776-.13a11.386 11.386 0 0 0-.798-4.538 11.377 11.377 0 0 0-2.535-3.837 11.366 11.366 0 0 0-3.838-2.536 11.39 11.39 0 0 0-4.538-.799l-.13-4.775z"/><path d="m88.164 18.095 11.785.388L93.722 29z"/></svg>');
+                background-position: center;
+                background-size: 50vmin 50vmin;
+                background-repeat: no-repeat;
             }
         }
 
-        :root.loading #overlay {
+        :root #overlay {
             display: block;
-            background-color: white;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g transform="translate(50 50)"><path fill="%23e90c59" d="M32.56-27.44a19.99 19.99 0 0 0-28.32 0L0-23.2l-4.24-4.24a19.99 19.99 0 0 0-28.32 0 19.99 19.99 0 0 0 0 28.32l4.24 4.24 9.92 9.84L0 33.36l18.4-18.4 9.92-9.92L32.56.8c7.76-7.84 7.76-20.48 0-28.24z"><animateTransform attributeName="transform" calcMode="spline" dur="1s" keySplines="0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1;0.215 0.61,0.355 1" keyTimes="0;0.05;0.39;0.45;0.6;1" repeatCount="indefinite" type="scale" values="0.68;0.8;0.60;0.72;0.68;0.64"/></path></g></svg>');
+            background: white url('loading.svg') center 30vmin / 31vmin 31vmin no-repeat;
         }
 
         .calendar,
@@ -1032,22 +1029,17 @@
             ],
             "icons": [
                 {
-                    "src": "https://kids-planner.netlify.app/icon-64x64.png",
-                    "sizes": "64x64",
-                    "type": "image/png"
-                },
-                {
-                    "src": "https://kids-planner.netlify.app/192.png",
+                    "src": "https://kids-planner.netlify.app/favicon.png",
                     "sizes": "192x192",
                     "type": "image/png"
                 },
                 {
-                    "src": "https://kids-planner.netlify.app/512.png",
+                    "src": "https://kids-planner.netlify.app/favicon-512.png",
                     "sizes": "512x512",
                     "type": "image/png"
                 },
                 {
-                    "src": "https://kids-planner.netlify.app/mask.png",
+                    "src": "https://kids-planner.netlify.app/favicon-512-maskable.png",
                     "sizes": "512x512",
                     "type": "image/png",
                     "purpose": "maskable"
