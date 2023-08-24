@@ -3045,7 +3045,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   });
   clientsClaim();
   precacheAndRoute(
-    [{"revision":"d1301b5e22d97a65026f87bc8605bcac","url":"apple-touch-icon.png"},{"revision":"3ca008f4d6a70b3c7e7bc1486c99feea","url":"favicon-512-maskable.png"},{"revision":"144ce48bc2633427576e02227e391b5c","url":"favicon-512.png"},{"revision":"22413513d0e2e360c2b36a9569161e74","url":"favicon.png"},{"revision":"7f3f67d9630cbaf46a8c578a9e7e9a58","url":"favicon.svg"},{"revision":"ff2467e2d07acae1b6530160371b16f3","url":"index.html"},{"revision":"f45d257ad8133bbfdd85b08d1880e310","url":"loading.svg"},{"revision":"ed5fd820788c6a7b0791442dfb97a7e5","url":"screenshot.png"},{"revision":"a2d5470c41d2e483dcd16517d8d00783","url":"SofiaSansCondensed-subset.woff2"},{"revision":"a932471f11c01096f2a8028d8444b911","url":"WixMadeforDisplay-subset.woff2"}],
+    [{"revision":"80bdb9a4b87ebd9716949401901ccef9","url":"apple-touch-icon.png"},{"revision":"0f81ef3dbfedc5360b278456e24b0d17","url":"favicon-512-maskable.png"},{"revision":"4caa208ff9a07ce57fc3d6bc1290b7cf","url":"favicon-512.png"},{"revision":"24961438f4503f3f255e69c84b4b7f2b","url":"favicon.png"},{"revision":"7ccf0595cc0626e862c05a403f02c407","url":"favicon.svg"},{"revision":"3f09ba4c495722bee9668ee619cdbdc7","url":"index.html"},{"revision":"a3a96acd18e59c37cdfbaccc66fe64f6","url":"loading.svg"},{"revision":"ed5fd820788c6a7b0791442dfb97a7e5","url":"screenshot.png"},{"revision":"a2d5470c41d2e483dcd16517d8d00783","url":"SofiaSansCondensed-subset.woff2"},{"revision":"a932471f11c01096f2a8028d8444b911","url":"WixMadeforDisplay-subset.woff2"}],
     { ignoreURLParametersMatching: [/.*/] }
   );
   registerRoute(
