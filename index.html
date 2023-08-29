@@ -150,7 +150,7 @@
             color: black;
             overflow: hidden;
             box-sizing: border-box;
-            background: #DBF6FF66;
+            background: hsl(195deg 100% 93% / 0.4);
             border: 1px solid #D9D9D9;
             border-radius: 5px;
             height: 100%;
@@ -221,7 +221,7 @@
             --bezel-color: white;
             --hour-hand-angle: calc(var(--hr-elapsed) * 360 / 12 * 1deg);
             --minute-hand-angle: calc(var(--min-elapsed) * 360 / 60 * 1deg);
-            --progress-radius: 5.5;
+            --progress-radius: 5.5px;
             --progress-min-elapsed: calc((var(--progress-radius) * 2 * var(--pi) / 60) * var(--min-elapsed));
             --progress-min-remaining: calc((var(--progress-radius) * 2 * var(--pi) / 60) * (60 - var(--min-elapsed)));
             --progress-hr-elapsed: calc((var(--progress-radius) * 2 * var(--pi) / 12) * var(--hr-elapsed));
@@ -263,15 +263,15 @@
             r: var(--progress-radius);
             fill: none;
             stroke: var(--progress-color);
-            stroke-width: 11;
+            stroke-width: 11px;
             stroke-dashoffset: 0;
             transform: rotate(-90deg);
             transform-origin: center;
-            stroke-dasharray: 0 0;
+            stroke-dasharray: 0px 0px;
         }
 
         .clock--active .clock__progress-ring {
-            stroke-dasharray: 0 var(--progress-min-elapsed) var(--progress-min-remaining);
+            stroke-dasharray: 0px var(--progress-min-elapsed) var(--progress-min-remaining);
         }
 
         .clock__hour-hand {
@@ -324,7 +324,7 @@
         .clock__inner-ring {
             r: 9.6px;
             fill: var(--page-background);
-            stroke-width: 0.1;
+            stroke-width: 0.1px;
         }
 
         .clock__inner-ring,
@@ -478,7 +478,7 @@
         }
 
         :root[data-theme="fruits"] .clock__progress-ring {
-            stroke-width: 11;
+            stroke-width: 11px;
         }
 
         :root.sleep {
