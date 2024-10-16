@@ -46,7 +46,7 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            padding: 1vw;
+            padding: 1vh 1vw;
         }
 
         #overlay {
@@ -86,7 +86,8 @@
         .widgets {
             justify-content: center;
             align-items: center;
-            flex: 1 1 40%;
+            height: 40vh;
+            gap: 4vw;
         }
 
         .weather {
@@ -95,10 +96,7 @@
 
         .clock,
         .weather {
-    flex: 1 1 auto; /* Allow the widget to grow and shrink */
-    aspect-ratio: 1 / 1; /* Ensure each widget remains square */
-    max-height: 100%; /* Ensures it does not exceed the row height */
-    width: auto; /* Let the width adjust to keep the square aspect ratio */
+    width: 40vh;
     box-sizing: border-box;
     text-align: center;
     overflow: hidden;
@@ -116,7 +114,7 @@
         }
 
         .clock__label {
-            line-height: 2;
+            line-height: 5.6vh;
         }
 
         .weather__temp {
@@ -142,7 +140,7 @@
         }
 
         .calendar {
-            flex: 1 1 60%;
+            flex: 1 1 auto;
         }
 
         .calendar__day {
