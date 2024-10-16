@@ -95,10 +95,13 @@
 
         .clock,
         .weather {
-            flex-basis: 24vw;
-            box-sizing: border-box;
-            text-align: center;
-            overflow: hidden;
+    flex: 1 1 auto; /* Allow the widget to grow and shrink */
+    aspect-ratio: 1 / 1; /* Ensure each widget remains square */
+    max-height: 100%; /* Ensures it does not exceed the row height */
+    width: auto; /* Let the width adjust to keep the square aspect ratio */
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
         }
 
         .calendar__day-name,
@@ -135,6 +138,7 @@
         .weather__forecast-icon {
             max-height: 30vh;
             max-width: 100%;
+            aspect-ratio: 1 / 1;
         }
 
         .calendar {
