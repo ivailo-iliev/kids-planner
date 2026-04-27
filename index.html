@@ -6,8 +6,8 @@
     <meta name="description" content="A kid-friendly planner dashboard with visual clocks, weather, and weekly schedule.">
     <title>Kids Planner</title>
 
-    <link rel="preload" href="SofiaSansCondensed-subset.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="WixMadeforDisplay-subset.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/SofiaSansCondensed-subset.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/WixMadeforDisplay-subset.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Kids Planner">
@@ -17,19 +17,19 @@
         content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#ffffff">
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" href="/assets/favicon.png" type="image/png">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <style>
         @font-face {
             font-family: 'Sofia Sans Condensed';
-            src: url('SofiaSansCondensed-subset.woff2') format('woff2-variations');
+            src: url('/assets/SofiaSansCondensed-subset.woff2') format('woff2-variations');
             font-weight: 1 1000;
         }
 
         @font-face {
             font-family: 'Wix Madefor Display';
-            src: url('WixMadeforDisplay-subset.woff2') format('woff2-variations');
+            src: url('/assets/WixMadeforDisplay-subset.woff2') format('woff2-variations');
             font-weight: 1 1000;
         }
 
@@ -74,7 +74,7 @@
 
         :root.loading #overlay {
             display: block;
-            background: white url('loading.svg') center center / 32vmin 32vmin no-repeat;
+            background: white url('/assets/loading.svg') center center / 32vmin 32vmin no-repeat;
         }
 
         .calendar,
@@ -467,8 +467,8 @@
             --number-color: black;
             --number-outline: hsl(0deg 0% 100% / 60%);
             --bezel-color: #29A00C;
-            --am-clock-background: url('orange.jpg') no-repeat center/102.5%;
-            --pm-clock-background: url('watermelon.jpg') no-repeat center/102.5%;
+            --am-clock-background: url('/assets/orange.jpg') no-repeat center/102.5%;
+            --pm-clock-background: url('/assets/watermelon.jpg') no-repeat center/102.5%;
             --progress-color: white;
         }
 
@@ -1025,24 +1025,24 @@
             ],
             "screenshots": [
                 {
-                    "src": "https://kids-planner.netlify.app/screenshot.png",
+                    "src": "https://kids-planner.netlify.app/assets/screenshot.png",
                     "sizes": "1920x1080",
                     "type": "image/png"
                 }
             ],
             "icons": [
                 {
-                    "src": "https://kids-planner.netlify.app/favicon.png",
+                    "src": "https://kids-planner.netlify.app/assets/favicon.png",
                     "sizes": "192x192",
                     "type": "image/png"
                 },
                 {
-                    "src": "https://kids-planner.netlify.app/favicon-512.png",
+                    "src": "https://kids-planner.netlify.app/assets/favicon-512.png",
                     "sizes": "512x512",
                     "type": "image/png"
                 },
                 {
-                    "src": "https://kids-planner.netlify.app/favicon-512-maskable.png",
+                    "src": "https://kids-planner.netlify.app/assets/favicon-512-maskable.png",
                     "sizes": "512x512",
                     "type": "image/png",
                     "purpose": "maskable"
