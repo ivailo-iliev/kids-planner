@@ -1,6 +1,7 @@
-const STATIC_CACHE = "static-v1";
-const PROFILE_CACHE = "profile-cache-v1";
-const WEATHER_CACHE = "weather-cache-v1";
+const CACHE_VERSION = "v2";
+const STATIC_CACHE = `static-${CACHE_VERSION}`;
+const PROFILE_CACHE = `profile-cache-${CACHE_VERSION}`;
+const WEATHER_CACHE = `weather-cache-${CACHE_VERSION}`;
 const WEATHER_TTL_MS = 24 * 60 * 60 * 1000;
 
 const PRECACHE_URLS = [
@@ -26,36 +27,31 @@ self.addEventListener("activate", (event) => {
     (async () => {
       const keep = new Set([STATIC_CACHE, PROFILE_CACHE, WEATHER_CACHE]);
       const keys = await caches.keys();
-      await Promise.all(keys.filter((name) => !keep.has(name)).map((name) => caches.delete(name)));
+      await Promise.all(keys.map((name) => (keep.has(name) ? null : caches.delete(name))));
       await self.clients.claim();
     })()
   );
 });
+
+function isFreshByDateHeader(response, ttlMs) {
+  if (!ttlMs) return true;
+  const dateHeader = response.headers.get("date");
+  if (!dateHeader) return true;
+  const timestamp = Date.parse(dateHeader);
+  if (!Number.isFinite(timestamp)) return true;
+  return Date.now() - timestamp <= ttlMs;
+}
 
 async function networkFirst(request, cacheName, ttlMs) {
   const cache = await caches.open(cacheName);
 
   try {
     const response = await fetch(request);
-    if (response?.ok) {
-      const responseToCache = response.clone();
-      const headers = new Headers(responseToCache.headers);
-      headers.set("sw-cached-at", String(Date.now()));
-      await cache.put(request, new Response(await responseToCache.blob(), {
-        status: responseToCache.status,
-        statusText: responseToCache.statusText,
-        headers
-      }));
-    }
+    if (response.ok) await cache.put(request, response.clone());
     return response;
   } catch {
     const cached = await cache.match(request, { ignoreVary: true });
-    if (!cached) return Response.error();
-
-    if (!ttlMs) return cached;
-    const cachedAt = Number(cached.headers.get("sw-cached-at"));
-    if (!cachedAt || Date.now() - cachedAt <= ttlMs) return cached;
-
+    if (cached && isFreshByDateHeader(cached, ttlMs)) return cached;
     return Response.error();
   }
 }
@@ -76,7 +72,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  event.respondWith(
-    caches.match(request, { ignoreSearch: true }).then((cached) => cached || fetch(request))
-  );
+  if (url.origin !== self.location.origin) return;
+
+  event.respondWith(caches.match(request, { ignoreSearch: true }).then((cached) => cached || fetch(request)));
 });
