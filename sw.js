@@ -1,20 +1,20 @@
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const PROFILE_CACHE = `profile-cache-${CACHE_VERSION}`;
 const WEATHER_CACHE = `weather-cache-${CACHE_VERSION}`;
 const WEATHER_TTL_MS = 24 * 60 * 60 * 1000;
 
 const PRECACHE_URLS = [
-  "apple-touch-icon.png",
-  "favicon-512-maskable.png",
-  "favicon-512.png",
-  "favicon.png",
-  "favicon.svg",
+  "assets/apple-touch-icon.png",
+  "assets/favicon-512-maskable.png",
+  "assets/favicon-512.png",
+  "assets/favicon.png",
+  "assets/favicon.svg",
   "index.html",
-  "loading.svg",
-  "screenshot.png",
-  "SofiaSansCondensed-subset.woff2",
-  "WixMadeforDisplay-subset.woff2"
+  "assets/loading.svg",
+  "assets/screenshot.png",
+  "assets/SofiaSansCondensed-subset.woff2",
+  "assets/WixMadeforDisplay-subset.woff2"
 ];
 
 self.addEventListener("install", (event) => {
