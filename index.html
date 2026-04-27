@@ -3,16 +3,18 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="description" content="A kid-friendly planner dashboard with visual clocks, weather, and weekly schedule.">
     <title>Kids Planner</title>
 
     <link rel="preload" href="SofiaSansCondensed-subset.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="WixMadeforDisplay-subset.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Kids Planner">
     <link rel="manifest" id="manifestPlaceholder" type="application/manifest+json">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport"
-        content="viewport-fit=cover, width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+        content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" href="/favicon.png" type="image/png">
@@ -925,7 +927,7 @@
 
         // Register service worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
+            window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').then(registration => {
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
@@ -935,7 +937,6 @@
                             }
                         });
                     });
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 }, err => {
                     console.log('ServiceWorker registration failed: ', err);
                 });
