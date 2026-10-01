@@ -9,59 +9,111 @@
 <body>
 <table width="100%" height="100%" cellspacing="0" cellpadding="0">
   <tr aria-label="Girl routine">
+    <td class="person"><span class="emoji">👧</span></td>
     <td class="routine">
-      <span class="emoji-item">🪥</span>
-      <span class="emoji-item">🪮</span>
-      <span class="emoji-item">👗</span>
-      <span class="emoji-item">🍞</span>
-      <span class="emoji-item">👟</span>
-      <span class="emoji-item">🎒</span>
+      <span class="emoji-item emoji"><span class="task-icon">🪥</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">🪮</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">👗</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">🍳</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">👟</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">🎒</span><span class="task-check">✅</span></span>
     </td>
   </tr>
   <tr aria-label="Boy routine">
+    <td class="person"><span class="emoji">👦</span></td>
     <td class="routine">
-      <span class="emoji-item">🪥</span>
-      <span class="emoji-item">👕</span>
-      <span class="emoji-item">🍞</span>
-      <span class="emoji-item">👟</span>
-      <span class="emoji-item">🎒</span>
+      <span class="emoji-item emoji"><span class="task-icon">🪥</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">👕</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">🍳</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">👟</span><span class="task-check">✅</span></span>
+      <span class="emoji-item emoji"><span class="task-icon">🎒</span><span class="task-check">✅</span></span>
     </td>
   </tr>
 </table>
 
 <script>
 (function () {
+  function hasClass(el, name) {
+    return (" " + el.className + " ").indexOf(" " + name + " ") !== -1;
+  }
+
+  function toggleClass(el, name) {
+    if (hasClass(el, name)) {
+      el.className = (" " + el.className + " ")
+        .replace(" " + name + " ", " ")
+        .replace(/^\s+|\s+$/g, "");
+    } else {
+      el.className += (el.className ? " " : "") + name;
+    }
+  }
+
+  function getItems(cell) {
+    var spans = cell.getElementsByTagName("span");
+    var items = [];
+    var i;
+    for (i = 0; i < spans.length; i++) {
+      if (hasClass(spans[i], "emoji-item")) items.push(spans[i]);
+    }
+    return items;
+  }
+
   function resizeRoutineEmoji() {
-    var rows = document.getElementsByTagName("tr");
+    var cells = document.getElementsByTagName("td");
+    var routineCells = [];
     var maxTasks = 1;
     var i;
 
-    for (i = 0; i < rows.length; i++) {
-      var count = rows[i].getElementsByTagName("span").length;
-      if (count > maxTasks) maxTasks = count;
+    for (i = 0; i < cells.length; i++) {
+      if (hasClass(cells[i], "routine")) {
+        routineCells.push(cells[i]);
+        var count = getItems(cells[i]).length;
+        if (count > maxTasks) maxTasks = count;
+      }
     }
 
-    var width = document.documentElement.clientWidth || document.body.clientWidth || 1024;
-    var height = document.documentElement.clientHeight || document.body.clientHeight || 758;
+    if (!routineCells.length) return;
 
-    var availableWidth = width * 0.94;
-    var rowHeight = height / rows.length;
+    var rowHeight = routineCells[0].parentNode.clientHeight;
+    var availableWidth = routineCells[0].clientWidth - 24;
 
-    // Each emoji is approximately 1em wide, with a 0.18em gap after it.
-    // Use the row with the most tasks so both rows have one consistent size.
+    // Each task occupies 1em plus a 0.18em gap.
+    // Both rows share the size required by the longer routine.
     var sizeByWidth = availableWidth / (maxTasks * 1.18);
     var sizeByHeight = rowHeight * 0.55;
     var size = Math.floor(Math.min(sizeByWidth, sizeByHeight));
 
+    for (i = 0; i < routineCells.length; i++) {
+      routineCells[i].style.fontSize = size + "px";
+    }
+
+    var people = document.getElementsByTagName("td");
+    for (i = 0; i < people.length; i++) {
+      if (hasClass(people[i], "person")) {
+        people[i].style.fontSize = Math.min(size, 78) + "px";
+      }
+    }
+  }
+
+  function bindTaskClicks() {
     var cells = document.getElementsByTagName("td");
+    var i;
+    var j;
+
     for (i = 0; i < cells.length; i++) {
-      if ((" " + cells[i].className + " ").indexOf(" routine ") !== -1) {
-        cells[i].style.fontSize = size + "px";
+      if (!hasClass(cells[i], "routine")) continue;
+
+      var items = getItems(cells[i]);
+      for (j = 0; j < items.length; j++) {
+        items[j].onclick = function () {
+          toggleClass(this, "done");
+          return false;
+        };
       }
     }
   }
 
   resizeRoutineEmoji();
+  bindTaskClicks();
 
   if (window.addEventListener) {
     window.addEventListener("resize", resizeRoutineEmoji, false);
