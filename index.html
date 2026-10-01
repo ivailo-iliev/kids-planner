@@ -1098,10 +1098,12 @@
             } catch (error) {
                 console.error('Error:', error);
             } finally {
+                /*
                 if (profile?.sleepTimeSec && profile?.wakeUpTimeSec) {
                     updateSleepMode();
                     setInterval(updateSleepMode, 60 * 1000);
                 }
+                */
                 setTheme(profile?.theme);
                 updateManifest(profile?.displayName);
                 updateTextContent();
