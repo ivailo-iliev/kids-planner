@@ -50,11 +50,7 @@ html.js-monochrome .emoji-js {
   <span class="emoji emoji-js">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
 </p>
 
-<p>
-  matchMedia support: <span id="matchmedia">JavaScript did not run</span><br>
-  User agent:<br>
-  <span id="ua">JavaScript did not run</span>
-</p>
+<p>\n  matchMedia support: <span id="matchmedia">JavaScript did not run</span><br>\n  navigator.userAgent:<br>\n  <span id="ua">JavaScript did not run</span>\n</p>\n\n<p>\n  HTTP User-Agent seen by Netlify:<br>\n  <span id="http-ua">Waiting for server response...</span>\n</p>
 
 <script>
 (function () {
@@ -77,6 +73,27 @@ html.js-monochrome .emoji-js {
     !hasMatchMedia ? "UNSUPPORTED" :
     isMonochrome ? "MONOCHROME" :
                    "COLOR / NOT DETECTED";
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+
+    if (xhr.status >= 200 && xhr.status < 300) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        document.getElementById("http-ua").innerHTML =
+          data.userAgent || "(empty)";
+      } catch (e) {
+        document.getElementById("http-ua").innerHTML =
+          "Could not parse response: " + xhr.responseText;
+      }
+    } else {
+      document.getElementById("http-ua").innerHTML =
+        "Request failed: HTTP " + xhr.status;
+    }
+  };
+  xhr.open("GET", "/.netlify/functions/user-agent?ts=" + new Date().getTime(), true);
+  xhr.send(null);
 }());
 </script>
 
