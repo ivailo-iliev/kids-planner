@@ -2,100 +2,28 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Monochrome Detection Test</title>
-<style>
-@font-face {
-  font-family: "Noto Emoji Kindle";
-  src: url("https://raw.githubusercontent.com/ghostlypi/NotoSans/main/NotoEmoji-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-body { font-size: 20px; }
-p { margin: 1em 0; }
-.emoji { font-size: 42px; line-height: 1.35; }
-#ua { font-family: monospace; font-size: 14px; word-break: break-all; }
-
-.css-mono { display: none; }
-.css-color { display: inline; }
-
-@media screen and (monochrome) {
-  .css-mono { display: inline; }
-  .css-color { display: none; }
-  .emoji-css { font-family: "Noto Emoji Kindle", sans-serif; }
-}
-
-html.js-monochrome .emoji-js {
-  font-family: "Noto Emoji Kindle", sans-serif;
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kids Routine Table Test</title>
+<link rel="stylesheet" href="/.netlify/functions/device-css">
 </head>
 <body>
-
-<p>
-  Native/default rendering (control)<br>
-  <span class="emoji">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
-</p>
-
-<p>
-  CSS detection:
-  <strong class="css-mono">MONOCHROME</strong>
-  <strong class="css-color">COLOR / NOT DETECTED</strong><br>
-  <span class="emoji emoji-css">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
-</p>
-
-<p>
-  JavaScript detection:
-  <strong id="js-result">JavaScript did not run</strong><br>
-  <span class="emoji emoji-js">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
-</p>
-
-<p>\n  matchMedia support: <span id="matchmedia">JavaScript did not run</span><br>\n  navigator.userAgent:<br>\n  <span id="ua">JavaScript did not run</span>\n</p>\n\n<p>\n  HTTP User-Agent seen by Netlify:<br>\n  <span id="http-ua">Waiting for server response...</span>\n</p>
-
-<script>
-(function () {
-  var root = document.documentElement;
-  var hasMatchMedia = typeof window.matchMedia === "function";
-  var isMonochrome = false;
-
-  document.getElementById("ua").innerHTML = navigator.userAgent || "";
-  document.getElementById("matchmedia").innerHTML = hasMatchMedia ? "YES" : "NO";
-
-  if (hasMatchMedia) {
-    isMonochrome = window.matchMedia("screen and (monochrome)").matches;
-  }
-
-  if (isMonochrome) {
-    root.className += (root.className ? " " : "") + "js-monochrome";
-  }
-
-  document.getElementById("js-result").innerHTML =
-    !hasMatchMedia ? "UNSUPPORTED" :
-    isMonochrome ? "MONOCHROME" :
-                   "COLOR / NOT DETECTED";
-
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState !== 4) return;
-
-    if (xhr.status >= 200 && xhr.status < 300) {
-      try {
-        var data = JSON.parse(xhr.responseText);
-        document.getElementById("http-ua").innerHTML =
-          data.userAgent || "(empty)";
-      } catch (e) {
-        document.getElementById("http-ua").innerHTML =
-          "Could not parse response: " + xhr.responseText;
-      }
-    } else {
-      document.getElementById("http-ua").innerHTML =
-        "Request failed: HTTP " + xhr.status;
-    }
-  };
-  xhr.open("GET", "/.netlify/functions/user-agent?ts=" + new Date().getTime(), true);
-  xhr.send(null);
-}());
-</script>
-
+<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+  <tr aria-label="Girl routine">
+    <td class="emoji">🪥</td>
+    <td class="emoji">🪮</td>
+    <td class="emoji">👗</td>
+    <td class="emoji">🍞</td>
+    <td class="emoji">👟</td>
+    <td class="emoji">🎒</td>
+  </tr>
+  <tr aria-label="Boy routine">
+    <td class="emoji">🛏️</td>
+    <td class="emoji">🪥</td>
+    <td class="emoji">👕</td>
+    <td class="emoji">🍞</td>
+    <td class="emoji">👟</td>
+    <td class="emoji">🎒</td>
+  </tr>
+</table>
 </body>
 </html>
