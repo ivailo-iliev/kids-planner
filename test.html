@@ -2,15 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Kindle Emoji Font Test</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
+<title>Kindle Emoji Fallback Test</title>
 
 <style>
 @font-face {
-  font-family: "Noto Emoji Embedded";
+  font-family: "Noto Emoji Kindle";
   src: url("https://raw.githubusercontent.com/ghostlypi/NotoSans/main/NotoEmoji-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
@@ -28,24 +24,43 @@ p {
   font-size: 42px;
   line-height: 1.35;
 }
+
+/* Only Kindle gets the bundled monochrome emoji font. */
+html.kindle .emoji-auto {
+  font-family: "Noto Emoji Kindle", sans-serif;
+}
 </style>
+
+<script>
+(function () {
+  var ua = navigator.userAgent || "";
+  if (/Kindle|Silk|KFAPWI|KFTT|KFSOWI/i.test(ua)) {
+    document.documentElement.className +=
+      (document.documentElement.className ? " " : "") + "kindle";
+  }
+}());
+</script>
 </head>
 <body>
 
-<p style="font-family: 'Noto Emoji Embedded', sans-serif;">
-  Embedded Noto Emoji (TTF via @font-face)<br>
+<p>
+  Native/default rendering (control)<br>
   <span class="emoji">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
 </p>
 
-<p style="font-family: 'Noto Emoji', sans-serif;">
-  Google Fonts — Noto Emoji<br>
-  <span class="emoji">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
+<p>
+  Automatic final strategy
+  <span id="mode"></span><br>
+  <span class="emoji emoji-auto">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
 </p>
 
-<p style="font-family: 'Noto Color Emoji', sans-serif;">
-  Google Fonts — Noto Color Emoji<br>
-  <span class="emoji">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
-</p>
+<script>
+(function () {
+  var isKindle = /(^|\s)kindle(\s|$)/.test(document.documentElement.className);
+  document.getElementById("mode").innerHTML =
+    isKindle ? " — Kindle: embedded Noto Emoji TTF" : " — modern browser: OS native emoji";
+}());
+</script>
 
 </body>
 </html>
