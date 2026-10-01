@@ -39,7 +39,13 @@ html.kindle .emoji-auto { font-family: "Noto Emoji Kindle", sans-serif; }
 (function () {
   var ua = navigator.userAgent || "";
   var root = document.documentElement;
-  var isKindle = /Kindle|Silk|KFAPWI|KFTT|KFSOWI/i.test(ua);
+  var isKindle =
+    /Kindle|Silk|KFAPWI|KFTT|KFSOWI/i.test(ua) ||
+    (
+      /Linux armv7l/i.test(ua) &&
+      /AppleWebKit\/534\.26\+/i.test(ua) &&
+      /Version\/5\.0 Safari\/534\.26\+/i.test(ua)
+    );
 
   document.getElementById("ua").innerHTML = ua;
 
