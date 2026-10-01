@@ -3,27 +3,72 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kids Routine Table Test</title>
+<title>Kids Routine Layout Test</title>
 <link rel="stylesheet" href="/.netlify/functions/device-css">
 </head>
 <body>
 <table width="100%" height="100%" cellspacing="0" cellpadding="0">
   <tr aria-label="Girl routine">
-    <td class="emoji">🪥</td>
-    <td class="emoji">🪮</td>
-    <td class="emoji">👗</td>
-    <td class="emoji">🍞</td>
-    <td class="emoji">👟</td>
-    <td class="emoji">🎒</td>
+    <td class="routine">
+      <span class="emoji-item">🪥</span>
+      <span class="emoji-item">🪮</span>
+      <span class="emoji-item">👗</span>
+      <span class="emoji-item">🍞</span>
+      <span class="emoji-item">👟</span>
+      <span class="emoji-item">🎒</span>
+    </td>
   </tr>
   <tr aria-label="Boy routine">
-    <td class="emoji">🛏️</td>
-    <td class="emoji">🪥</td>
-    <td class="emoji">👕</td>
-    <td class="emoji">🍞</td>
-    <td class="emoji">👟</td>
-    <td class="emoji">🎒</td>
+    <td class="routine">
+      <span class="emoji-item">🪥</span>
+      <span class="emoji-item">👕</span>
+      <span class="emoji-item">🍞</span>
+      <span class="emoji-item">👟</span>
+      <span class="emoji-item">🎒</span>
+    </td>
   </tr>
 </table>
+
+<script>
+(function () {
+  function resizeRoutineEmoji() {
+    var rows = document.getElementsByTagName("tr");
+    var maxTasks = 1;
+    var i;
+
+    for (i = 0; i < rows.length; i++) {
+      var count = rows[i].getElementsByTagName("span").length;
+      if (count > maxTasks) maxTasks = count;
+    }
+
+    var width = document.documentElement.clientWidth || document.body.clientWidth || 1024;
+    var height = document.documentElement.clientHeight || document.body.clientHeight || 758;
+
+    var availableWidth = width * 0.94;
+    var rowHeight = height / rows.length;
+
+    // Each emoji is approximately 1em wide, with a 0.18em gap after it.
+    // Use the row with the most tasks so both rows have one consistent size.
+    var sizeByWidth = availableWidth / (maxTasks * 1.18);
+    var sizeByHeight = rowHeight * 0.55;
+    var size = Math.floor(Math.min(sizeByWidth, sizeByHeight));
+
+    var cells = document.getElementsByTagName("td");
+    for (i = 0; i < cells.length; i++) {
+      if ((" " + cells[i].className + " ").indexOf(" routine ") !== -1) {
+        cells[i].style.fontSize = size + "px";
+      }
+    }
+  }
+
+  resizeRoutineEmoji();
+
+  if (window.addEventListener) {
+    window.addEventListener("resize", resizeRoutineEmoji, false);
+  } else if (window.attachEvent) {
+    window.attachEvent("onresize", resizeRoutineEmoji);
+  }
+}());
+</script>
 </body>
 </html>
