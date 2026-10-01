@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>Kindle Emoji Fallback Test</title>
-
 <style>
 @font-face {
   font-family: "Noto Emoji Kindle";
@@ -11,35 +10,12 @@
   font-weight: normal;
   font-style: normal;
 }
-
-body {
-  font-size: 20px;
-}
-
-p {
-  margin: 1em 0;
-}
-
-.emoji {
-  font-size: 42px;
-  line-height: 1.35;
-}
-
-/* Only Kindle gets the bundled monochrome emoji font. */
-html.kindle .emoji-auto {
-  font-family: "Noto Emoji Kindle", sans-serif;
-}
+body { font-size: 20px; }
+p { margin: 1em 0; }
+.emoji { font-size: 42px; line-height: 1.35; }
+html.kindle .emoji-auto { font-family: "Noto Emoji Kindle", sans-serif; }
+#ua { font-family: monospace; font-size: 14px; word-break: break-all; }
 </style>
-
-<script>
-(function () {
-  var ua = navigator.userAgent || "";
-  if (/Kindle|Silk|KFAPWI|KFTT|KFSOWI/i.test(ua)) {
-    document.documentElement.className +=
-      (document.documentElement.className ? " " : "") + "kindle";
-  }
-}());
-</script>
 </head>
 <body>
 
@@ -48,16 +24,32 @@ html.kindle .emoji-auto {
   <span class="emoji">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
 </p>
 
-<p id="ua"></p>\n\n<p>\n  Automatic final strategy
+<p>
+  User agent:<br>
+  <span id="ua">JavaScript did not run</span>
+</p>
+
+<p>
+  Automatic final strategy
   <span id="mode"></span><br>
   <span class="emoji emoji-auto">👧 👦 🪥 🪮 👗 👕 🍞 👟 🎒 🍽️ 🛁 📖 🛏️ ☀️ 🌙 ✅</span>
 </p>
 
 <script>
 (function () {
-  var isKindle = /(^|\s)kindle(\s|$)/.test(document.documentElement.className);
+  var ua = navigator.userAgent || "";
+  var root = document.documentElement;
+  var isKindle = /Kindle|Silk|KFAPWI|KFTT|KFSOWI/i.test(ua);
+
+  document.getElementById("ua").innerHTML = ua;
+
+  if (isKindle) {
+    root.className += (root.className ? " " : "") + "kindle";
+  }
+
   document.getElementById("mode").innerHTML =
-    isKindle ? " — Kindle: embedded Noto Emoji TTF" : " — modern browser: OS native emoji";
+    isKindle ? " — Kindle: embedded Noto Emoji TTF"
+             : " — modern browser: OS native emoji";
 }());
 </script>
 
