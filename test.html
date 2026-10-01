@@ -5,32 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kids Routine Layout Test</title>
 <link rel="stylesheet" href="/.netlify/functions/device-css">
+<script>
+function toggleDone(el) {
+  var name = "done";
+  var classes = " " + el.className + " ";
+
+  if (classes.indexOf(" " + name + " ") !== -1) {
+    el.className = classes
+      .replace(" " + name + " ", " ")
+      .replace(/^\s+|\s+$/g, "");
+  } else {
+    el.className += (el.className ? " " : "") + name;
+  }
+
+  return false;
+}
+</script>
 </head>
 <body>
 <table width="100%" height="100%" cellspacing="0" cellpadding="0">
-  <colgroup>
-    <col class="person-column">
-    <col>
-  </colgroup>
   <tr aria-label="Girl routine">
-    <td class="person"><span class="emoji">👧</span></td>
     <td class="routine">
-      <span class="emoji-item emoji"><span class="task-icon">🪥</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">🪮</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">👗</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">🍳</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">👟</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">🎒</span></span>
+      <span class="person-icon emoji">👧</span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪥</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪮</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👗</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🍳</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👟</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🎒</span></span>
     </td>
   </tr>
   <tr aria-label="Boy routine">
-    <td class="person"><span class="emoji">👦</span></td>
     <td class="routine">
-      <span class="emoji-item emoji"><span class="task-icon">🪥</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">👕</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">🍳</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">👟</span></span>
-      <span class="emoji-item emoji"><span class="task-icon">🎒</span></span>
+      <span class="person-icon emoji">👦</span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪥</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👕</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🍳</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👟</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🎒</span></span>
     </td>
   </tr>
 </table>
@@ -41,82 +53,51 @@
     return (" " + el.className + " ").indexOf(" " + name + " ") !== -1;
   }
 
-  function toggleClass(el, name) {
-    if (hasClass(el, name)) {
-      el.className = (" " + el.className + " ")
-        .replace(" " + name + " ", " ")
-        .replace(/^\s+|\s+$/g, "");
-    } else {
-      el.className += (el.className ? " " : "") + name;
-    }
-  }
-
-  function getItems(cell) {
+  function countVisualItems(cell) {
     var spans = cell.getElementsByTagName("span");
-    var items = [];
+    var count = 0;
     var i;
+
     for (i = 0; i < spans.length; i++) {
-      if (hasClass(spans[i], "emoji-item")) items.push(spans[i]);
+      if (hasClass(spans[i], "person-icon") || hasClass(spans[i], "emoji-item")) {
+        count++;
+      }
     }
-    return items;
+
+    return count;
   }
 
   function resizeRoutineEmoji() {
     var cells = document.getElementsByTagName("td");
     var routineCells = [];
-    var maxTasks = 1;
+    var maxItems = 1;
     var i;
 
     for (i = 0; i < cells.length; i++) {
       if (hasClass(cells[i], "routine")) {
         routineCells.push(cells[i]);
-        var count = getItems(cells[i]).length;
-        if (count > maxTasks) maxTasks = count;
+        var count = countVisualItems(cells[i]);
+        if (count > maxItems) maxItems = count;
       }
     }
 
     if (!routineCells.length) return;
 
     var rowHeight = routineCells[0].parentNode.clientHeight;
-    var availableWidth = routineCells[0].clientWidth - 24;
+    var availableWidth = routineCells[0].clientWidth * 0.96;
 
-    // Each task occupies 1em plus a 0.18em gap.
-    // Both rows share the size required by the longer routine.
-    var sizeByWidth = availableWidth / (maxTasks * 1.18);
+    // The longest row determines one shared icon size for both children.
+    // Allow roughly 1em per icon plus the small inter-item gaps.
+    var sizeByWidth = availableWidth / (maxItems * 1.16);
     var sizeByHeight = rowHeight * 0.55;
     var size = Math.floor(Math.min(sizeByWidth, sizeByHeight));
 
     for (i = 0; i < routineCells.length; i++) {
       routineCells[i].style.fontSize = size + "px";
     }
-
-    for (i = 0; i < cells.length; i++) {
-      if (hasClass(cells[i], "person")) {
-        cells[i].style.fontSize = Math.min(size, 78) + "px";
-      }
-    }
-  }
-
-  function bindTaskClicks() {
-    var cells = document.getElementsByTagName("td");
-    var i;
-    var j;
-
-    for (i = 0; i < cells.length; i++) {
-      if (!hasClass(cells[i], "routine")) continue;
-
-      var items = getItems(cells[i]);
-      for (j = 0; j < items.length; j++) {
-        items[j].onclick = function () {
-          toggleClass(this, "done");
-          return false;
-        };
-      }
-    }
   }
 
   resizeRoutineEmoji();
-  bindTaskClicks();
 
   if (window.addEventListener) {
     window.addEventListener("resize", resizeRoutineEmoji, false);
