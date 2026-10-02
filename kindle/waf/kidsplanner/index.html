@@ -41,10 +41,23 @@
             -webkit-appearance: none;
             appearance: none;
         }
+
+        #version {
+            position: fixed;
+            z-index: 10;
+            top: 8px;
+            left: 8px;
+            padding: 4px 6px;
+            background: #fff;
+            color: #555;
+            font: 14px/1.2 Arial, sans-serif;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
     <iframe id="planner" title="Kids Planner morning routine" src="https://kids-planner.netlify.app/test.html"></iframe>
+    <div id="version">Kids Planner v1.0.8</div>
     <button id="close" type="button" aria-label="Close Kids Planner" title="Close">&times;</button>
     <script>
         (function requestFullscreen() {

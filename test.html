@@ -9,7 +9,7 @@ html, body { width: 100%; height: 100%; margin: 0; }
 body { color: #111; background: #fff; font-family: Arial, sans-serif; }
 table { width: 100%; height: 100%; table-layout: fixed; border-collapse: collapse; }
 tr { height: 50%; }
-td { padding: 0; text-align: left; vertical-align: middle; white-space: nowrap; line-height: 1; }
+td { padding: 0; text-align: left; vertical-align: middle; white-space: nowrap; line-height: 1; font-size: 0; }
 .person-icon, .emoji-item { display: inline-block; width: 1em; text-align: center; vertical-align: middle; }
 .person-icon { margin-right: 0.35em; }
 .emoji-item { margin-right: 0.18em; }
@@ -125,6 +125,20 @@ function resizeRoutineEmoji() {
   var iconSize = Math.floor(Math.min(availableWidth / maxWidthUnits, availableHeight * 0.8));
   for (i = 0; i < allItems.length; i++) {
     allItems[i].style.fontSize = iconSize + "px";
+  }
+
+  var fitRatio = 1;
+  for (i = 0; i < rows.length; i++) {
+    var measuredCell = rows[i].getElementsByTagName("td")[0];
+    if (measuredCell.scrollWidth > measuredCell.clientWidth) {
+      fitRatio = Math.min(fitRatio, (measuredCell.clientWidth - 1) / measuredCell.scrollWidth);
+    }
+  }
+  if (fitRatio < 1) {
+    iconSize = Math.floor(iconSize * fitRatio);
+    for (i = 0; i < allItems.length; i++) {
+      allItems[i].style.fontSize = iconSize + "px";
+    }
   }
 }
 

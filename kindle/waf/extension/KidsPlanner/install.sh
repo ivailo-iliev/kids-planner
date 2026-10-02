@@ -3,7 +3,7 @@
 set -e
 
 APP_ID="com.ivailo.kidsplanner"
-WAF_VERSION="1.0.7"
+WAF_VERSION="1.0.8"
 SOURCE="/mnt/us/extensions/KidsPlanner/waf"
 DEST="/var/local/mesquite/kidsplanner"
 DB="/var/local/appreg.db"
