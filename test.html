@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kids Routine Layout Test</title>
+<title>Kids Planner</title>
 <link id="device-css" rel="stylesheet" href="/.netlify/functions/device-css">
 <style>
 html, body {
@@ -63,10 +63,14 @@ td.routine {
 }
 
 @font-face {
-  font-family: "Noto Emoji Direct URL";
+  font-family: "Noto Emoji Kindle";
   src: url("/.netlify/functions/emoji-font") format("truetype");
   font-weight: normal;
   font-style: normal;
+}
+
+html.kindle-emoji .emoji {
+  font-family: "Noto Emoji Kindle", sans-serif;
 }
 
 @font-face {
@@ -138,6 +142,20 @@ function toggleDone(el) {
   }
 
   return false;
+}
+
+function isLegacyKindleUserAgent(userAgent) {
+  return /Linux armv7l/i.test(userAgent) &&
+    /AppleWebKit\/534\.26\+/i.test(userAgent) &&
+    /Version\/5\.0 Safari\/534\.26\+/i.test(userAgent);
+}
+
+if (
+  !/(?:^|[?&])font-diagnostics=1(?:&|$)/.test(window.location.search || "") &&
+  isLegacyKindleUserAgent(navigator.userAgent || "")
+) {
+  document.documentElement.className +=
+    (document.documentElement.className ? " " : "") + "kindle-emoji";
 }
 </script>
 </head>
@@ -441,7 +459,7 @@ function toggleDone(el) {
       applyFamily("Arial, sans-serif");
       fontStatus("system/browser fallback");
     } else if (mode === "direct-url") {
-      applyFamily('"Noto Emoji Direct URL", sans-serif');
+      applyFamily('"Noto Emoji Kindle", sans-serif');
       fontStatus("same-origin TTF URL");
     } else if (mode === "github-url") {
       applyFamily('"Noto Emoji GitHub URL", sans-serif');

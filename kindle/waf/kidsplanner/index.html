@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-    <iframe id="planner" title="Kids Planner morning routine" src="https://kids-planner.netlify.app/test.html?font-diagnostics=1"></iframe>
+    <iframe id="planner" title="Kids Planner morning routine" src="https://kids-planner.netlify.app/test.html"></iframe>
     <button id="close" type="button" aria-label="Close Kids Planner" title="Close">&times;</button>
     <script>
         (function requestLandscapeAndFullscreen() {
@@ -64,6 +64,30 @@
                 }
             }
         }());
+
+        function configureKindleChrome() {
+            var kindle = window.kindle;
+            var messaging = kindle && kindle.messaging;
+            if (!messaging || typeof messaging.sendMessage !== 'function') {
+                return;
+            }
+            try {
+                messaging.sendMessage('com.lab126.chromebar', 'configureChrome', {
+                    appId: 'com.ivailo.kidsplanner',
+                    topNavBar: {
+                        template: 'title',
+                        title: 'Kids Planner',
+                        buttons: []
+                    }
+                });
+            } catch (error) {
+                // Keep the custom close button if this firmware rejects custom chrome.
+            }
+        }
+        configureKindleChrome();
+        if (window.kindle && window.kindle.appmgr) {
+            window.kindle.appmgr.ongo = configureKindleChrome;
+        }
 
         document.getElementById('close').onclick = function() {
             if (window.kindle && window.kindle.dev && window.kindle.dev.setOrientation) {

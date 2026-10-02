@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget id="com.ivailo.kidsplanner" version="1.0.5" viewmodes="fullscreen application"
+<widget id="com.ivailo.kidsplanner" version="1.0.6" viewmodes="fullscreen application"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:kindle="http://kindle.amazon.com/ns/widget-extensions">
     <name xml:lang="en">Kids Planner</name>
@@ -9,6 +9,10 @@
         <kindle:asset key="enableWrsProxy" value="true" />
         <kindle:asset key="allowTlsFallback" value="true" />
     </kindle:network>
+    <kindle:chrome>
+        <kindle:asset key="useCustomSearchBar" value="true" />
+        <kindle:asset key="configureSearchBar" value="none" />
+    </kindle:chrome>
     <kindle:settings>
         <kindle:setting name="internetRequired" value="yes" />
         <kindle:setting name="saveContext" value="no" />
@@ -16,10 +20,12 @@
     </kindle:settings>
     <feature name="http://kindle.amazon.com/apis" required="true">
         <param name="appmgr" value="yes" />
+        <param name="chrome" value="yes" />
         <param name="dev" value="yes" />
         <param name="messaging" value="yes" />
     </feature>
     <kindle:messaging>
         <kindle:app name="com.lab126.mfa" value="yes" />
+        <kindle:app name="com.lab126.chromebar" value="yes" />
     </kindle:messaging>
 </widget>

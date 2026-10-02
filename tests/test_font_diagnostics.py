@@ -56,6 +56,29 @@ handler({
 });
 """
 
+KINDLE_UA_PROBE = r"""
+const fs = require("fs");
+const vm = require("vm");
+const source = fs.readFileSync("./test.html", "utf8");
+const match = source.match(/<script\b[^>]*>([\s\S]*?)<\/script>/i);
+if (!match) throw new Error("page initialization script not found");
+const request = JSON.parse(process.argv[1]);
+function classFor(userAgent, search) {
+  const context = {
+    window: { location: { search } },
+    navigator: { userAgent },
+    document: { documentElement: { className: "" } }
+  };
+  vm.runInNewContext(match[1], context);
+  return context.document.documentElement.className;
+}
+process.stdout.write(JSON.stringify({
+  legacyKindle: classFor(request.legacyUserAgent, ""),
+  genericLinux: classFor(request.genericUserAgent, ""),
+  diagnosticMode: classFor(request.legacyUserAgent, "?font-diagnostics=1")
+}));
+"""
+
 
 class FontDiagnosticTests(unittest.TestCase):
     def request_probe(self, user_agent, query):
@@ -82,6 +105,42 @@ class FontDiagnosticTests(unittest.TestCase):
         self.assertTrue(response["contentType"].startswith("text/plain"))
         self.assertFalse(response["isBase64Encoded"])
         self.assertEqual(response["fontHash"], EXPECTED_FONT_SHA256)
+
+    def test_client_detects_legacy_kindle_user_agent_and_uses_same_origin_font(self):
+        source = (ROOT / "test.html").read_text(encoding="utf-8")
+        self.assertIn("function isLegacyKindleUserAgent", source)
+        result = subprocess.run(
+            [
+                "node",
+                "-e",
+                KINDLE_UA_PROBE,
+                json.dumps(
+                    {
+                        "legacyUserAgent": (
+                            "Mozilla/5.0 (X11; ; U; Linux armv7l; en-gb) "
+                            "AppleWebKit/534.26+ (KHTML, like Gecko) "
+                            "Version/5.0 Safari/534.26+"
+                        ),
+                        "genericUserAgent": (
+                            "Mozilla/5.0 (X11; Linux x86_64) "
+                            "AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
+                        ),
+                    }
+                ),
+            ],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(
+            json.loads(result.stdout),
+            {"legacyKindle": "kindle-emoji", "genericLinux": "", "diagnosticMode": ""},
+        )
+        self.assertIn('src: url("/.netlify/functions/emoji-font") format("truetype")', source)
+        self.assertIn(".kindle-emoji .emoji", source)
+        self.assertIn('isLegacyKindleUserAgent(navigator.userAgent || "")', source)
 
     def test_server_diagnostics_echo_the_request_user_agent_and_detection(self):
         user_agent = "Mozilla/5.0 Kindle/5.12.2.2"
@@ -155,12 +214,10 @@ class FontDiagnosticTests(unittest.TestCase):
         self.assertIn('id="routine-table"', source)
         self.assertEqual(source.count('class="routine"'), 2)
 
-    def test_waf_launches_the_temporary_font_diagnostic_view(self):
+    def test_waf_launches_the_routine_view_without_font_diagnostics(self):
         source = (ROOT / "kindle/waf/kidsplanner/index.html").read_text(encoding="utf-8")
-        self.assertIn(
-            'src="https://kids-planner.netlify.app/test.html?font-diagnostics=1"',
-            source,
-        )
+        self.assertIn('src="https://kids-planner.netlify.app/test.html"', source)
+        self.assertNotIn("font-diagnostics=1", source)
 
 
 if __name__ == "__main__":
