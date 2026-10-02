@@ -14,8 +14,8 @@ class KidsPlannerWAFTests(unittest.TestCase):
         ns = {"w": "http://www.w3.org/ns/widgets"}
         waf = ET.parse(WAF / "config.xml").getroot()
         extension = ET.parse(EXTENSION / "config.xml").getroot()
-        self.assertEqual(waf.attrib["version"], "1.0.4")
-        self.assertEqual(extension.findtext("information/version"), "1.0.4")
+        self.assertEqual(waf.attrib["version"], "1.0.5")
+        self.assertEqual(extension.findtext("information/version"), "1.0.5")
 
     def test_built_packages_match_the_current_waf_and_extension_sources(self):
         kual_package = KINDLE / "build/KidsPlanner-KUAL-extension.zip"
@@ -65,7 +65,7 @@ class KidsPlannerWAFTests(unittest.TestCase):
 
     def test_installer_allows_rotation_and_reports_the_same_version(self):
         source = (EXTENSION / "install.sh").read_text(encoding="utf-8")
-        self.assertIn('WAF_VERSION="1.0.4"', source)
+        self.assertIn('WAF_VERSION="1.0.5"', source)
         self.assertIn("'supportedOrientation', 'URL'", source)
         self.assertIn("orientationLock L", source)
         self.assertIn('"$APP_ID $WAF_VERSION"', source)
@@ -76,9 +76,9 @@ class KidsPlannerWAFTests(unittest.TestCase):
         self.assertIn("setOrientation('auto')", source)
         self.assertIn("start('com.lab126.booklet.home')", source)
 
-    def test_waf_loads_the_kids_morning_routine_test_page(self):
+    def test_waf_loads_the_kids_routine_font_diagnostic_view(self):
         source = (WAF / "index.html").read_text(encoding="utf-8")
-        self.assertIn('src="https://kids-planner.netlify.app/test.html"', source)
+        self.assertIn('src="https://kids-planner.netlify.app/test.html?font-diagnostics=1"', source)
 
     def test_page_content_uses_the_full_viewport(self):
         source = (WAF / "index.html").read_text(encoding="utf-8")
