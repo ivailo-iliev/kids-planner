@@ -129,6 +129,8 @@ class FontDiagnosticTests(unittest.TestCase):
         self.assertLess(loading, request)
         self.assertIn("if (activeFontMode !== mode) return;", apply_mode)
         self.assertIn('id="css-status"', source)
+        self.assertIn("cssLink.sheet", source)
+        self.assertIn("dataCssState", source)
 
     def test_diagnostic_page_exposes_user_agents_font_variants_and_layout_metrics(self):
         source = (ROOT / "test.html").read_text(encoding="utf-8")

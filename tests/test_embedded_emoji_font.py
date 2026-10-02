@@ -23,7 +23,8 @@ handler({
       : null,
     referencesExternalFont: /emoji-font/.test(response.body),
     hasLayoutCss: /table-layout: fixed/.test(response.body),
-    hasEmojiFontRule: /\.emoji\s*\{[^}]*font-family/i.test(response.body)
+    hasEmojiFontRule: /\.emoji\s*\{[^}]*font-family/i.test(response.body),
+    hasIsolatedTestFamily: /Noto Emoji Embedded CSS Test/.test(response.body)
   }));
 }).catch((error) => {
   console.error(error);
@@ -62,6 +63,7 @@ class EmbeddedEmojiFontTests(unittest.TestCase):
         self.assertEqual(result["fontHash"], EXPECTED_FONT_SHA256)
         self.assertFalse(result["hasLayoutCss"])
         self.assertFalse(result["hasEmojiFontRule"])
+        self.assertTrue(result["hasIsolatedTestFamily"])
 
     def test_non_kindle_default_css_does_not_include_a_font(self):
         result = self.css_probe(

@@ -396,16 +396,17 @@ exports.handler = async function (event) {
       };
     }
 
+    var embeddedFamily = fontOnly ? "Noto Emoji Embedded CSS Test" : "Noto Emoji Kindle";
     css.push('');
     css.push('@font-face {');
-    css.push('  font-family: "Noto Emoji Kindle";');
+    css.push('  font-family: "' + embeddedFamily + '";');
     css.push('  src: url("data:font/ttf;base64,' + EMOJI_FONT_BASE64 + '") format("truetype");');
     css.push('  font-weight: normal;');
     css.push('  font-style: normal;');
     css.push('}');
     css.push('');
     if (!fontOnly) {
-      css.push('.emoji { font-family: "Noto Emoji Kindle", sans-serif; }');
+      css.push('.emoji { font-family: "' + embeddedFamily + '", sans-serif; }');
     }
   }
 
