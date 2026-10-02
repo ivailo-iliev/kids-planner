@@ -4,129 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kids Planner</title>
-<link id="device-css" rel="stylesheet" href="/.netlify/functions/device-css">
 <style>
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  color: #111;
-  background: #fff;
-  font-family: Arial, sans-serif;
-}
-
-#routine-table {
-  width: 100%;
-  height: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-#routine-table tr {
-  height: 50%;
-}
-
-td.routine {
-  text-align: left;
-  vertical-align: middle;
-  white-space: nowrap;
-  padding: 0 2%;
-  line-height: 1;
-}
-
-.person-icon,
-.emoji-item {
-  display: inline-block;
-  width: 1em;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.person-icon {
-  margin-right: 0.35em;
-}
-
-.emoji-item {
-  margin-right: 0.18em;
-}
-
-.emoji-item.done .task-icon {
-  display: none;
-}
-
-.emoji-item.done:after {
-  content: "✅";
-}
-
+html, body { width: 100%; height: 100%; margin: 0; }
+body { color: #111; background: #fff; font-family: Arial, sans-serif; }
+table { width: 100%; height: 100%; table-layout: fixed; border-collapse: collapse; }
+tr { height: 50%; }
+td { padding: 0 2%; text-align: left; vertical-align: middle; white-space: nowrap; line-height: 1; font-size: 80px; }
+.person-icon, .emoji-item { display: inline-block; width: 1em; text-align: center; vertical-align: middle; }
+.person-icon { margin-right: 0.35em; }
+.emoji-item { margin-right: 0.18em; }
+.emoji-item.done .task-icon { display: none; }
+.emoji-item.done:after { content: "✅"; }
 @font-face {
-  font-family: "Noto Emoji Kindle";
-  src: url("/.netlify/functions/emoji-font") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-html.kindle-emoji .emoji {
-  font-family: "Noto Emoji Kindle", sans-serif;
-}
-
-@font-face {
-  font-family: "Noto Emoji GitHub URL";
+  font-family: "Noto Emoji";
   src: url("https://raw.githubusercontent.com/ghostlypi/NotoSans/main/NotoEmoji-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
-
-#diagnostics {
-  display: none;
-  box-sizing: border-box;
-  max-height: 42%;
-  overflow: auto;
-  padding: 3px 64px 3px 6px;
-  border-bottom: 1px solid #777;
-  background: #eee;
-  color: #111;
-  font: 12px/1.25 Arial, sans-serif;
-}
-
-body.font-diagnostics #diagnostics {
-  display: block;
-}
-
-#diagnostics h1 {
-  display: inline;
-  margin: 0 8px 0 0;
-  font-size: 12px;
-}
-
-.diag-line {
-  margin: 1px 0;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.diag-ua {
-  font: 10px/1.15 monospace;
-}
-
-#font-mode {
-  max-width: 72%;
-  font-size: 12px;
-}
-
-#font-status,
-#css-status,
-#server-detection,
-#layout-metrics {
-  margin-top: 2px;
-  font: 10px/1.2 monospace;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
+html.kindle-emoji .emoji { font-family: "Noto Emoji", sans-serif; }
 </style>
 <script>
 function toggleDone(el) {
@@ -150,46 +45,16 @@ function isLegacyKindleUserAgent(userAgent) {
     /Version\/5\.0 Safari\/534\.26\+/i.test(userAgent);
 }
 
-if (
-  !/(?:^|[?&])font-diagnostics=1(?:&|$)/.test(window.location.search || "") &&
-  isLegacyKindleUserAgent(navigator.userAgent || "")
-) {
+if (isLegacyKindleUserAgent(navigator.userAgent || "")) {
   document.documentElement.className +=
     (document.documentElement.className ? " " : "") + "kindle-emoji";
 }
 </script>
 </head>
 <body>
-<div id="diagnostics">
-  <h1>Font &amp; device test</h1>
-  <span>Check whether Kindle/browser chrome is still visible.</span>
-  <div class="diag-line"><strong>Client User-Agent:</strong> <span id="client-ua" class="diag-ua">reading…</span></div>
-  <div class="diag-line"><strong>Server HTTP User-Agent:</strong> <span id="server-ua" class="diag-ua">reading…</span></div>
-  <div id="server-detection">Server detection: waiting</div>
-  <div class="diag-line">
-    <label for="font-mode">Font method (same routine rows):</label>
-    <select id="font-mode">
-      <option value="server">Server-detected default</option>
-      <option value="system">System/browser fallback</option>
-      <option value="direct-url">Same-origin TTF URL</option>
-      <option value="github-url">Direct GitHub TTF URL</option>
-      <option value="server-data-uri">Embedded data URI in device-css response</option>
-      <option value="inline-ttf">Inline CSS data:font/ttf + format</option>
-      <option value="inline-no-format">Inline CSS data:font/ttf without format</option>
-      <option value="inline-xfont">Inline CSS application/x-font-ttf</option>
-      <option value="inline-sfnt">Inline CSS application/font-sfnt</option>
-      <option value="inline-octet">Inline CSS application/octet-stream</option>
-      <option value="inline-fallback">Inline data URI, then same-origin URL</option>
-    </select>
-  </div>
-  <div id="font-status">Font method: server-detected default</div>
-  <div id="css-status">Device stylesheet: waiting</div>
-  <div id="layout-metrics">Layout metrics: measuring</div>
-</div>
-
-<table id="routine-table" width="100%" height="100%" cellspacing="0" cellpadding="0">
+<table width="100%" height="100%" cellspacing="0" cellpadding="0">
   <tr aria-label="Girl routine">
-    <td class="routine">
+    <td>
       <span class="person-icon emoji">👧</span>
       <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪥</span></span>
       <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪮</span></span>
@@ -200,7 +65,7 @@ if (
     </td>
   </tr>
   <tr aria-label="Boy routine">
-    <td class="routine">
+    <td>
       <span class="person-icon emoji">👦</span>
       <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪥</span></span>
       <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👕</span></span>
@@ -210,348 +75,5 @@ if (
     </td>
   </tr>
 </table>
-
-<script>
-(function () {
-  var diagnosticMode = /(?:^|[?&])font-diagnostics=1(?:&|$)/.test(window.location.search || "");
-  var fontBase64 = null;
-  var fontDataLoading = false;
-  var fontDataCallbacks = [];
-  var dataCssLink = null;
-  var dataCssState = "idle";
-  var activeFontMode = "server";
-  var inlineFontStyle = null;
-  var cssLink = document.getElementById("device-css");
-  var choices;
-
-  function hasClass(el, name) {
-    return (" " + el.className + " ").indexOf(" " + name + " ") !== -1;
-  }
-
-  function setText(el, value) {
-    if (!el) return;
-    if (typeof el.textContent !== "undefined") {
-      el.textContent = value;
-    } else {
-      el.innerText = value;
-    }
-  }
-
-  function countVisualItems(cell) {
-    var spans = cell.getElementsByTagName("span");
-    var count = 0;
-    var i;
-
-    for (i = 0; i < spans.length; i++) {
-      if (hasClass(spans[i], "person-icon") || hasClass(spans[i], "emoji-item")) {
-        count++;
-      }
-    }
-
-    return count;
-  }
-
-  function resizeRoutineEmoji() {
-    var cells = document.getElementsByTagName("td");
-    var routineCells = [];
-    var maxItems = 1;
-    var i;
-    var j;
-    var spans;
-
-    for (i = 0; i < cells.length; i++) {
-      if (hasClass(cells[i], "routine")) {
-        routineCells.push(cells[i]);
-        var count = countVisualItems(cells[i]);
-        if (count > maxItems) maxItems = count;
-      }
-    }
-
-    if (!routineCells.length) return;
-
-    var rowHeight = routineCells[0].parentNode.clientHeight;
-    var availableWidth = routineCells[0].clientWidth * 0.96;
-    var sizeByWidth = availableWidth / (maxItems * 1.24);
-    var sizeByHeight = rowHeight * 0.55;
-    var size = Math.floor(Math.min(sizeByWidth, sizeByHeight));
-
-    for (i = 0; i < routineCells.length; i++) {
-      routineCells[i].style.fontSize = "0px";
-      spans = routineCells[i].getElementsByTagName("span");
-      for (j = 0; j < spans.length; j++) {
-        if (hasClass(spans[j], "person-icon") || hasClass(spans[j], "emoji-item")) {
-          spans[j].style.fontSize = size + "px";
-        }
-      }
-    }
-  }
-
-  function updateLayoutMetrics() {
-    var table = document.getElementById("routine-table");
-    var rows = table ? table.getElementsByTagName("tr") : [];
-    var root = document.documentElement;
-    var body = document.body;
-    var viewportWidth = window.innerWidth || root.clientWidth || body.clientWidth;
-    var viewportHeight = window.innerHeight || root.clientHeight || body.clientHeight;
-    var rowHeights = [];
-    var i;
-
-    for (i = 0; i < rows.length; i++) rowHeights.push(rows[i].offsetHeight);
-
-    setText(
-      document.getElementById("layout-metrics"),
-      "Viewport " + viewportWidth + "x" + viewportHeight +
-        "; document client/scroll width " + root.clientWidth + "/" + root.scrollWidth +
-        "; table width " + (table ? table.offsetWidth : 0) +
-        "; routine rows " + rows.length +
-        "; row heights " + rowHeights.join(",")
-    );
-  }
-
-  function fitRoutineTable() {
-    var table = document.getElementById("routine-table");
-    var panel = document.getElementById("diagnostics");
-    var viewportHeight;
-
-    if (diagnosticMode && table && panel) {
-      viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-      table.style.height = Math.max(1, viewportHeight - panel.offsetHeight) + "px";
-    }
-
-    resizeRoutineEmoji();
-    if (diagnosticMode) updateLayoutMetrics();
-  }
-
-  function fontStatus(message) {
-    setText(document.getElementById("font-status"), "Font method: " + message);
-  }
-
-  function applyFamily(family) {
-    var spans = document.getElementsByTagName("span");
-    var i;
-
-    for (i = 0; i < spans.length; i++) {
-      if (hasClass(spans[i], "emoji")) spans[i].style.fontFamily = family;
-    }
-  }
-
-  function loadFontData(callback) {
-    if (fontBase64 !== null) {
-      callback(null, fontBase64);
-      return;
-    }
-
-    fontDataCallbacks.push(callback);
-    if (fontDataLoading) return;
-    fontDataLoading = true;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/.netlify/functions/device-css?font_data=1", true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
-
-      fontDataLoading = false;
-      var error = null;
-      if (xhr.status === 200) {
-        fontBase64 = (xhr.responseText || "").replace(/\s/g, "");
-        if (!/^[A-Za-z0-9+/]+={0,2}$/.test(fontBase64)) {
-          fontBase64 = null;
-          error = "server returned invalid base64 (HTTP 200)";
-        }
-      } else {
-        error = "font-data request failed (HTTP " + xhr.status + ")";
-      }
-
-      var callbacks = fontDataCallbacks.slice(0);
-      fontDataCallbacks = [];
-      var i;
-      for (i = 0; i < callbacks.length; i++) callbacks[i](error, fontBase64);
-    };
-    xhr.onerror = function () {
-      fontDataLoading = false;
-      var callbacks = fontDataCallbacks.slice(0);
-      fontDataCallbacks = [];
-      var i;
-      for (i = 0; i < callbacks.length; i++) callbacks[i]("font-data request failed", null);
-    };
-    xhr.send(null);
-  }
-
-  function removeInlineFontStyle() {
-    if (inlineFontStyle && inlineFontStyle.parentNode) {
-      inlineFontStyle.parentNode.removeChild(inlineFontStyle);
-    }
-    inlineFontStyle = null;
-  }
-
-  function installInlineFont(mode, base64) {
-    var mime = "font/ttf";
-    var addFormat = true;
-    var family = "Noto Emoji Inline Test";
-    var source;
-    var cssText;
-    var head = document.getElementsByTagName("head")[0];
-
-    if (mode === "inline-no-format") addFormat = false;
-    if (mode === "inline-xfont") mime = "application/x-font-ttf";
-    if (mode === "inline-sfnt") mime = "application/font-sfnt";
-    if (mode === "inline-octet") mime = "application/octet-stream";
-
-    source = 'url("data:' + mime + ';base64,' + base64 + '")';
-    if (addFormat) source += ' format("truetype")';
-    if (mode === "inline-fallback") {
-      source += ', url("/.netlify/functions/emoji-font") format("truetype")';
-    }
-
-    cssText = '@font-face { font-family: "' + family + '"; src: ' + source + '; font-weight: normal; font-style: normal; }';
-    removeInlineFontStyle();
-    inlineFontStyle = document.createElement("style");
-    inlineFontStyle.type = "text/css";
-    inlineFontStyle.appendChild(document.createTextNode(cssText));
-    head.appendChild(inlineFontStyle);
-    applyFamily('"' + family + '", sans-serif');
-    fontStatus(mode + " installed in an inline style element");
-  }
-
-  function loadServerDataUriStylesheet() {
-    if (dataCssState === "loaded") {
-      applyFamily('"Noto Emoji Embedded CSS Test", sans-serif');
-      fontStatus("embedded CSS data URI stylesheet loaded");
-      return;
-    }
-    if (dataCssState === "loading") {
-      fontStatus("loading embedded CSS data URI stylesheet");
-      return;
-    }
-    if (dataCssState === "failed") {
-      fontStatus("embedded CSS data URI stylesheet failed to load");
-      return;
-    }
-
-    dataCssState = "loading";
-    dataCssLink = document.createElement("link");
-    dataCssLink.rel = "stylesheet";
-    dataCssLink.type = "text/css";
-    dataCssLink.href = "/.netlify/functions/device-css?font_test=1&font_only=1";
-    dataCssLink.onload = function () {
-      dataCssState = "loaded";
-      if (activeFontMode !== "server-data-uri") return;
-      applyFamily('"Noto Emoji Embedded CSS Test", sans-serif');
-      fontStatus("embedded CSS data URI stylesheet loaded");
-    };
-    dataCssLink.onerror = function () {
-      dataCssState = "failed";
-      if (activeFontMode !== "server-data-uri") return;
-      fontStatus("embedded CSS data URI stylesheet failed to load");
-    };
-    document.getElementsByTagName("head")[0].appendChild(dataCssLink);
-    fontStatus("loading embedded CSS data URI stylesheet");
-  }
-
-  function applyFontMode(mode) {
-    activeFontMode = mode;
-    removeInlineFontStyle();
-
-    if (mode === "server") {
-      applyFamily("");
-      fontStatus("server-detected default; check the detection line above");
-    } else if (mode === "system") {
-      applyFamily("Arial, sans-serif");
-      fontStatus("system/browser fallback");
-    } else if (mode === "direct-url") {
-      applyFamily('"Noto Emoji Kindle", sans-serif');
-      fontStatus("same-origin TTF URL");
-    } else if (mode === "github-url") {
-      applyFamily('"Noto Emoji GitHub URL", sans-serif');
-      fontStatus("direct GitHub TTF URL");
-    } else if (mode === "server-data-uri") {
-      loadServerDataUriStylesheet();
-    } else {
-      fontStatus("loading embedded font data for " + mode);
-      loadFontData(function (error, base64) {
-        if (activeFontMode !== mode) return;
-        if (error) {
-          fontStatus(error);
-          return;
-        }
-        installInlineFont(mode, base64);
-      });
-    }
-  }
-
-  function loadServerDiagnostics() {
-    var client = document.getElementById("client-ua");
-    var server = document.getElementById("server-ua");
-    var detection = document.getElementById("server-detection");
-    var xhr = new XMLHttpRequest();
-    var clientUa = navigator.userAgent || "(navigator.userAgent unavailable)";
-
-    setText(client, clientUa);
-    xhr.open("GET", "/.netlify/functions/device-css?diagnostics=1&_=" + new Date().getTime(), true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
-      if (xhr.status !== 200) {
-        setText(server, "request failed (HTTP " + xhr.status + ")");
-        setText(detection, "Server detection: diagnostics endpoint failed");
-        return;
-      }
-
-      try {
-        var info = JSON.parse(xhr.responseText);
-        setText(server, info.serverUserAgent || "(server returned an empty User-Agent)");
-        setText(
-          detection,
-          "Server Kindle/e-ink detection: " + (info.isKindleEInk ? "yes" : "no") +
-            "; Silk: " + (info.isSilk ? "yes" : "no") +
-            "; diagnostic font mode can force the data URI test"
-        );
-      } catch (error) {
-        setText(server, "invalid diagnostics response: " + error);
-        setText(detection, "Server detection: JSON parse failed");
-      }
-      fitRoutineTable();
-    };
-    xhr.onerror = function () {
-      setText(server, "diagnostics request failed");
-      setText(detection, "Server detection: network error");
-      fitRoutineTable();
-    };
-    xhr.send(null);
-  }
-
-  if (diagnosticMode) {
-    document.body.className += (document.body.className ? " " : "") + "font-diagnostics";
-    if (cssLink) {
-      var deviceCssLoaded = false;
-      try {
-        deviceCssLoaded = !!(cssLink.sheet && (!cssLink.sheet.cssRules || cssLink.sheet.cssRules.length));
-      } catch (error) {
-        deviceCssLoaded = !!cssLink.sheet;
-      }
-      if (deviceCssLoaded) {
-        setText(document.getElementById("css-status"), "Device stylesheet: loaded");
-      } else {
-        cssLink.onload = function () { setText(document.getElementById("css-status"), "Device stylesheet: loaded"); };
-        cssLink.onerror = function () { setText(document.getElementById("css-status"), "Device stylesheet: failed to load"); };
-      }
-    }
-    choices = document.getElementById("font-mode");
-    if (choices.addEventListener) {
-      choices.addEventListener("change", function () { applyFontMode(choices.value); }, false);
-    } else if (choices.attachEvent) {
-      choices.attachEvent("onchange", function () { applyFontMode(choices.value); });
-    }
-    loadServerDiagnostics();
-    applyFontMode(choices.value);
-  }
-
-  fitRoutineTable();
-  if (window.addEventListener) {
-    window.addEventListener("resize", fitRoutineTable, false);
-  } else if (window.attachEvent) {
-    window.attachEvent("onresize", fitRoutineTable);
-  }
-}());
-</script>
 </body>
 </html>
