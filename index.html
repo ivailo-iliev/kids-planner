@@ -1140,10 +1140,6 @@
             if (mode.trim()) root.classList.add('clock-progress-' + mode.replace(/\s+/g, '-').toLowerCase());
         }
         function applyProfile() {
-            if (profile && profile.sleepTimeSec && profile.wakeUpTimeSec) {
-                updateSleepMode();
-                setInterval(updateSleepMode, 60000);
-            }
             root.setAttribute('data-theme', profile && profile.theme ? profile.theme.toLowerCase() : '');
             updateManifest(profile && profile.displayName);
             updateTextContent();

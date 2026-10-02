@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kids Routine Layout Test</title>
+<link rel="stylesheet" href="/.netlify/functions/device-css">
+<script>
+function toggleDone(el) {
+  var name = "done";
+  var classes = " " + el.className + " ";
+
+  if (classes.indexOf(" " + name + " ") !== -1) {
+    el.className = classes
+      .replace(" " + name + " ", " ")
+      .replace(/^\s+|\s+$/g, "");
+  } else {
+    el.className += (el.className ? " " : "") + name;
+  }
+
+  return false;
+}
+</script>
+</head>
+<body>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+  <tr aria-label="Girl routine">
+    <td class="routine">
+      <span class="person-icon emoji">👧</span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪥</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪮</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👗</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🍳</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👟</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🎒</span></span>
+    </td>
+  </tr>
+  <tr aria-label="Boy routine">
+    <td class="routine">
+      <span class="person-icon emoji">👦</span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🪥</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👕</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🍳</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">👟</span></span>
+      <span class="emoji-item emoji" onclick="return toggleDone(this)"><span class="task-icon">🎒</span></span>
+    </td>
+  </tr>
+</table>
+
+<script>
+(function () {
+  function hasClass(el, name) {
+    return (" " + el.className + " ").indexOf(" " + name + " ") !== -1;
+  }
+
+  function countVisualItems(cell) {
+    var spans = cell.getElementsByTagName("span");
+    var count = 0;
+    var i;
+
+    for (i = 0; i < spans.length; i++) {
+      if (hasClass(spans[i], "person-icon") || hasClass(spans[i], "emoji-item")) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+  function resizeRoutineEmoji() {
+    var cells = document.getElementsByTagName("td");
+    var routineCells = [];
+    var maxItems = 1;
+    var i;
+
+    for (i = 0; i < cells.length; i++) {
+      if (hasClass(cells[i], "routine")) {
+        routineCells.push(cells[i]);
+        var count = countVisualItems(cells[i]);
+        if (count > maxItems) maxItems = count;
+      }
+    }
+
+    if (!routineCells.length) return;
+
+    var rowHeight = routineCells[0].parentNode.clientHeight;
+    var availableWidth = routineCells[0].clientWidth * 0.96;
+
+    // The longest row determines one shared icon size for both children.
+    // Allow roughly 1em per icon plus the small inter-item gaps.
+    var sizeByWidth = availableWidth / (maxItems * 1.16);
+    var sizeByHeight = rowHeight * 0.55;
+    var size = Math.floor(Math.min(sizeByWidth, sizeByHeight));
+
+    for (i = 0; i < routineCells.length; i++) {
+      routineCells[i].style.fontSize = size + "px";
+    }
+  }
+
+  resizeRoutineEmoji();
+
+  if (window.addEventListener) {
+    window.addEventListener("resize", resizeRoutineEmoji, false);
+  } else if (window.attachEvent) {
+    window.attachEvent("onresize", resizeRoutineEmoji);
+  }
+}());
+</script>
+</body>
+</html>
