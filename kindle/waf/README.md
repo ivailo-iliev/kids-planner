@@ -1,8 +1,8 @@
 # Kids Planner Kindle WAF
 
-WAF version 1.0.4 prefers the fullscreen view mode and requests landscape orientation and fullscreen at startup. It loads the static `test.html` routine page and provides a corner close button that returns to the Kindle home screen. Fullscreen chrome behavior remains to be confirmed on the Kindle's legacy firmware:
+WAF version 1.0.5 prefers the fullscreen view mode and requests landscape orientation and fullscreen at startup. It retains the corner close button, which returns to the Kindle home screen. During font diagnosis it opens `test.html?font-diagnostics=1`, which preserves the two-row routine while exposing the client `navigator.userAgent`, the server-received HTTP User-Agent and Kindle/Silk detection, viewport/row-width metrics, and selectable font-delivery variants. The ordinary `test.html` URL without the query remains the routine-only view. Fullscreen chrome behavior remains to be confirmed on the Kindle's legacy firmware.
 
-`https://kids-planner.netlify.app/test.html`
+`https://kids-planner.netlify.app/test.html?font-diagnostics=1`
 
 The WAF itself is in `kidsplanner/`. Copy that directory to `/var/local/mesquite/kidsplanner` on a jailbroken Kindle and register the `com.ivailo.kidsplanner` handler in `/var/local/appreg.db`.
 
