@@ -1,6 +1,6 @@
 # Kids Planner Kindle WAF
 
-WAF version 1.0.3 runs the Kids Planner morning-routine layout in a full-screen landscape frame. It asks the Kindle WAF APIs for landscape orientation and fullscreen view mode, loads the static `test.html` routine page, and provides a corner close button that returns to the Kindle home screen:
+WAF version 1.0.4 prefers the fullscreen view mode and requests landscape orientation and fullscreen at startup. It loads the static `test.html` routine page and provides a corner close button that returns to the Kindle home screen. Fullscreen chrome behavior remains to be confirmed on the Kindle's legacy firmware:
 
 `https://kids-planner.netlify.app/test.html`
 

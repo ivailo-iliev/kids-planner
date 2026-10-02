@@ -14,8 +14,8 @@ class KidsPlannerWAFTests(unittest.TestCase):
         ns = {"w": "http://www.w3.org/ns/widgets"}
         waf = ET.parse(WAF / "config.xml").getroot()
         extension = ET.parse(EXTENSION / "config.xml").getroot()
-        self.assertEqual(waf.attrib["version"], "1.0.3")
-        self.assertEqual(extension.findtext("information/version"), "1.0.3")
+        self.assertEqual(waf.attrib["version"], "1.0.4")
+        self.assertEqual(extension.findtext("information/version"), "1.0.4")
 
     def test_built_packages_match_the_current_waf_and_extension_sources(self):
         kual_package = KINDLE / "build/KidsPlanner-KUAL-extension.zip"
@@ -39,6 +39,10 @@ class KidsPlannerWAFTests(unittest.TestCase):
             for member, source in waf_sources.items():
                 self.assertEqual(archive.read(member), source.read_bytes(), member)
 
+    def test_manifest_advertises_fullscreen_view_mode(self):
+        root = ET.parse(WAF / "config.xml").getroot()
+        self.assertEqual(root.attrib["viewmodes"].split(), ["fullscreen", "application"])
+
     def test_manifest_enables_orientation_and_fullscreen_apis(self):
         root = ET.parse(WAF / "config.xml").getroot()
         ns = {"k": "http://kindle.amazon.com/ns/widget-extensions"}
@@ -61,7 +65,7 @@ class KidsPlannerWAFTests(unittest.TestCase):
 
     def test_installer_allows_rotation_and_reports_the_same_version(self):
         source = (EXTENSION / "install.sh").read_text(encoding="utf-8")
-        self.assertIn('WAF_VERSION="1.0.3"', source)
+        self.assertIn('WAF_VERSION="1.0.4"', source)
         self.assertIn("'supportedOrientation', 'URL'", source)
         self.assertIn("orientationLock L", source)
         self.assertIn('"$APP_ID $WAF_VERSION"', source)
