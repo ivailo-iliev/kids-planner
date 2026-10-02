@@ -14,8 +14,8 @@ class KidsPlannerWAFTests(unittest.TestCase):
         ns = {"w": "http://www.w3.org/ns/widgets"}
         waf = ET.parse(WAF / "config.xml").getroot()
         extension = ET.parse(EXTENSION / "config.xml").getroot()
-        self.assertEqual(waf.attrib["version"], "1.0.6")
-        self.assertEqual(extension.findtext("information/version"), "1.0.6")
+        self.assertEqual(waf.attrib["version"], "1.0.10")
+        self.assertEqual(extension.findtext("information/version"), "1.0.10")
 
     def test_built_packages_match_the_current_waf_and_extension_sources(self):
         kual_package = KINDLE / "build/KidsPlanner-KUAL-extension.zip"
@@ -39,47 +39,40 @@ class KidsPlannerWAFTests(unittest.TestCase):
             for member, source in waf_sources.items():
                 self.assertEqual(archive.read(member), source.read_bytes(), member)
 
-    def test_manifest_advertises_fullscreen_view_mode(self):
+    def test_manifest_uses_application_view_mode(self):
         root = ET.parse(WAF / "config.xml").getroot()
-        self.assertEqual(root.attrib["viewmodes"].split(), ["fullscreen", "application"])
+        self.assertEqual(root.attrib["viewmodes"].split(), ["application"])
 
-    def test_manifest_enables_orientation_and_fullscreen_apis(self):
+    def test_manifest_keeps_only_close_and_orientation_reset_apis(self):
         root = ET.parse(WAF / "config.xml").getroot()
         ns = {"k": "http://kindle.amazon.com/ns/widget-extensions"}
         params = {
             item.attrib["name"]: item.attrib["value"]
             for item in root.findall(".//{http://www.w3.org/ns/widgets}feature/{http://www.w3.org/ns/widgets}param")
         }
+        self.assertEqual(params.get("appmgr"), "yes")
         self.assertEqual(params.get("dev"), "yes")
-        self.assertEqual(params.get("messaging"), "yes")
-        self.assertEqual(params.get("chrome"), "yes")
-        chrome_asset = root.find("k:chrome/k:asset[@key='useCustomSearchBar']", ns)
-        self.assertEqual(chrome_asset.attrib.get("value") if chrome_asset is not None else None, "true")
-        searchbar_asset = root.find("k:chrome/k:asset[@key='configureSearchBar']", ns)
-        self.assertEqual(searchbar_asset.attrib.get("value") if searchbar_asset is not None else None, "none")
-        allowed_apps = {
-            item.attrib["name"]: item.attrib["value"]
-            for item in root.findall("k:messaging/k:app", ns)
-        }
-        self.assertEqual(allowed_apps.get("com.lab126.mfa"), "yes")
-        self.assertEqual(allowed_apps.get("com.lab126.chromebar"), "yes")
+        self.assertNotIn("messaging", params)
+        self.assertNotIn("chrome", params)
+        self.assertIsNone(root.find("k:chrome", ns))
+        self.assertIsNone(root.find("k:messaging", ns))
 
-    def test_page_requests_landscape_and_fullscreen_at_startup(self):
+    def test_page_leaves_orientation_and_view_mode_to_kindle(self):
         source = (WAF / "index.html").read_text(encoding="utf-8")
-        self.assertIn("setOrientation('landscape')", source)
-        self.assertIn("sendStringMessage('com.lab126.mfa', 'switchViewMode', 'fullscreen')", source)
-        self.assertIn("sendMessage('com.lab126.chromebar', 'configureChrome'", source)
-        self.assertIn("template: 'title'", source)
-        self.assertIn("buttons: []", source)
-        self.assertIn("window.kindle.appmgr.ongo = configureKindleChrome;", source)
+        self.assertNotIn("setOrientation('landscape')", source)
+        self.assertNotIn("switchViewMode", source)
+        self.assertNotIn("configureChrome", source)
+        self.assertNotIn("setTimeout", source)
+        self.assertIn('src="https://kids-planner.netlify.app/test.html"', source)
 
-    def test_installer_allows_rotation_and_reports_the_same_version(self):
+    def test_installer_removes_experimental_registry_properties(self):
         source = (EXTENSION / "install.sh").read_text(encoding="utf-8")
-        self.assertIn('WAF_VERSION="1.0.6"', source)
-        self.assertIn("'supportedOrientation', 'URL'", source)
-        self.assertIn("orientationLock L", source)
+        self.assertIn('WAF_VERSION="1.0.10"', source)
+        self.assertIn("'supportedOrientation', 'default-chrome-style', 'searchbar-mode'", source)
+        self.assertNotIn("orientationLock L", source)
+        self.assertNotIn("disableEnablePillow", source)
         self.assertIn('"$APP_ID $WAF_VERSION"', source)
-        self.assertIn('"SUCCESS: Kids Planner WAF $WAF_VERSION installed; landscape/fullscreen requested.', source)
+        self.assertIn('"SUCCESS: Kids Planner WAF $WAF_VERSION installed.', source)
 
     def test_close_restores_orientation_and_returns_home(self):
         source = (WAF / "index.html").read_text(encoding="utf-8")

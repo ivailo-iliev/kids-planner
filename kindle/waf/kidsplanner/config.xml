@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget id="com.ivailo.kidsplanner" version="1.0.9" viewmodes="fullscreen application"
+<widget id="com.ivailo.kidsplanner" version="1.0.10" viewmodes="application"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:kindle="http://kindle.amazon.com/ns/widget-extensions">
     <name xml:lang="en">Kids Planner</name>
-    <description xml:lang="en">Open the Kids Planner morning routine.</description>
+    <description xml:lang="en">Open Kids Planner for Елена and Филип.</description>
     <content src="index.html" />
     <kindle:network>
         <kindle:asset key="enableWrsProxy" value="true" />
         <kindle:asset key="allowTlsFallback" value="true" />
     </kindle:network>
-    <kindle:chrome>
-        <kindle:asset key="useCustomSearchBar" value="true" />
-        <kindle:asset key="configureSearchBar" value="none" />
-    </kindle:chrome>
     <kindle:settings>
         <kindle:setting name="internetRequired" value="yes" />
         <kindle:setting name="saveContext" value="no" />
@@ -20,11 +16,6 @@
     </kindle:settings>
     <feature name="http://kindle.amazon.com/apis" required="true">
         <param name="appmgr" value="yes" />
-        <param name="chrome" value="yes" />
         <param name="dev" value="yes" />
-        <param name="messaging" value="yes" />
     </feature>
-    <kindle:messaging>
-        <kindle:app name="com.lab126.mfa" value="yes" />
-    </kindle:messaging>
 </widget>

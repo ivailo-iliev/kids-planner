@@ -3,7 +3,7 @@
 set -e
 
 APP_ID="com.ivailo.kidsplanner"
-WAF_VERSION="1.0.9"
+WAF_VERSION="1.0.10"
 SOURCE="/mnt/us/extensions/KidsPlanner/waf"
 DEST="/var/local/mesquite/kidsplanner"
 DB="/var/local/appreg.db"
@@ -50,12 +50,9 @@ INSERT OR REPLACE INTO properties (handlerId, name, value)
     VALUES ('$APP_ID', 'lipcId', '$APP_ID');
 INSERT OR REPLACE INTO properties (handlerId, name, value)
     VALUES ('$APP_ID', 'command', '/usr/bin/mesquite -l $APP_ID -c file://$DEST/');
-INSERT OR REPLACE INTO properties (handlerId, name, value)
-    VALUES ('$APP_ID', 'supportedOrientation', 'URL');
-INSERT OR REPLACE INTO properties (handlerId, name, value)
-    VALUES ('$APP_ID', 'default-chrome-style', 'NH');
-INSERT OR REPLACE INTO properties (handlerId, name, value)
-    VALUES ('$APP_ID', 'searchbar-mode', 'transient');
+DELETE FROM properties
+    WHERE handlerId='$APP_ID'
+      AND name IN ('supportedOrientation', 'default-chrome-style', 'searchbar-mode');
 INSERT OR REPLACE INTO associations (handlerId, interface, contentId, defaultAssoc)
     VALUES ('$APP_ID', 'application', 'none', 'false');
 SQL
@@ -64,33 +61,15 @@ SQL
     [ "$REGISTERED_COMMAND" = "/usr/bin/mesquite -l $APP_ID -c file://$DEST/" ] || { log "ERROR: WAF app registration did not persist"; exit 1; }
     mount -o ro,remount / || true
     echo "$APP_ID $WAF_VERSION" > "$INSTALLED"
-    log "SUCCESS: Kids Planner WAF $WAF_VERSION installed; landscape/fullscreen requested. Use Launch Kids Planner to open it."
+    log "SUCCESS: Kids Planner WAF $WAF_VERSION installed. Use Launch Kids Planner to open it."
 }
 
 launch_waf() {
     if [ ! -f "$DEST/config.xml" ]; then
         install_waf
     fi
-    lipc-set-prop com.lab126.winmgr orientationLock L
-    sleep 1
-    lipc-set-prop com.lab126.pillow disableEnablePillow disable
     lipc-set-prop com.lab126.appmgrd start "app://$APP_ID"
-    (
-        attempts=0
-        active_app=""
-        while [ "$attempts" -lt 10 ]; do
-            active_app=$(lipc-get-prop com.lab126.appmgrd activeApp 2>/dev/null || true)
-            [ "$active_app" = "$APP_ID" ] && break
-            attempts=$((attempts + 1))
-            sleep 1
-        done
-        while [ "$active_app" = "$APP_ID" ]; do
-            sleep 1
-            active_app=$(lipc-get-prop com.lab126.appmgrd activeApp 2>/dev/null || true)
-        done
-        lipc-set-prop com.lab126.pillow disableEnablePillow enable
-    ) </dev/null >/dev/null 2>&1 &
-    log "Launch requested for Kids Planner WAF $WAF_VERSION in landscape/fullscreen mode"
+    log "Launch requested for Kids Planner WAF $WAF_VERSION using normal Kindle orientation and chrome"
 }
 
 case "$1" in
