@@ -23,14 +23,34 @@
     <style>
         @font-face {
             font-family: 'Sofia Sans Condensed';
-            src: url('/assets/SofiaSansCondensed-subset.woff2') format('woff2-variations');
-            font-weight: 1 1000;
+            src: url('/assets/SofiaSansCondensed-400-subset.ttf') format('truetype');
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: 'Sofia Sans Condensed';
+            src: url('/assets/SofiaSansCondensed-700-subset.ttf') format('truetype');
+            font-weight: 700;
         }
 
         @font-face {
             font-family: 'Wix Madefor Display';
-            src: url('/assets/WixMadeforDisplay-subset.woff2') format('woff2-variations');
-            font-weight: 1 1000;
+            src: url('/assets/WixMadeforDisplay-600-subset.ttf') format('truetype');
+            font-weight: 600;
+        }
+
+        @supports (font-variation-settings: normal) {
+            @font-face {
+                font-family: 'Sofia Sans Condensed';
+                src: url('/assets/SofiaSansCondensed-subset.woff2') format('woff2');
+                font-weight: 400 700;
+            }
+
+            @font-face {
+                font-family: 'Wix Madefor Display';
+                src: url('/assets/WixMadeforDisplay-subset.woff2') format('woff2');
+                font-weight: 400 700;
+            }
         }
 
         html,
@@ -41,10 +61,15 @@
             margin: 0;
             padding: 0;
             font-family: 'Sofia Sans Condensed', sans-serif;
+            -webkit-user-select: none;
             user-select: none;
         }
 
         .parent {
+            padding: 0.6% 1%;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
@@ -64,9 +89,10 @@
         @media (orientation:portrait) {
             #overlay {
                 display: block;
-                background-color: hsl(0deg 0% 100% / 70%);
+                background-color: rgba(255, 255, 255, 0.7);
                 background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 115.563 115.563"><path d="M24.413 31.538h86.172a4.992 4.992 0 0 1 4.978 4.977v64.069a4.992 4.992 0 0 1-4.978 4.977H24.413a4.991 4.991 0 0 1-4.977-4.977v-64.07a4.991 4.991 0 0 1 4.977-4.976zm.194 34.531a2.605 2.605 0 1 1 0 5.21 2.605 2.605 0 0 1 0-5.21zm4.783-26.754h77.618v58.64H29.39v-58.64z"/><path d="M0 91.15V4.976C0 2.239 2.24 0 4.978 0h64.068c2.738 0 4.978 2.24 4.978 4.977v30.02h-7.606V8.555H7.778v77.618h9.635v9.955H4.978A4.992 4.992 0 0 1 0 91.149z"/><path fill="none" d="M79.793 6.193a13.769 13.769 0 0 1 14.162 14.162"/><path fill-rule="nonzero" d="M79.727 3.806a16.149 16.149 0 0 1 6.428 1.135 16.161 16.161 0 0 1 5.466 3.585 16.155 16.155 0 0 1 3.585 5.467 16.137 16.137 0 0 1 1.136 6.428l-4.776-.13a11.386 11.386 0 0 0-.798-4.538 11.377 11.377 0 0 0-2.535-3.837 11.366 11.366 0 0 0-3.838-2.536 11.39 11.39 0 0 0-4.538-.799l-.13-4.775z"/><path d="m88.164 18.095 11.785.388L93.722 29z"/></svg>');
                 background-position: center;
+                background-size: 50% auto;
                 background-size: 50vmin 50vmin;
                 background-repeat: no-repeat;
             }
@@ -74,40 +100,72 @@
 
         :root.loading #overlay {
             display: block;
+            background: white url('/assets/loading.svg') center center no-repeat;
+            background-size: 32% auto;
             background: white url('/assets/loading.svg') center center / 32vmin 32vmin no-repeat;
         }
 
         .calendar,
         .widgets {
+            display: -webkit-box;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
             display: flex;
             flex-direction: row;
             box-sizing: border-box;
-            gap: 1vw;
         }
 
         .widgets {
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
             justify-content: center;
             align-items: center;
+            height: 40%;
             height: 40vh;
-            gap: 4vw;
+        }
+
+        .calendar {
+            -webkit-box-flex: 1;
+            -webkit-box-align: stretch;
+        }
+
+        .widgets > * {
+            margin-right: 4%;
+            margin-right: 4vw;
+        }
+
+        .widgets > *:last-child {
+            margin-right: 0;
         }
 
         .weather {
             display: none;
         }
 
-        .clock,
-        .weather {
+.clock,
+.weather {
+    width: 18.75%;
     width: 30vh;
     box-sizing: border-box;
     text-align: center;
     overflow: hidden;
-        }
+}
+
+.clock {
+    height: 89%;
+}
+
+@supports (height: 1vh) {
+    .clock {
+        height: auto;
+    }
+}
 
         .calendar__day-name,
         .clock__label,
         .weather__temp {
             font-style: normal;
+            font-size: 1.4em;
             font-size: 2.8vh;
             line-height: 1;
             text-transform: uppercase;
@@ -116,10 +174,12 @@
         }
 
         .clock__label {
+            line-height: 2em;
             line-height: 5.6vh;
         }
 
         .weather__temp {
+            font-size: 1.6em;
             font-size: 3.2vh;
         }
 
@@ -141,27 +201,47 @@
             aspect-ratio: 1 / 1;
         }
 
+        .clock__face {
+            width: 100%;
+            height: 84.27%;
+            width: 30vh;
+            height: 30vh;
+        }
+
         .calendar {
             flex: 1 1 auto;
         }
 
         .calendar__day {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-box-align: center;
+            -webkit-box-flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 0.5%;
-            gap: 1.5%;
             color: black;
             overflow: hidden;
             box-sizing: border-box;
-            background: hsl(195deg 100% 93% / 0.4);
+            background: rgba(220, 245, 255, 0.4);
             border: 1px solid #D9D9D9;
             border-radius: 5px;
-            height: 100%;
+            /* The legacy box fallback stretches cards to the calendar height. */
+            height: 58vh;
+            /* Fixed flex basis is unsupported in the legacy box model. */
+            width: 11.4%;
             flex: none;
             order: 0;
             align-self: center;
             flex: 1 1 0;
+            margin-right: 1%;
+            margin-right: 1vw;
+        }
+
+        .calendar__day:last-child {
+            margin-right: 0;
         }
 
         .calendar__day--past {
@@ -169,140 +249,89 @@
         }
 
         .calendar__day--weekend {
-            background-color: hsl(0deg 100% 94% / 40%);
+            background-color: rgba(255, 224, 224, 0.4);
         }
 
         .calendar__day--active {
             color: white;
             font-weight: 700;
+            background-color: #096fe0;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, #3df5a7), color-stop(1, #096fe0));
             background-image: linear-gradient(0deg, #3df5a7 50%, #096fe0 100%);
         }
 
         .calendar__event {
+            -webkit-box-flex: 1;
             background-size: cover;
             background-position: center center;
             border-radius: 5px;
             border: 1px solid white;
             box-sizing: border-box;
+            width: 100%;
             flex: none;
             align-self: stretch;
             flex-grow: 1;
             max-height: 60%;
-        }
-
-        .clock {
-            --pi: 3.1415926535897932;
-            --viewbox: 22px;
-            --center: calc(var(--viewbox)/2);
-            --icon-radius: 6px;
-            --icon-offset-x: -1px;
-            --icon-offset-y: -11px;
-            --hour-marks-circumference: calc(2*var(--pi)*var(--hour-marks-radius));
-            --hour-marks-offset: calc(var(--hour-marks-width)/2);
-            --hour-marks-radius: 9.1px;
-            --hour-marks-width: calc(var(--hour-marks-circumference)/12*0.04);
-            --hour-marks-gap: calc(var(--hour-marks-circumference)/12*0.96);
-            --quarter-marks-radius: 5.5px;
-            --quarter-marks-circumference: calc(2*var(--pi)*var(--quarter-marks-radius));
-            --quarter-marks-width: calc(var(--quarter-marks-circumference)/4*0.03);
-            --quarter-marks-gap: calc(var(--quarter-marks-circumference)/4*0.97);
-            --quarter-marks-offset: calc(var(--quarter-marks-width)/2);
-            --page-background: white;
-            --icon-color: hsl(0deg 0% 60%);
-            --clock-hands-color: #096fe0;
-            --number-radius: 7.8px;
-            --number-offset-x: 0px;
-            --number-offset-y: 0.6px;
-            --number-color: #096fe0;
-            --number-outline: none;
-            --minute-number-radius: 10.2px;
-            --minute-number-offset-x: 0px;
-            --minute-number-offset-y: 0.35px;
-            --minute-number-color: white;
-            --am-clock-background: linear-gradient(0deg, #3df5a7 40%, #096fe0 60%);
-            --pm-clock-background: linear-gradient(0deg, #3df5a7 40%, #096fe0 60%);
-            --progress-color: #ebebeb;
-            --bezel-color: white;
-            --hour-hand-angle: calc(var(--hr-elapsed) * 360 / 12 * 1deg);
-            --minute-hand-angle: calc(var(--min-elapsed) * 360 / 60 * 1deg);
-            --progress-radius: 5.5px;
-            --progress-min-elapsed: calc((var(--progress-radius) * 2 * var(--pi) / 60) * var(--min-elapsed));
-            --progress-min-remaining: calc((var(--progress-radius) * 2 * var(--pi) / 60) * (60 - var(--min-elapsed)));
-            --progress-hr-elapsed: calc((var(--progress-radius) * 2 * var(--pi) / 12) * var(--hr-elapsed));
-            --progress-hr-remaining: calc((var(--progress-radius) * 2 * var(--pi) / 12) * (12 - var(--hr-elapsed)));
+            margin-top: 0.45em;
+            margin-top: 0.87vh;
         }
 
         .clock__face {
             border-radius: 50%;
-            outline: solid 1.5px var(--bezel-color);
+            outline: solid 1.5px white;
             outline-offset: -1px;
         }
 
-        .am-clock .clock__face {
-            background: var(--am-clock-background);
+        .clock__face-background {
+            fill: url('#background-geddy');
         }
 
-        .pm-clock .clock__face {
-            background: var(--pm-clock-background);
+        .clock__face-photo {
+            display: none;
         }
 
-        :root[data-theme="fruits"] .clock__quarter-marks {
-            r: var(--quarter-marks-radius);
-            fill: none;
-            stroke: var(--page-background);
-            stroke-width: 11px;
-            stroke-dashoffset: var(--quarter-marks-offset);
-            stroke-dasharray: var(--quarter-marks-width) var(--quarter-marks-gap);
+        .clock__quarter-marks {
+            display: none;
         }
 
         .clock__hour-marks {
-            stroke-dasharray: var(--hour-marks-width) var(--hour-marks-gap);
-            stroke-dashoffset: var(--hour-marks-offset);
-            r: var(--hour-marks-radius);
-            stroke-width: 1px;
             fill: none;
+            stroke: url('#background-geddy');
+            stroke-width: 1px;
         }
 
         .clock__progress-ring {
-            r: var(--progress-radius);
             fill: none;
-            stroke: var(--progress-color);
+            stroke: #ebebeb;
             stroke-width: 11px;
-            stroke-dashoffset: 0;
-            transform: rotate(-90deg);
-            transform-origin: center;
             stroke-dasharray: 0px 0px;
         }
 
-        .clock--active .clock__progress-ring {
-            stroke-dasharray: 0px var(--progress-min-elapsed) var(--progress-min-remaining);
-        }
-
         .clock__hour-hand {
-            transform-origin: center;
-            transform: rotate(var(--hour-hand-angle));
+            fill: none;
         }
 
-        .clock__minute-hand {
-            transform-origin: center;
-            transform: rotate(var(--minute-hand-angle));
+        .clock__hour-hand line,
+        .clock__minute-hand line {
+            stroke: none;
         }
 
         .clock--active .clock__hour-hand line,
         .clock--active .clock__minute-hand line {
-            stroke: var(--clock-hands-color);
+            stroke: #096fe0;
         }
 
         .clock__center-point {
-            fill: var(--clock-hands-color);
+            fill: #096fe0;
+            stroke: none;
         }
 
         .clock__hour-numbers {
             pointer-events: none;
             text-anchor: middle;
             stroke-width: 0.2px;
-            fill: var(--number-color);
-            stroke: var(--number-outline);
+            fill: #096fe0;
+            stroke: none;
             paint-order: stroke;
             font-family: 'Wix Madefor Display', sans-serif;
             letter-spacing: -0.05em;
@@ -326,124 +355,13 @@
         }
 
         .clock__inner-ring {
-            r: 9.6px;
-            fill: var(--page-background);
-            stroke-width: 0.1px;
-        }
-
-        .clock__inner-ring,
-        .clock__hour-marks {
+            fill: white;
             stroke: url('#background-geddy');
+            stroke-width: 0.1px;
         }
 
         .clock__icon use {
             pointer-events: none;
-            fill: var(--icon-color);
-        }
-
-        .clock__hour-numbers text:nth-of-type(1),
-        .clock__minute-numbers text:nth-of-type(1),
-        .clock__icon-12,
-        .clock__icon-0 {
-            --index: 0;
-        }
-
-        .clock__hour-numbers text:nth-of-type(2),
-        .clock__minute-numbers text:nth-of-type(2),
-        .clock__icon-1,
-        .clock__icon-13 {
-            --index: 1;
-        }
-
-        .clock__hour-numbers text:nth-of-type(3),
-        .clock__minute-numbers text:nth-of-type(3),
-        .clock__icon-2,
-        .clock__icon-14 {
-            --index: 2;
-        }
-
-        .clock__hour-numbers text:nth-of-type(4),
-        .clock__minute-numbers text:nth-of-type(4),
-        .clock__icon-3,
-        .clock__icon-15 {
-            --index: 3;
-        }
-
-        .clock__hour-numbers text:nth-of-type(5),
-        .clock__minute-numbers text:nth-of-type(5),
-        .clock__icon-4,
-        .clock__icon-16 {
-            --index: 4;
-        }
-
-        .clock__hour-numbers text:nth-of-type(6),
-        .clock__minute-numbers text:nth-of-type(6),
-        .clock__icon-5,
-        .clock__icon-17 {
-            --index: 5;
-        }
-
-        .clock__hour-numbers text:nth-of-type(7),
-        .clock__minute-numbers text:nth-of-type(7),
-        .clock__icon-6,
-        .clock__icon-18 {
-            --index: 6;
-        }
-
-        .clock__hour-numbers text:nth-of-type(8),
-        .clock__minute-numbers text:nth-of-type(8),
-        .clock__icon-7,
-        .clock__icon-19 {
-            --index: 7;
-        }
-
-        .clock__hour-numbers text:nth-of-type(9),
-        .clock__minute-numbers text:nth-of-type(9),
-        .clock__icon-8,
-        .clock__icon-20 {
-            --index: 8;
-        }
-
-        .clock__hour-numbers text:nth-of-type(10),
-        .clock__minute-numbers text:nth-of-type(10),
-        .clock__icon-9,
-        .clock__icon-21 {
-            --index: 9;
-        }
-
-        .clock__hour-numbers text:nth-of-type(11),
-        .clock__minute-numbers text:nth-of-type(11),
-        .clock__icon-10,
-        .clock__icon-22 {
-            --index: 10;
-        }
-
-        .clock__hour-numbers text:nth-of-type(12),
-        .clock__minute-numbers text:nth-of-type(12),
-        .clock__icon-11,
-        .clock__icon-23 {
-            --index: 11;
-        }
-
-        .clock__hour-numbers text {
-            --translate-x: calc(var(--center) + var(--number-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-x));
-            --translate-y: calc(var(--center) + var(--number-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--number-offset-y));
-
-            transform: translate(var(--translate-x), var(--translate-y));
-        }
-
-        .clock__minute-numbers text {
-            --translate-x: calc(var(--center) + var(--minute-number-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--minute-number-offset-x));
-            --translate-y: calc(var(--center) + var(--minute-number-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--minute-number-offset-y));
-
-            transform: translate(var(--translate-x), var(--translate-y));
-        }
-
-        .clock__icon {
-            --translate-x: calc(var(--center) + var(--icon-radius) * cos((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--icon-offset-x));
-            --translate-y: calc(var(--center) + var(--icon-radius) * sin((var(--index) * (360 / 12) - 90) * var(--pi) / 180) + var(--icon-offset-y));
-
-            transform: translate(var(--translate-x), var(--translate-y));
         }
 
         .symbols-library {
@@ -453,23 +371,28 @@
         }
 
         :root[data-theme="fruits"] .calendar__day--active {
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #e62214), color-stop(1, #f29e18));
             background-image: linear-gradient(0deg, #e62214 0%, #f29e18 100%);
         }
 
-        :root[data-theme="fruits"] .clock {
-            --hour-marks-radius: 7.6px;
-            --hour-marks-width: calc(var(--hour-marks-circumference)/12*0.005);
-            --hour-marks-gap: calc(var(--hour-marks-circumference)/12*0.995);
-            --number-radius: 9.4px;
-            --number-offset-y: 0.92px;
-            --icon-radius: 7px;
-            --clock-hands-color: black;
-            --number-color: black;
-            --number-outline: hsl(0deg 0% 100% / 60%);
-            --bezel-color: #29A00C;
-            --am-clock-background: url('/assets/orange.jpg') no-repeat center/102.5%;
-            --pm-clock-background: url('/assets/watermelon.jpg') no-repeat center/102.5%;
-            --progress-color: white;
+        :root[data-theme="fruits"] .am-clock .clock__face {
+            background: none;
+        }
+
+        :root[data-theme="fruits"] .pm-clock .clock__face {
+            background: none;
+        }
+
+        :root[data-theme="fruits"] .clock__face-background {
+            display: none;
+        }
+
+        :root[data-theme="fruits"] .clock__face-photo {
+            display: inline;
+        }
+
+        :root[data-theme="fruits"] .clock__face {
+            outline-color: #29a00c;
         }
 
         :root[data-theme="fruits"] .clock__hour-marks,
@@ -477,12 +400,27 @@
             display: none;
         }
 
+        :root[data-theme="fruits"] .clock__quarter-marks {
+            display: inline;
+        }
+
         :root[data-theme="fruits"] .clock__hour-numbers {
             font-size: 2.6px;
+            fill: black;
+            stroke: rgba(255, 255, 255, 0.6);
         }
 
         :root[data-theme="fruits"] .clock__progress-ring {
-            stroke-width: 11px;
+            stroke: white;
+        }
+
+        :root[data-theme="fruits"] .clock--active .clock__hour-hand line,
+        :root[data-theme="fruits"] .clock--active .clock__minute-hand line {
+            stroke: black;
+        }
+
+        :root[data-theme="fruits"] .clock__center-point {
+            fill: black;
         }
 
         :root.sleep {
@@ -493,25 +431,56 @@
             visibility: hidden;
         }
 
-        :root.sleep .clock {
-            --page-background: black;
-            --clock-hands-color: hsl(0deg 0% 60%);
-            --number-color: hsl(0deg 0% 60%);
-            --number-outline: none;
-            --progress-color: hsl(0deg 0% 20%);
-            --bezel-color: black;
+        :root.sleep .clock__face {
+            outline-color: black;
         }
 
-        :root.sleep .clock:not(.clock--active) {
-            --am-clock-background: hsl(0deg 0% 20%);
-            --pm-clock-background: hsl(0deg 0% 20%);
+        :root.sleep .clock:not(.clock--active) .clock__face {
+            background: none;
         }
 
-        :root.sleep[data-theme="fruits"] .clock {
-            --am-clock-background: none;
-            --pm-clock-background: none;
-            --bezel-color: #29A00C;
-            --progress-color: none;
+        :root.sleep .clock:not(.clock--active) .clock__face-background {
+            fill: #333333;
+        }
+
+        :root.sleep .clock__face-photo {
+            display: none;
+        }
+
+        :root.sleep .clock__hour-numbers {
+            fill: #999999;
+            stroke: none;
+        }
+
+        :root.sleep .clock--active .clock__hour-hand line,
+        :root.sleep .clock--active .clock__minute-hand line {
+            stroke: #999999;
+        }
+
+        :root.sleep .clock__center-point {
+            fill: #999999;
+        }
+
+        :root.sleep .clock__progress-ring {
+            stroke: #333333;
+        }
+
+        :root.sleep .clock__inner-ring {
+            fill: black;
+            stroke: black;
+        }
+
+        :root.sleep[data-theme="fruits"] .clock__face {
+            background: none;
+            outline-color: #29a00c;
+        }
+
+        :root.sleep[data-theme="fruits"] .clock__face-background {
+            display: none;
+        }
+
+        :root.sleep[data-theme="fruits"] .clock__progress-ring {
+            stroke: none;
         }
     </style>
 
@@ -790,7 +759,14 @@
             </svg>
             <div class="clock am-clock" id="am-clock">
                 <div class="clock__label">AM</div>
-                <svg class="clock__face" viewBox="0 0 22 22">
+                <svg class="clock__face" viewBox="-0.25 -0.25 22.5 22.5" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs>
+                        <clipPath id="am-clock-face-clip">
+                            <circle cx="11" cy="11" r="11"></circle>
+                        </clipPath>
+                    </defs>
+                    <circle class="clock__face-background" cx="11" cy="11" r="11"></circle>
+                    <image class="clock__face-photo" xlink:href="/assets/orange.jpg" x="-0.275" y="-0.275" width="22.55" height="22.55" preserveAspectRatio="xMidYMid slice" clip-path="url(#am-clock-face-clip)"></image>
                     <circle class="clock__progress-ring" cx="11" cy="11"></circle>
                     <circle class="clock__quarter-marks" cx="11" cy="11"></circle>
                     <circle class="clock__inner-ring" cx="11" cy="11"></circle>
@@ -838,7 +814,14 @@
             </div>
             <div class="clock pm-clock" id="pm-clock">
                 <div class="clock__label">PM</div>
-                <svg class="clock__face" viewBox="0 0 22 22">
+                <svg class="clock__face" viewBox="-0.25 -0.25 22.5 22.5" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs>
+                        <clipPath id="pm-clock-face-clip">
+                            <circle cx="11" cy="11" r="11"></circle>
+                        </clipPath>
+                    </defs>
+                    <circle class="clock__face-background" cx="11" cy="11" r="11"></circle>
+                    <image class="clock__face-photo" xlink:href="/assets/watermelon.jpg" x="-0.275" y="-0.275" width="22.55" height="22.55" preserveAspectRatio="xMidYMid slice" clip-path="url(#pm-clock-face-clip)"></image>
                     <circle class="clock__progress-ring" cx="11" cy="11"></circle>
                     <circle class="clock__quarter-marks" cx="11" cy="11"></circle>
                     <circle class="clock__inner-ring" cx="11" cy="11"></circle>
@@ -918,359 +901,343 @@
     </div>
 
     <script>
-        //Get URL query parameters
-        const queryParams = new URLSearchParams(window.location.search);
-        const userId = queryParams.get("id");
-        let currentLanguage = queryParams.get("lang") || "en";
-        let profile;
-        const root = document.documentElement;
-
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                window.location.reload();
-                            }
-                        });
-                    });
-                }, err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
+        // Keep startup compatible with older WebKit and Chromium engines.
+        var query = window.location.search.replace(/^\?/, '').split('&');
+        var userId = null;
+        var currentLanguage = 'en';
+        var forceAwake = /(?:^|&)sleep=off(?:&|$)/.test(window.location.search.replace(/^\?/, ''));
+        var useLocalData = /(?:^|&)localData=1(?:&|$)/.test(window.location.search.replace(/^\?/, ''));
+        for (var queryIndex = 0; queryIndex < query.length; queryIndex++) {
+            var pair = query[queryIndex].split('=');
+            if (pair[0] === 'id') userId = decodeURIComponent((pair[1] || '').replace(/\+/g, ' '));
+            if (pair[0] === 'lang') currentLanguage = decodeURIComponent((pair[1] || '').replace(/\+/g, ' ')) || 'en';
         }
 
-        // Clock Functions
-        const clocks = {
+        var root = document.documentElement;
+        var profile = null;
+        var calDays = document.querySelectorAll('.calendar__day');
+        var clocks = {
             am: {
-                clock: document.getElementById("am-clock"),
-                label: document.querySelector("#am-clock .clock__label"),
-                icons: document.querySelector("#am-clock .clock__icons")
+                clock: document.getElementById('am-clock'),
+                label: document.querySelector('#am-clock .clock__label'),
+                icons: document.querySelector('#am-clock .clock__icons'),
+                hourHand: document.querySelector('#am-clock .clock__hour-hand'),
+                minuteHand: document.querySelector('#am-clock .clock__minute-hand'),
+                progressRing: document.querySelector('#am-clock .clock__progress-ring')
             },
             pm: {
-                clock: document.getElementById("pm-clock"),
-                label: document.querySelector("#pm-clock .clock__label"),
-                icons: document.querySelector("#pm-clock .clock__icons")
+                clock: document.getElementById('pm-clock'),
+                label: document.querySelector('#pm-clock .clock__label'),
+                icons: document.querySelector('#pm-clock .clock__icons'),
+                hourHand: document.querySelector('#pm-clock .clock__hour-hand'),
+                minuteHand: document.querySelector('#pm-clock .clock__minute-hand'),
+                progressRing: document.querySelector('#pm-clock .clock__progress-ring')
             }
         };
 
-        const runClock = () => {
-            const d = new Date();
-            const hr = d.getHours();
-            const min = d.getMinutes();
-            const sec = d.getSeconds();
-            const hrElapsed = hr % 12 + min / 60;
-            const minElapsed = min + sec / 60;
-            const activeClock = clocks[hr < 12 ? 'am' : 'pm'];
-            const inactiveClock = clocks[hr < 12 ? 'pm' : 'am'];
-
-            if (!activeClock.clock.classList.contains("clock--active")) {
-                activeClock.clock.classList.add("clock--active");
-                inactiveClock.clock.classList.remove("clock--active");
+        function requestJSON(url, onSuccess, onFailure) {
+            if (useLocalData && url.indexOf('/.netlify/functions/profile') === 0) {
+                url = '/tmp/chrome37-layout/profile.json';
+            } else if (useLocalData && url.indexOf('/.netlify/functions/calendar') === 0) {
+                url = '/tmp/chrome37-layout/calendar.json';
+            } else if (useLocalData && url.indexOf('/.netlify/functions/weather') === 0) {
+                url = '/tmp/chrome37-layout/weather.json';
             }
-
-            activeClock.clock.style.setProperty('--hr-elapsed', hrElapsed);
-            activeClock.clock.style.setProperty('--min-elapsed', minElapsed);
-        };
-        runClock();
-        setInterval(runClock, 1000);
-
-        const updateSleepMode = () => {
-            const d = new Date();
-            const hour = d.getHours();
-            if (profile?.sleepTimeSec && profile?.wakeUpTimeSec) {
-                const sleepTimeHour = profile.sleepTimeSec / 3600;
-                const wakeUpTimeHour = profile.wakeUpTimeSec / 3600;
-                const isNight = hour >= sleepTimeHour || hour < wakeUpTimeHour;
-                root.classList.toggle("sleep", isNight);
-            }
-        }
-
-        const calDays = document.querySelectorAll(".calendar__day");
-        const updateCalendar = () => {
-            const d = new Date();
-            const day = (d.getDay() + 6) % 7;
-            const activeDay = calDays[day];
-            if (!activeDay.classList.contains("calendar__day--active")) {
-                [...calDays].forEach((dayElement, index) => {
-                    dayElement.classList.remove("calendar__day--active", "calendar__day--past");
-                    if (index < day) dayElement.classList.add("calendar__day--past");
-                });
-                activeDay.classList.add("calendar__day--active");
-            }
-        }
-        updateCalendar();
-        setInterval(updateCalendar, 60 * 1000);
-
-        // Localization Functions
-        let manifestData = {
-            "id": "https://kids-planner.netlify.app/",
-            "scope": "https://kids-planner.netlify.app/",
-            "start_url": `https://kids-planner.netlify.app/?id=${userId}`,
-            "name": "Kids Planner",
-            "short_name": "Kids Planner",
-            "description": "",
-            "lang": "en",
-            "theme_color": "#ffffff",
-            "background_color": "#ffffff",
-            "display": "fullscreen",
-            "orientation": "landscape",
-            "categories": [
-                "education",
-                "kids",
-                "productivity"
-            ],
-            "screenshots": [
-                {
-                    "src": "https://kids-planner.netlify.app/assets/screenshot.png",
-                    "sizes": "1920x1080",
-                    "type": "image/png"
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.onreadystatechange = function() {
+                if (request.readyState !== 4) return;
+                if (request.status >= 200 && request.status < 300) {
+                    try { onSuccess(JSON.parse(request.responseText)); }
+                    catch (error) { if (onFailure) onFailure(error); }
+                } else if (onFailure) {
+                    onFailure(new Error(request.responseText || ('HTTP ' + request.status)));
                 }
-            ],
-            "icons": [
-                {
-                    "src": "https://kids-planner.netlify.app/assets/favicon.png",
-                    "sizes": "192x192",
-                    "type": "image/png"
-                },
-                {
-                    "src": "https://kids-planner.netlify.app/assets/favicon-512.png",
-                    "sizes": "512x512",
-                    "type": "image/png"
-                },
-                {
-                    "src": "https://kids-planner.netlify.app/assets/favicon-512-maskable.png",
-                    "sizes": "512x512",
-                    "type": "image/png",
-                    "purpose": "maskable"
-                },
+            };
+            request.onerror = function() { if (onFailure) onFailure(new Error('Network request failed')); };
+            request.send(null);
+        }
+
+        function runClock() {
+            var now = new Date();
+            var hour = now.getHours();
+            var minute = now.getMinutes();
+            var seconds = now.getSeconds();
+            var hourElapsed = hour % 12 + minute / 60;
+            var minuteElapsed = minute + seconds / 60;
+            var active = clocks[hour < 12 ? 'am' : 'pm'];
+            var inactive = clocks[hour < 12 ? 'pm' : 'am'];
+            if (!active.clock.classList.contains('clock--active')) {
+                active.clock.classList.add('clock--active');
+                inactive.clock.classList.remove('clock--active');
+            }
+            active.hourHand.setAttribute('transform', 'rotate(' + (hourElapsed * 30) + ' 11 11)');
+            active.minuteHand.setAttribute('transform', 'rotate(' + (minuteElapsed * 6) + ' 11 11)');
+            var elapsedDegrees = Math.max(0, minuteElapsed * 6 - active.progressAngleOffset);
+            var elapsedLength = active.progressCircumference * elapsedDegrees / 360;
+            active.progressRing.style.strokeDasharray = '0 ' + elapsedLength + ' ' + (active.progressCircumference - elapsedLength);
+        }
+
+        function updateCalendar() {
+            var day = (new Date().getDay() + 6) % 7;
+            var activeDay = calDays[day];
+            if (!activeDay.classList.contains('calendar__day--active')) {
+                for (var i = 0; i < calDays.length; i++) {
+                    calDays[i].classList.remove('calendar__day--active');
+                    calDays[i].classList.remove('calendar__day--past');
+                    if (i < day) calDays[i].classList.add('calendar__day--past');
+                }
+                activeDay.classList.add('calendar__day--active');
+            }
+        }
+
+        function configureClockFace(clock) {
+            var theme = root.getAttribute('data-theme');
+            var hourRadius = theme === 'fruits' ? 9.4 : 7.8;
+            var hourOffsetY = theme === 'fruits' ? 0.92 : 0.6;
+            var hourGroups = clock.querySelector('.clock__hour-numbers');
+            var minuteGroups = clock.querySelector('.clock__minute-numbers');
+            var hourNumbers = hourGroups.getElementsByTagName('text');
+            var minuteNumbers = minuteGroups.getElementsByTagName('text');
+            var i;
+            for (i = 0; i < hourNumbers.length; i++) {
+                var hourAngle = (i * 30 - 90) * Math.PI / 180;
+                hourNumbers[i].setAttribute('x', 11 + hourRadius * Math.cos(hourAngle));
+                hourNumbers[i].setAttribute('y', 11 + hourRadius * Math.sin(hourAngle) + hourOffsetY);
+            }
+            for (i = 0; i < minuteNumbers.length; i++) {
+                var minuteAngle = (i * 30 - 90) * Math.PI / 180;
+                minuteNumbers[i].setAttribute('x', 11 + 10.2 * Math.cos(minuteAngle));
+                minuteNumbers[i].setAttribute('y', 11 + 10.2 * Math.sin(minuteAngle) + 0.35);
+            }
+
+            var hourMarks = clock.querySelector('.clock__hour-marks');
+            var markRadius = theme === 'fruits' ? 7.6 : 9.1;
+            var circumference = 2 * Math.PI * markRadius;
+            var markLength = circumference / 12 * (theme === 'fruits' ? 0.005 : 0.04);
+            hourMarks.setAttribute('r', markRadius);
+            hourMarks.setAttribute('stroke-dasharray', markLength + ' ' + (circumference / 12 - markLength));
+            hourMarks.setAttribute('stroke-dashoffset', markLength / 2);
+
+            var innerRing = clock.querySelector('.clock__inner-ring');
+            innerRing.setAttribute('r', '9.6');
+
+            var progressRing = clock.querySelector('.clock__progress-ring');
+            progressRing.setAttribute('r', '5.5');
+            progressRing.setAttribute('stroke-dashoffset', '0');
+            progressRing.setAttribute('transform', 'rotate(-90 11 11)');
+
+            var quarterMarks = clock.querySelector('.clock__quarter-marks');
+            var quarterRadius = 5.5;
+            var quarterCircumference = 2 * Math.PI * quarterRadius;
+            var quarterLength = quarterCircumference / 4 * 0.03;
+            quarterMarks.setAttribute('r', quarterRadius);
+            quarterMarks.setAttribute('fill', 'none');
+            quarterMarks.setAttribute('stroke', 'white');
+            quarterMarks.setAttribute('stroke-width', '11');
+            quarterMarks.setAttribute('stroke-dasharray', quarterLength + ' ' + (quarterCircumference / 4 - quarterLength));
+            quarterMarks.setAttribute('stroke-dashoffset', quarterLength / 2);
+
+            var clockState = clocks[clock.id === 'am-clock' ? 'am' : 'pm'];
+            var tickMarks = theme === 'fruits' ? quarterMarks : hourMarks;
+            var tickDashArray = (tickMarks.getAttribute('stroke-dasharray') || '').split(/[ ,]+/);
+            var tickDashLength = parseFloat(tickDashArray[0]);
+            var tickRadius = parseFloat(tickMarks.getAttribute('r'));
+            var tickHalfAngle = tickDashLength > 0 && tickRadius > 0 ? tickDashLength / tickRadius * 90 / Math.PI : 0;
+            var tickStrokeWidth = parseFloat(window.getComputedStyle(tickMarks).strokeWidth);
+            var tickStrokeHalfAngle = tickStrokeWidth > 0 && tickRadius > 0 ? Math.atan(tickStrokeWidth / 2 / tickRadius) * 180 / Math.PI : 0;
+            var minuteHandLine = clockState.minuteHand.getElementsByTagName('line')[0];
+            var handLength = Math.sqrt(Math.pow(parseFloat(minuteHandLine.getAttribute('x2')) - parseFloat(minuteHandLine.getAttribute('x1')), 2) + Math.pow(parseFloat(minuteHandLine.getAttribute('y2')) - parseFloat(minuteHandLine.getAttribute('y1')), 2));
+            var handHalfWidth = parseFloat(minuteHandLine.getAttribute('stroke-width')) / 2;
+            var handHalfAngle = handLength > 0 ? Math.atan(handHalfWidth / handLength) * 180 / Math.PI : 0;
+            clockState.progressCircumference = 2 * Math.PI * 5.5;
+            clockState.progressAngleOffset = handHalfAngle + tickHalfAngle + tickStrokeHalfAngle;
+
+            var icons = clock.querySelectorAll('.clock__icon');
+            for (i = 0; i < icons.length; i++) {
+                var iconClass = icons[i].getAttribute('class') || '';
+                var iconHour = parseInt(iconClass.replace(/^.*clock__icon-([0-9]+).*$/, '$1'), 10);
+                if (isNaN(iconHour)) continue;
+                var iconIndex = iconHour % 12;
+                var iconAngle = (iconIndex * 30 - 90) * Math.PI / 180;
+                var iconRadius = theme === 'fruits' ? 7 : 6;
+                icons[i].setAttribute('transform', 'translate(' + (11 + iconRadius * Math.cos(iconAngle) - 1) + ' ' + (iconRadius * Math.sin(iconAngle)) + ')');
+            }
+        }
+
+        function configureClockFaces() {
+            configureClockFace(clocks.am.clock);
+            configureClockFace(clocks.pm.clock);
+        }
+
+        var localTimeOfDay = { en: { AM: 'AM', PM: 'PM' }, bg: { AM: 'Предиобед', PM: 'Следобед' } };
+        var localDayNames = {
+            en: { Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday: 'Sunday' },
+            bg: { Monday: 'Понеделник', Tuesday: 'Вторник', Wednesday: 'Сряда', Thursday: 'Четвъртък', Friday: 'Петък', Saturday: 'Събота', Sunday: 'Неделя' }
+        };
+        var localDescriptions = {
+            en: 'A static, non-interactive weekly planner for pre-school children. Features a clock, weather widget and a weekly calendar with activities.',
+            bg: 'Статичен, неинтерактивен седмичен планер за деца в предучилищна възраст. Разполага с часовник, прогноза за времето и седмичен календар с активности.'
+        };
+        var manifestData = {
+            id: 'https://kids-planner.netlify.app/', scope: 'https://kids-planner.netlify.app/',
+            start_url: 'https://kids-planner.netlify.app/?id=' + (userId || ''), name: 'Kids Planner', short_name: 'Kids Planner',
+            description: '', lang: 'en', theme_color: '#ffffff', background_color: '#ffffff', display: 'fullscreen',
+            orientation: 'landscape', categories: ['education', 'kids', 'productivity'],
+            screenshots: [{ src: 'https://kids-planner.netlify.app/assets/screenshot.png', sizes: '1920x1080', type: 'image/png' }],
+            icons: [
+                { src: 'https://kids-planner.netlify.app/assets/favicon.png', sizes: '192x192', type: 'image/png' },
+                { src: 'https://kids-planner.netlify.app/assets/favicon-512.png', sizes: '512x512', type: 'image/png' },
+                { src: 'https://kids-planner.netlify.app/assets/favicon-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
             ]
         };
-        const localTimeOfDay = {
-            "en": {
-                "AM": "AM",
-                "PM": "PM"
-            },
-            "bg": {
-                "AM": "Предиобед",
-                "PM": "Следобед"
-            }
-        };
-        const localDayNames = {
-            "en": {
-                "Monday": "Monday",
-                "Tuesday": "Tuesday",
-                "Wednesday": "Wednesday",
-                "Thursday": "Thursday",
-                "Friday": "Friday",
-                "Saturday": "Saturday",
-                "Sunday": "Sunday"
-            },
-            "bg": {
-                "Monday": "Понеделник",
-                "Tuesday": "Вторник",
-                "Wednesday": "Сряда",
-                "Thursday": "Четвъртък",
-                "Friday": "Петък",
-                "Saturday": "Събота",
-                "Sunday": "Неделя"
-            }
-        };
 
-        const localDescriptions = {
-            "en": "A static, non-interactive weekly planner for pre-school children. Features a clock, weather widget and a weekly calendar with activities.",
-            "bg": "Статичен, неинтерактивен седмичен планер за деца в предучилищна възраст. Разполага с часовник, прогноза за времето и седмичен календар с активности."
-        };
-
-        const getProfile = async () => {
-            try {
-                const response = await fetch(`/.netlify/functions/profile?id=${userId}`);
-                if (!response.ok) {
-                    let errorText = await response.text();
-                    throw new Error(errorText);
-                }
-
-                profile = await response.json();
-                currentLanguage = profile?.currentLanguage || currentLanguage;
-            } catch (error) {
-                console.error('Error:', error);
-            } finally {
-                if (profile?.sleepTimeSec && profile?.wakeUpTimeSec) {
-                    updateSleepMode();
-                    setInterval(updateSleepMode, 60 * 1000);
-                }
-                setTheme(profile?.theme);
-                updateManifest(profile?.displayName);
-                updateTextContent();
-                updateClockIcons(profile?.icons);
-                setClockFeatures(profile);
-            }
-            root.classList.remove("loading");
+        function getFormattedTitle(name) {
+            if (currentLanguage === 'bg') return name ? 'Календар на ' + name : 'Детски календар';
+            return name ? name + '’s Planner' : 'Kids Planner';
         }
-
-        const setTheme = (theme = "") => {
-            root.setAttribute('data-theme', theme.toLowerCase());
-        };
-
-        const setClockFeatures = ({ clockFeatures = [], clockProgressMode = "" } = {}) => {
-            clockFeatures
-                .map(feature => feature.replace(/\s+/g, '-').toLowerCase())
-                .forEach(className => root.classList.add(`clock-${className}`));
-
-            if (clockProgressMode.trim()) {
-                const progressModeClassName = clockProgressMode.replace(/\s+/g, '-').toLowerCase();
-                root.classList.add(`clock-progress-${progressModeClassName}`);
-            }
-        };
-
-        const getFormattedTitle = (displayName, language) => {
-            const titles = {
-                "bg": displayName ? `Календар на ${displayName}` : "Детски календар",
-                "en": displayName ? `${displayName}’s Planner` : "Kids Planner"
-            };
-
-            return titles[language];
-        }
-        const updateManifest = (name) => {
-            document.title = getFormattedTitle(name, currentLanguage);
-            manifestData.name = getFormattedTitle(name, currentLanguage);
-            manifestData.short_name = getFormattedTitle(name, currentLanguage);
+        function updateManifest(name) {
+            var title = getFormattedTitle(name);
+            document.title = title;
+            manifestData.name = title;
+            manifestData.short_name = title;
             manifestData.lang = currentLanguage;
-            manifestData.description = localDescriptions[currentLanguage];
-            const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' });
-            const manifestUrl = URL.createObjectURL(manifestBlob);
-            document.getElementById('manifestPlaceholder').href = manifestUrl;
-        };
-        const updateTextContent = () => {
-            clocks['am'].label.textContent = localTimeOfDay[currentLanguage]['AM'];
-            clocks['pm'].label.textContent = localTimeOfDay[currentLanguage]['PM'];
-
-            const dayNameElements = document.getElementsByClassName("calendar__day-name");
-            [...dayNameElements].forEach(element => {
-                const initialDayName = element.textContent;
-                const localDayName = localDayNames[currentLanguage][initialDayName];
-                element.textContent = localDayName;
-            });
-        };
-        function updateClockIcons(icons = {}) {
-            for (let icon in icons) {
-                icons[icon].forEach(hour => {
-                    const iconNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                    iconNode.classList.add("clock__icon", `clock__icon-${hour}`);
-                    const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
-                    use.setAttributeNS(null, "width", "2");
-                    use.setAttributeNS("http://www.w3.org/1999/xlink", "href", `#icon-${icon}`);
+            manifestData.description = localDescriptions[currentLanguage] || localDescriptions.en;
+            if (window.URL && URL.createObjectURL && window.Blob) {
+                document.getElementById('manifestPlaceholder').href = URL.createObjectURL(new Blob([JSON.stringify(manifestData)], { type: 'application/manifest+json' }));
+            }
+        }
+        function updateTextContent() {
+            var language = localTimeOfDay[currentLanguage] ? currentLanguage : 'en';
+            clocks.am.label.textContent = localTimeOfDay[language].AM;
+            clocks.pm.label.textContent = localTimeOfDay[language].PM;
+            var dayNames = document.getElementsByClassName('calendar__day-name');
+            for (var i = 0; i < dayNames.length; i++) {
+                var initialName = dayNames[i].textContent;
+                dayNames[i].textContent = (localDayNames[language] || localDayNames.en)[initialName] || initialName;
+            }
+        }
+        function updateClockIcons(icons) {
+            if (!icons) return;
+            for (var icon in icons) {
+                if (!icons.hasOwnProperty(icon) || !icons[icon]) continue;
+                for (var i = 0; i < icons[icon].length; i++) {
+                    var hour = icons[icon][i];
+                    var iconNode = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                    iconNode.setAttribute('class', 'clock__icon clock__icon-' + hour);
+                    var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+                    use.setAttributeNS(null, 'width', '2');
+                    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#icon-' + icon);
                     iconNode.appendChild(use);
-                    (hour <= 11 ? clocks['am'] : clocks['pm']).icons.appendChild(iconNode);
-                });
-            }
-        }
-        getProfile();
-
-        // Weather Functions
-        const weatherContainer = document.getElementById("weather");
-        const getWeather = async () => {
-            try {
-                const response = await fetch('/.netlify/functions/weather');
-
-                if (!response.ok) {
-                    let errorText = await response.text();
-                    throw new Error(errorText);
+                    (hour <= 11 ? clocks.am : clocks.pm).icons.appendChild(iconNode);
                 }
+            }
+        }
+        function setClockFeatures(data) {
+            var features = data && data.clockFeatures || [];
+            for (var i = 0; i < features.length; i++) root.classList.add('clock-' + features[i].replace(/\s+/g, '-').toLowerCase());
+            var mode = data && data.clockProgressMode || '';
+            if (mode.trim()) root.classList.add('clock-progress-' + mode.replace(/\s+/g, '-').toLowerCase());
+        }
+        function applyProfile() {
+            if (profile && profile.sleepTimeSec && profile.wakeUpTimeSec) {
+                updateSleepMode();
+                setInterval(updateSleepMode, 60000);
+            }
+            root.setAttribute('data-theme', profile && profile.theme ? profile.theme.toLowerCase() : '');
+            updateManifest(profile && profile.displayName);
+            updateTextContent();
+            updateClockIcons(profile && profile.icons);
+            configureClockFaces();
+            setClockFeatures(profile);
+            runClock();
+            root.classList.remove('loading');
+        }
+        function updateSleepMode() {
+            if (forceAwake) {
+                root.classList.remove('sleep');
+                return;
+            }
+            if (!profile || !profile.sleepTimeSec || !profile.wakeUpTimeSec) return;
+            var hour = new Date().getHours();
+            var isNight = hour >= profile.sleepTimeSec / 3600 || hour < profile.wakeUpTimeSec / 3600;
+            if (isNight) root.classList.add('sleep');
+            else root.classList.remove('sleep');
+        }
 
-                const data = await response.json();
-                const todayForecast = data.todayForecastData;
-                const currentWeather = data.currentWeatherData;
-
-                if (currentWeather && todayForecast) {
-                    updateWeather(currentWeather, todayForecast);
+        function updateWeather(data) {
+            var forecast = data.todayForecastData;
+            var current = data.currentWeatherData;
+            if (!forecast || !current || !current[0]) return;
+            var today = forecast.DailyForecasts[0];
+            var precipitation = today.Day.PrecipitationType;
+            var display = precipitation === 'Rain' || precipitation === 'Snow' ? 'inline' : 'none';
+            var html = '<div class="weather__temp"><span class="weather__current-temp">' + current[0].RealFeelTemperature.Metric.Value + '°</span> ▸ <span class="weather__max-temp">' + today.Temperature.Maximum.Value + '°</span>' +
+                '<svg viewBox="0 0 960 960" class="weather__percipitation-icon" style="display: ' + display + '"><use href="#' + precipitation + '"></svg></div>' +
+                '<svg viewBox="0 0 300 300" class="weather__forecast-icon"><use xlink:href="#w-' + today.Day.Icon + '" width="250" height="250" x="25" y="25"></use></svg>';
+            var container = document.getElementById('weather');
+            container.innerHTML = html;
+            container.style.display = 'block';
+        }
+        function updateCalendarImages(data) {
+            if (!data || !data.records) return;
+            var urlsPerDay = [];
+            for (var i = 0; i < data.records.length; i++) {
+                var urls = [];
+                var fields = data.records[i].fields || {};
+                for (var fieldName in fields) {
+                    if (!fields.hasOwnProperty(fieldName)) continue;
+                    var attachments = fields[fieldName];
+                    if (!Array.isArray(attachments)) continue;
+                    for (var j = 0; j < attachments.length; j++) {
+                        var attachment = attachments[j];
+                        if (attachment && attachment.thumbnails && attachment.thumbnails.large && attachment.thumbnails.large.url) urls.push(attachment.thumbnails.large.url);
+                    }
                 }
-            } catch (error) {
-                console.error('Error:', error);
+                urlsPerDay.push(urls);
             }
-        }
-        const updateWeather = (currentWeather, todayForecast) => {
-            const precipitationType = todayForecast.DailyForecasts[0].Day.PrecipitationType;
-            const precipitationIconDisplay = (precipitationType === "Rain" || precipitationType === "Snow") ? "inline" : "none";
-
-            const weatherHTML = `
-            <div class="weather__temp">
-                <span class="weather__current-temp">${currentWeather[0].RealFeelTemperature.Metric.Value}°</span> ▸ <span class="weather__max-temp">${todayForecast.DailyForecasts[0].Temperature.Maximum.Value}°</span>
-                <svg viewBox="0 0 960 960" class="weather__percipitation-icon" style="display: ${precipitationIconDisplay}">
-                    <use href="#${precipitationType}">
-                </svg>
-            </div>
-            <svg viewBox="0 0 300 300" class="weather__forecast-icon"><use xlink:href="#w-${todayForecast.DailyForecasts[0].Day.Icon}" width="250" height="250" x="25" y="25"></use></svg>
-            `;
-            // Get the container and set its innerHTML
-            weatherContainer.innerHTML = weatherHTML;
-            weatherContainer.style.display = "block";
-        }
-        getWeather();
-
-        // Calendar Functions
-        const getCalendar = async () => {
-            try {
-                const response = await fetch(`/.netlify/functions/calendar?id=${userId}`);
-                if (!response.ok) {
-                    let errorText = await response.text();
-                    throw new Error(errorText);
+            for (var dayIndex = 0; dayIndex < calDays.length; dayIndex++) {
+                var oldEvents = calDays[dayIndex].getElementsByClassName('calendar__event');
+                while (oldEvents.length) oldEvents[0].parentNode.removeChild(oldEvents[0]);
+                var dayUrls = urlsPerDay[dayIndex] || [];
+                for (var urlIndex = 0; urlIndex < dayUrls.length; urlIndex++) {
+                    (function(day, url) {
+                        var image = new Image();
+                        image.onload = function() {
+                            var eventNode = document.createElement('div');
+                            eventNode.className = 'calendar__event';
+                            eventNode.style.backgroundImage = 'url(' + url + ')';
+                            day.appendChild(eventNode);
+                        };
+                        image.src = url;
+                    }(calDays[dayIndex], dayUrls[urlIndex]));
                 }
-                const calendarData = await response.json();
-                if (calendarData) updateCalendarImages(calendarData);
-            } catch (error) {
-                console.error('Error:', error);
             }
         }
 
-        const updateCalendarImages = (calendarData) => {
-            // Construct an array of arrays containing URLs for each day
-            const urlsPerDay = calendarData.records.map((record) =>
-                Object.values(record.fields)
-                    .filter((field) => Array.isArray(field) && field[0]?.thumbnails?.large?.url)
-                    .flatMap((attachments) => attachments.map((attachment) => attachment.thumbnails.large.url))
-            );
-
-            // Create promises to load images for each day
-            const loadPromisesPerDay = urlsPerDay.map((urls) =>
-                Promise.all(urls.map((url) => new Promise((resolve) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const eventNode = document.createElement('div');
-                        eventNode.className = 'calendar__event';
-                        eventNode.style.backgroundImage = `url(${url})`;
-                        resolve(eventNode);
-                    };
-                    img.src = url;
-                })))
-            );
-
-            // Wait for all images to be loaded
-            Promise.all(loadPromisesPerDay).then((newEventNodesPerDay) => {
-                // Iterate over the day elements and replace the old images with the new ones
-                [...calDays].forEach((dayElement, i) => {
-                    const oldEvents = [...dayElement.getElementsByClassName('calendar__event')];
-                    oldEvents.forEach((eventNode) => eventNode.remove());
-                    newEventNodesPerDay[i].forEach((eventNode) => dayElement.appendChild(eventNode));
-                });
-            });
-        };
-
-        getCalendar();
-
-        // Refresh
-        const refreshData = async () => {
-            const h = new Date().getHours();
-            if (h >= 6 && h < 21) {
-                getWeather();
-                getCalendar();
+        configureClockFaces();
+        runClock();
+        updateCalendar();
+        setInterval(runClock, 1000);
+        setInterval(updateCalendar, 60000);
+        requestJSON('/.netlify/functions/profile?id=' + encodeURIComponent(userId || ''), function(data) {
+            profile = data || null;
+            if (profile && profile.currentLanguage) currentLanguage = profile.currentLanguage;
+            applyProfile();
+        }, function(error) {
+            console.error('Error:', error);
+            applyProfile();
+        });
+        function refreshData() {
+            var hour = new Date().getHours();
+            if (hour >= 6 && hour < 21) {
+                requestJSON('/.netlify/functions/weather', updateWeather, function(error) { console.error('Error:', error); });
+                requestJSON('/.netlify/functions/calendar?id=' + encodeURIComponent(userId || ''), updateCalendarImages, function(error) { console.error('Error:', error); });
             }
-        };
+        }
+        requestJSON('/.netlify/functions/weather', updateWeather, function(error) { console.error('Error:', error); });
+        requestJSON('/.netlify/functions/calendar?id=' + encodeURIComponent(userId || ''), updateCalendarImages, function(error) { console.error('Error:', error); });
         setInterval(refreshData, 30 * 60 * 1000);
-
     </script>
 
 </body>

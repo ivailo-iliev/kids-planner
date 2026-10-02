@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "name": "Kids Planner",
+      "priority": 0,
+      "items": [
+        {
+          "name": "Install Kids Planner WAF",
+          "action": "./install.sh",
+          "params": "install",
+          "exitmenu": false,
+          "refresh": true,
+          "status": true
+        },
+        {
+          "name": "Launch Kids Planner",
+          "action": "./install.sh",
+          "params": "launch",
+          "exitmenu": true,
+          "refresh": false,
+          "status": true
+        }
+      ]
+    }
+  ]
+}
