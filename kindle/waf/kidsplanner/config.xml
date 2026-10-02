@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget id="com.ivailo.kidsplanner" version="1.0.2" viewmodes="application"
+<widget id="com.ivailo.kidsplanner" version="1.0.3" viewmodes="application"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:kindle="http://kindle.amazon.com/ns/widget-extensions">
     <name xml:lang="en">Kids Planner</name>
-    <description xml:lang="en">Open the live Kids Planner dashboard.</description>
+    <description xml:lang="en">Open the Kids Planner morning routine.</description>
     <content src="index.html" />
     <kindle:network>
         <kindle:asset key="enableWrsProxy" value="true" />

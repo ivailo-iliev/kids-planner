@@ -72,6 +72,8 @@ function toggleDone(el) {
     var routineCells = [];
     var maxItems = 1;
     var i;
+    var j;
+    var spans;
 
     for (i = 0; i < cells.length; i++) {
       if (hasClass(cells[i], "routine")) {
@@ -86,14 +88,20 @@ function toggleDone(el) {
     var rowHeight = routineCells[0].parentNode.clientHeight;
     var availableWidth = routineCells[0].clientWidth * 0.96;
 
-    // The longest row determines one shared icon size for both children.
-    // Allow roughly 1em per icon plus the small inter-item gaps.
-    var sizeByWidth = availableWidth / (maxItems * 1.16);
+    // The longest row sets one shared icon size; leave room for icon margins.
+    var sizeByWidth = availableWidth / (maxItems * 1.24);
     var sizeByHeight = rowHeight * 0.55;
     var size = Math.floor(Math.min(sizeByWidth, sizeByHeight));
 
     for (i = 0; i < routineCells.length; i++) {
-      routineCells[i].style.fontSize = size + "px";
+      // Zero inherited whitespace between inline-block icons, then size each icon.
+      routineCells[i].style.fontSize = "0px";
+      spans = routineCells[i].getElementsByTagName("span");
+      for (j = 0; j < spans.length; j++) {
+        if (hasClass(spans[j], "person-icon") || hasClass(spans[j], "emoji-item")) {
+          spans[j].style.fontSize = size + "px";
+        }
+      }
     }
   }
 
