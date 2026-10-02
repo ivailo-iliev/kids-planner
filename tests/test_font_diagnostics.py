@@ -118,6 +118,18 @@ class FontDiagnosticTests(unittest.TestCase):
         self.assertTrue(result["referencesExternalFont"])
         self.assertTrue(result["hasLayoutCss"])
 
+    def test_cached_font_mode_status_and_older_requests_cannot_overwrite_the_current_choice(self):
+        source = (ROOT / "test.html").read_text(encoding="utf-8")
+        start = source.index("function applyFontMode(mode)")
+        end = source.index("function loadServerDiagnostics()", start)
+        apply_mode = source[start:end]
+
+        loading = apply_mode.index('fontStatus("loading embedded font data for " + mode)')
+        request = apply_mode.index("loadFontData(function (error, base64)")
+        self.assertLess(loading, request)
+        self.assertIn("if (activeFontMode !== mode) return;", apply_mode)
+        self.assertIn('id="css-status"', source)
+
     def test_diagnostic_page_exposes_user_agents_font_variants_and_layout_metrics(self):
         source = (ROOT / "test.html").read_text(encoding="utf-8")
 

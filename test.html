@@ -164,6 +164,7 @@ function toggleDone(el) {
     </select>
   </div>
   <div id="font-status">Font method: server-detected default</div>
+  <div id="css-status">Device stylesheet: waiting</div>
   <div id="layout-metrics">Layout metrics: measuring</div>
 </div>
 
@@ -198,6 +199,7 @@ function toggleDone(el) {
   var fontDataLoading = false;
   var fontDataCallbacks = [];
   var dataCssLink = null;
+  var activeFontMode = "server";
   var inlineFontStyle = null;
   var cssLink = document.getElementById("device-css");
   var choices;
@@ -403,10 +405,12 @@ function toggleDone(el) {
     dataCssLink.type = "text/css";
     dataCssLink.href = "/.netlify/functions/device-css?font_test=1&font_only=1";
     dataCssLink.onload = function () {
+      if (activeFontMode !== "server-data-uri") return;
       applyFamily('"Noto Emoji Kindle", sans-serif');
       fontStatus("embedded CSS data URI stylesheet loaded");
     };
     dataCssLink.onerror = function () {
+      if (activeFontMode !== "server-data-uri") return;
       fontStatus("embedded CSS data URI stylesheet failed to load");
     };
     document.getElementsByTagName("head")[0].appendChild(dataCssLink);
@@ -414,6 +418,7 @@ function toggleDone(el) {
   }
 
   function applyFontMode(mode) {
+    activeFontMode = mode;
     removeInlineFontStyle();
 
     if (mode === "server") {
@@ -431,14 +436,15 @@ function toggleDone(el) {
     } else if (mode === "server-data-uri") {
       loadServerDataUriStylesheet();
     } else {
+      fontStatus("loading embedded font data for " + mode);
       loadFontData(function (error, base64) {
+        if (activeFontMode !== mode) return;
         if (error) {
           fontStatus(error);
           return;
         }
         installInlineFont(mode, base64);
       });
-      fontStatus("loading embedded font data for " + mode);
     }
   }
 
@@ -485,8 +491,8 @@ function toggleDone(el) {
   if (diagnosticMode) {
     document.body.className += (document.body.className ? " " : "") + "font-diagnostics";
     if (cssLink) {
-      cssLink.onload = function () { fontStatus("device stylesheet loaded"); };
-      cssLink.onerror = function () { fontStatus("device stylesheet failed to load"); };
+      cssLink.onload = function () { setText(document.getElementById("css-status"), "Device stylesheet: loaded"); };
+      cssLink.onerror = function () { setText(document.getElementById("css-status"), "Device stylesheet: failed to load"); };
     }
     choices = document.getElementById("font-mode");
     if (choices.addEventListener) {

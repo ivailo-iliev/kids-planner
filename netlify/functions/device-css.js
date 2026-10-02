@@ -404,7 +404,9 @@ exports.handler = async function (event) {
     css.push('  font-style: normal;');
     css.push('}');
     css.push('');
-    css.push('.emoji { font-family: "Noto Emoji Kindle", sans-serif; }');
+    if (!fontOnly) {
+      css.push('.emoji { font-family: "Noto Emoji Kindle", sans-serif; }');
+    }
   }
 
   return {
