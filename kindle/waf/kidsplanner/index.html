@@ -3,13 +3,76 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="refresh" content="0;url=https://kids-planner.netlify.app/?id=recoHkbAGiDt1mtAH&amp;sleep=off">
     <title>Kids Planner</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        #planner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        #close {
+            position: fixed;
+            z-index: 10;
+            top: 8px;
+            right: 8px;
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border: 2px solid #777;
+            border-radius: 50%;
+            background: #fff;
+            color: #333;
+            font: bold 32px/42px Arial, sans-serif;
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+    </style>
 </head>
 <body>
+    <iframe id="planner" title="Kids Planner" src="https://kids-planner.netlify.app/?id=recoHkbAGiDt1mtAH&amp;sleep=off"></iframe>
+    <button id="close" type="button" aria-label="Close Kids Planner" title="Close">&times;</button>
     <script>
-        window.location.replace('https://kids-planner.netlify.app/?id=recoHkbAGiDt1mtAH&sleep=off');
+        (function requestLandscapeAndFullscreen() {
+            var kindle = window.kindle;
+            if (kindle && kindle.dev && typeof kindle.dev.setOrientation === 'function') {
+                try {
+                    kindle.dev.setOrientation('landscape');
+                } catch (error) {
+                    // Keep the close action available if this firmware rejects the request.
+                }
+            }
+            if (kindle && kindle.messaging && typeof kindle.messaging.sendStringMessage === 'function') {
+                try {
+                    kindle.messaging.sendStringMessage('com.lab126.mfa', 'switchViewMode', 'fullscreen');
+                } catch (error) {
+                    // The WAF still fills its viewport if this firmware lacks the mode switch.
+                }
+            }
+        }());
+
+        document.getElementById('close').onclick = function() {
+            if (window.kindle && window.kindle.dev && window.kindle.dev.setOrientation) {
+                window.kindle.dev.setOrientation('auto');
+            }
+            if (window.kindle && window.kindle.appmgr && window.kindle.appmgr.start) {
+                window.kindle.appmgr.start('com.lab126.booklet.home');
+            }
+        };
     </script>
-    <p><a href="https://kids-planner.netlify.app/?id=recoHkbAGiDt1mtAH&amp;sleep=off">Open Kids Planner</a></p>
 </body>
 </html>
