@@ -1,0 +1,38 @@
+{
+  "items": [
+    {
+      "name": "Kids Planner",
+      "priority": 0,
+      "items": [
+        {
+          "name": "Install / Refresh Kids Planner WAF",
+          "if": "\"/mnt/us/kidsplanner-install-ok\" -f!",
+          "action": "/bin/sh",
+          "params": "/mnt/us/extensions/KidsPlanner/install.sh install",
+          "exitmenu": false,
+          "refresh": true,
+          "status": true,
+          "internal": "status Installing Kids Planner WAF; check for the installed state after menu refresh"
+        },
+        {
+          "name": "Kids Planner WAF installed (tap to refresh)",
+          "if": "\"/mnt/us/kidsplanner-install-ok\" -f",
+          "action": "/bin/sh",
+          "params": "/mnt/us/extensions/KidsPlanner/install.sh install",
+          "exitmenu": false,
+          "refresh": true,
+          "status": true,
+          "internal": "status Refreshing Kids Planner WAF"
+        },
+        {
+          "name": "Launch Kids Planner",
+          "action": "/bin/sh",
+          "params": "/mnt/us/extensions/KidsPlanner/install.sh launch",
+          "exitmenu": true,
+          "refresh": false,
+          "status": true
+        }
+      ]
+    }
+  ]
+}
