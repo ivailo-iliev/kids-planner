@@ -3,7 +3,7 @@
 set -e
 
 APP_ID="com.ivailo.kidsplanner"
-WAF_VERSION="1.0.6"
+WAF_VERSION="1.0.7"
 SOURCE="/mnt/us/extensions/KidsPlanner/waf"
 DEST="/var/local/mesquite/kidsplanner"
 DB="/var/local/appreg.db"
@@ -52,6 +52,10 @@ INSERT OR REPLACE INTO properties (handlerId, name, value)
     VALUES ('$APP_ID', 'command', '/usr/bin/mesquite -l $APP_ID -c file://$DEST/');
 INSERT OR REPLACE INTO properties (handlerId, name, value)
     VALUES ('$APP_ID', 'supportedOrientation', 'URL');
+INSERT OR REPLACE INTO properties (handlerId, name, value)
+    VALUES ('$APP_ID', 'default-chrome-style', 'NH');
+INSERT OR REPLACE INTO properties (handlerId, name, value)
+    VALUES ('$APP_ID', 'searchbar-mode', 'transient');
 INSERT OR REPLACE INTO associations (handlerId, interface, contentId, defaultAssoc)
     VALUES ('$APP_ID', 'application', 'none', 'false');
 SQL
@@ -68,6 +72,7 @@ launch_waf() {
         install_waf
     fi
     lipc-set-prop com.lab126.winmgr orientationLock L
+    sleep 1
     lipc-set-prop com.lab126.appmgrd start "app://$APP_ID"
     log "Launch requested for Kids Planner WAF $WAF_VERSION in landscape/fullscreen mode"
 }

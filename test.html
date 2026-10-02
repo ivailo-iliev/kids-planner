@@ -9,7 +9,7 @@ html, body { width: 100%; height: 100%; margin: 0; }
 body { color: #111; background: #fff; font-family: Arial, sans-serif; }
 table { width: 100%; height: 100%; table-layout: fixed; border-collapse: collapse; }
 tr { height: 50%; }
-td { padding: 0 2%; text-align: left; vertical-align: middle; white-space: nowrap; line-height: 1; font-size: 80px; }
+td { padding: 0; text-align: left; vertical-align: middle; white-space: nowrap; line-height: 1; }
 .person-icon, .emoji-item { display: inline-block; width: 1em; text-align: center; vertical-align: middle; }
 .person-icon { margin-right: 0.35em; }
 .emoji-item { margin-right: 0.18em; }
@@ -75,5 +75,62 @@ if (isLegacyKindleUserAgent(navigator.userAgent || "")) {
     </td>
   </tr>
 </table>
+<script>
+function resizeRoutineEmoji() {
+  var table = document.getElementsByTagName("table")[0];
+  var rows = table.getElementsByTagName("tr");
+  var allItems = [];
+  var maxItems = 0;
+  var maxWidthUnits = 0;
+  var availableWidth = 0;
+  var availableHeight = 0;
+  var i;
+
+  for (i = 0; i < rows.length; i++) {
+    var cell = rows[i].getElementsByTagName("td")[0];
+    var spans = cell.getElementsByTagName("span");
+    var rowItems = 0;
+    var rowWidthUnits = 0;
+    var j;
+
+    for (j = 0; j < spans.length; j++) {
+      var className = spans[j].className;
+      if (/(^|\s)(person-icon|emoji-item)(\s|$)/.test(className)) {
+        allItems.push(spans[j]);
+        rowItems++;
+        rowWidthUnits += 1;
+        rowWidthUnits += /(^|\s)person-icon(\s|$)/.test(className) ? 0.35 : 0.18;
+      }
+    }
+
+    if (rowItems > maxItems) {
+      maxItems = rowItems;
+    }
+    if (rowWidthUnits > maxWidthUnits) {
+      maxWidthUnits = rowWidthUnits;
+    }
+
+    if (i === 0 || cell.clientWidth < availableWidth) {
+      availableWidth = cell.clientWidth;
+    }
+    if (i === 0 || cell.clientHeight < availableHeight) {
+      availableHeight = cell.clientHeight;
+    }
+  }
+
+  if (!maxItems || !maxWidthUnits || !availableWidth || !availableHeight) {
+    return;
+  }
+
+  var iconSize = Math.floor(Math.min(availableWidth / maxWidthUnits, availableHeight * 0.8));
+  for (i = 0; i < allItems.length; i++) {
+    allItems[i].style.fontSize = iconSize + "px";
+  }
+}
+
+window.onresize = resizeRoutineEmoji;
+window.onorientationchange = resizeRoutineEmoji;
+resizeRoutineEmoji();
+</script>
 </body>
 </html>
