@@ -1169,7 +1169,7 @@
             var precipitation = today.Day.PrecipitationType;
             var display = precipitation === 'Rain' || precipitation === 'Snow' ? 'inline' : 'none';
             var html = '<div class="weather__temp"><span class="weather__current-temp">' + current[0].RealFeelTemperature.Metric.Value + '°</span> ▸ <span class="weather__max-temp">' + today.Temperature.Maximum.Value + '°</span>' +
-                '<svg viewBox="0 0 960 960" class="weather__percipitation-icon" style="display: ' + display + '"><use href="#' + precipitation + '"></svg></div>' +
+                '<svg viewBox="0 0 960 960" class="weather__percipitation-icon" style="display: ' + display + '"><use href="#' + precipitation + '" xlink:href="#' + precipitation + '"></use></svg></div>' +
                 '<svg viewBox="0 0 300 300" class="weather__forecast-icon"><use xlink:href="#w-' + today.Day.Icon + '" width="250" height="250" x="25" y="25"></use></svg>';
             var container = document.getElementById('weather');
             container.innerHTML = html;
