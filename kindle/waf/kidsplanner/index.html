@@ -56,19 +56,37 @@
     </style>
 </head>
 <body>
-    <iframe id="planner" title="Kids Planner morning routine" src="https://kids-planner.netlify.app/test.html"></iframe>
-    <div id="version">Kids Planner v1.0.8</div>
+    <div id="version">Kids Planner v1.0.9</div>
     <button id="close" type="button" aria-label="Close Kids Planner" title="Close">&times;</button>
     <script>
-        (function requestFullscreen() {
+        function loadPlanner() {
+            var iframe = document.createElement('iframe');
+            iframe.id = 'planner';
+            iframe.title = 'Kids Planner morning routine';
+            iframe.src = 'https://kids-planner.netlify.app/test.html';
+            document.body.insertBefore(iframe, document.body.firstChild);
+        }
+
+        (function startKidsPlanner() {
             var kindle = window.kindle;
+
+            if (kindle && kindle.dev && typeof kindle.dev.setOrientation === 'function') {
+                try {
+                    kindle.dev.setOrientation('landscape');
+                } catch (error) {}
+            }
+
             if (kindle && kindle.messaging && typeof kindle.messaging.sendStringMessage === 'function') {
                 try {
-                    kindle.messaging.sendStringMessage('com.lab126.mfa', 'switchViewMode', 'fullscreen');
-                } catch (error) {
-                    // The WAF still fills its viewport if this firmware lacks the mode switch.
-                }
+                    kindle.messaging.sendStringMessage(
+                        'com.lab126.mfa',
+                        'switchViewMode',
+                        'fullscreen'
+                    );
+                } catch (error) {}
             }
+
+            setTimeout(loadPlanner, 500);
         }());
 
         document.getElementById('close').onclick = function() {

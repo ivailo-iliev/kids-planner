@@ -3,7 +3,7 @@
 set -e
 
 APP_ID="com.ivailo.kidsplanner"
-WAF_VERSION="1.0.8"
+WAF_VERSION="1.0.9"
 SOURCE="/mnt/us/extensions/KidsPlanner/waf"
 DEST="/var/local/mesquite/kidsplanner"
 DB="/var/local/appreg.db"
@@ -73,7 +73,23 @@ launch_waf() {
     fi
     lipc-set-prop com.lab126.winmgr orientationLock L
     sleep 1
+    lipc-set-prop com.lab126.pillow disableEnablePillow disable
     lipc-set-prop com.lab126.appmgrd start "app://$APP_ID"
+    (
+        attempts=0
+        active_app=""
+        while [ "$attempts" -lt 10 ]; do
+            active_app=$(lipc-get-prop com.lab126.appmgrd activeApp 2>/dev/null || true)
+            [ "$active_app" = "$APP_ID" ] && break
+            attempts=$((attempts + 1))
+            sleep 1
+        done
+        while [ "$active_app" = "$APP_ID" ]; do
+            sleep 1
+            active_app=$(lipc-get-prop com.lab126.appmgrd activeApp 2>/dev/null || true)
+        done
+        lipc-set-prop com.lab126.pillow disableEnablePillow enable
+    ) </dev/null >/dev/null 2>&1 &
     log "Launch requested for Kids Planner WAF $WAF_VERSION in landscape/fullscreen mode"
 }
 

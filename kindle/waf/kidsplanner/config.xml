@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget id="com.ivailo.kidsplanner" version="1.0.8" viewmodes="fullscreen application"
+<widget id="com.ivailo.kidsplanner" version="1.0.9" viewmodes="fullscreen application"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:kindle="http://kindle.amazon.com/ns/widget-extensions">
     <name xml:lang="en">Kids Planner</name>
